@@ -1,32 +1,27 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import './App.css';
 
-//Components
-import ListEstudiantes from "./Component/ListEstudiantes";
-import RegEstudiante from "./Component/RegEstudiante";
+//Pages
+import ListEstudiantes from "./Pages/ListEstudiantes";
+import RegEstudiante from "./Pages/RegEstudiante";
 
+//Components
+import Menu from "./Component/Menu";
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <ul>
-          <li>
-            <Link to="/registrar">Registrar</Link>
-          </li>
-          <li>
-            <Link to="/listar">Listar</Link>
-          </li>
-        </ul>
+        <Menu />
         <Switch>
           <Route exact path="/registrar">
-            <RegEstudiante/>
+            <RegEstudiante />
           </Route>
           <Route exact path="/listar">
-            <ListEstudiantes/>
+            <ListEstudiantes />
           </Route>
-
+          <Route render={() => <Redirect to={{pathname: "/registrar"}} />} />
         </Switch>
 
       </Router>
