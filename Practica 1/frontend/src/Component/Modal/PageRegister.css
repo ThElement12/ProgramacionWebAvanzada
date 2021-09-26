@@ -1,0 +1,25 @@
+/*.fondo-pantalla{
+    background-image: url('../../assets/img/real-estate-lawyer.jpg') !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-size: cover !important;
+    background-size: 100% 100% !important;
+
+}*/
+.avatar{
+    width: 250px;
+    height: 100px;
+}
+.card-register{
+    width: 600px;
+    margin-top: 1%;
+
+}
+.card-logo{
+    display: block;
+    text-align: center;
+}
+.completeName{
+    float: left;
+    display: inline;
+}
