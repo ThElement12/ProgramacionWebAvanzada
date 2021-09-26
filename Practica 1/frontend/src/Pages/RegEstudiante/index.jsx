@@ -29,10 +29,15 @@ const RegEstudiante = () => {
     var estudiante = new Estudiante(matricula, nombre, apellido, telefono)
     event.preventDefault();
     const estudianteService = new EstudianteService();
-    estudianteService.registrarEstudiante(estudiante);
-    setModal(true);
-    clean()
-    console.log(estudiante);
+    estudianteService.registrarEstudiante(estudiante)
+    .then((res)=>{
+      setModal(true);
+      clean()
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+
   }
 
   const formatTelefono = value => {
