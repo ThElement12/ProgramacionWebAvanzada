@@ -5,11 +5,10 @@ import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -22,7 +21,13 @@ public class User implements Serializable{
     @Column()
     private String username;
     @Column()
-    private String pass;
-    @Column()
-    private String rol;
+    private String password;
+
+    @ManyToOne()
+    private Role UserRole;
+
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @JoinColumn(name = "id_mockup")
+    private Set<Mockup> mockups;
+
 }

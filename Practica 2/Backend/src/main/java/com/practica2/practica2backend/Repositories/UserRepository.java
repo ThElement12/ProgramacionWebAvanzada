@@ -1,4 +1,4 @@
-package com.practica2.practica2backend.Models.Repositories;
+package com.practica2.practica2backend.Repositories;
 
 import com.practica2.practica2backend.Models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
