@@ -33,7 +33,7 @@ public class Practica2BackendApplication {
             User admin = new User();
             admin.setUsername("admin");
             admin.setPassword(bCryptPasswordEncoder.encode("admin"));
-            admin.setName("Administrador");
+            admin.setMail("Administrador");
             admin.setRoles(Collections.singletonList("admin"));
             usuarioRepository.save(admin);
         };
