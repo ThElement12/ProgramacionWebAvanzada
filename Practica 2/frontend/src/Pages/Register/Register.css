@@ -1,0 +1,13 @@
+.card-register{
+    width: 600px;
+    margin-top: 1%;
+
+}
+.card-logo{
+    display: block;
+    text-align: center;
+}
+.completeName{
+    float: left;
+    display: inline;
+}

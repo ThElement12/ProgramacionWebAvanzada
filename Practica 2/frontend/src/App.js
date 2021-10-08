@@ -11,6 +11,7 @@ import {
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Navigation from './Components/Navigation';
+import Register from './Pages/Register';
 
 function App() {
   return (
@@ -25,6 +26,11 @@ function App() {
         <Route exact path='/login' render={
           () => {
             return <Login/>
+          }
+        }/>
+        <Route exact path="/register" render = {
+          () => {
+            return <Register/>
           }
         }/>
         <Route exact path='/'
