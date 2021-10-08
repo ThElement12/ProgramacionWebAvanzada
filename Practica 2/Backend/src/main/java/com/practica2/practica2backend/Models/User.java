@@ -27,7 +27,7 @@ public class User implements Serializable{
     @Column()
     private String password;
     @Column()
-    private String name;
+    private String mail;
 
     /*@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id",nullable = false),
