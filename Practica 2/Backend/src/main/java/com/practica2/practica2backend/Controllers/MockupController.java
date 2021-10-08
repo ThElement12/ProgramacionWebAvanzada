@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8080")
 public class MockupController {
 
     private final MockupService mockupService;
