@@ -48,7 +48,6 @@ public class MockupController {
 
     @GetMapping("/mockup/{username}/{resource}")
     @PreAuthorize("hasAnyAuthority('admin','cliente')")
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getResource(@PathVariable String username,@PathVariable String resource){
         Map<String,Object> response = new HashMap<>();
         User user = userService.findByUsername(username);
@@ -59,7 +58,7 @@ public class MockupController {
             }
             else {
                 response.put("message",mockupService.validateMessageJwtToken(mockup.getToken()));
-                return new ResponseEntity<>(response, HttpStatus.OK);
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
 
         }
