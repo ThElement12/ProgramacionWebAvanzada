@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+@CrossOrigin(origins = { "http://localhost:3000","*"})
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
 public class AuthController {
 
     private final UserService userService;

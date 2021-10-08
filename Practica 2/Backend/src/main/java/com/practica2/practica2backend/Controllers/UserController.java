@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin(origins = { "https://www.noisewatcher.systems","http://localhost:3000","*"})
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
 public class UserController {
     private final UserService userService;
 

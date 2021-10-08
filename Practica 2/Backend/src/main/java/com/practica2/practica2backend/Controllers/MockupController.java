@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+@CrossOrigin(origins = { "https://www.noisewatcher.systems","http://localhost:3000","*"})
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
 public class MockupController {
 
     private final MockupService mockupService;
