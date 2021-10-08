@@ -88,6 +88,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     public String generateJwtToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getUsername())
+                .claim("username",user.getUsername())
+                .claim("roles",user.getRoles())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + 3000000)) //50 minutos 3000000
                 .signWith(SignatureAlgorithm.HS512, SECRET)

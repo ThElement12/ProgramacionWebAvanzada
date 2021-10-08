@@ -1,5 +1,7 @@
 package com.practica2.practica2backend.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.Generated;
 import lombok.Getter;
@@ -35,8 +37,16 @@ public class User implements Serializable{
     @ElementCollection(targetClass = String.class,fetch = FetchType.EAGER)
     List<String> roles;
 
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    @JoinColumn(name = "id_mockup")
+    @OneToMany( cascade = CascadeType.ALL)
     private Set<Mockup> mockups;
+
+    public Boolean hasMockup(String uuid){
+        for(Mockup mockup:mockups){
+            if(mockup.getUuid().equals(uuid)){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
