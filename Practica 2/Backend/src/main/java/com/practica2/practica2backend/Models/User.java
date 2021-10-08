@@ -29,11 +29,6 @@ public class User implements Serializable{
     @Column()
     private String mail;
 
-    /*@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id",nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();*/
-
     @ElementCollection(targetClass = String.class,fetch = FetchType.EAGER)
     List<String> roles;
 

@@ -87,11 +87,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        // Don't do this in production, use a proper list  of allowed origins https://www.noisewatcher.systems
+        // Don't do this in production, use a proper list  of allowed origins
         List<String> allowed = new ArrayList<>();
         allowed.add("http://localhost:3000");
         config.setAllowedOrigins(allowed);
-        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
+        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept","Authorization"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
         source.registerCorsConfiguration("/**", config);
         return source;
