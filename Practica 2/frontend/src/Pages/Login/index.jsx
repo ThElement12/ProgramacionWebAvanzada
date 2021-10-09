@@ -24,53 +24,18 @@ const Login = () => {
   const authentication = async () => {
     await AuthService.login(credential, password)
       .then(res => {
-        console.log("Decodiao: ")
+        console.log("Decodiao: ");
         var decoded = jwt_decode(res);
-        console.log(decoded)
-      })
-      .catch(res => {
-        setmsgError(res.message)
-      });
-  }
-
-  /*const firebaseAuthentication = () => {
-    Auth.signInWithEmailAndPassword(username, pass)
-      .then(firebaseSuccess)
-      .catch(firebaseError);
-  };*/
-  const firebaseSuccess = () => {
-    setmsgError("");
-    fetch(process.env.REACT_APP_BACK_URL + "usuarios/" + credential)
-      .then((res) => res.json())
-      .then((res) => {
-        const entries = Object.entries(res[0]);
-        for (const [key, value] of entries) {
-          localStorage.setItem(key, value);
-        }
-        if (localStorage.getItem("Tipo Usuario") === "Abogado") {
-          const idPersona = localStorage.getItem("Id Persona");
-          fetch(process.env.REACT_APP_BACK_URL + "abogado-id/" + idPersona)
-            .then((res) => res.json())
-            .then((res) => {
-              const entries = Object.entries(res[0]);
-              for (const [key, value] of entries) {
-                localStorage.setItem(key, value);
-              }
-            });
+        sessionStorage.setItem('username', decoded.username);
+        if(decoded.roles.includes("admin")){
+          sessionStorage.setItem('rol', "admin")
         }
         history.push("/home");
       })
-      .catch((err) => console.error(err));
-  };
-  const firebaseError = (error) => {
-    if (error.code === "auth/user-not-found") {
-      setmsgError("El correo no existe");
-      return;
-    } else if (error.code === "auth/wrong-password") {
-      setmsgError("La contraseña es incorrecta");
-      return;
-    }
-  };
+      .catch(res => {
+        setmsgError("La contraseña o el usuario no es correcto")
+      });
+  }
 
   return (
     <div
@@ -104,6 +69,7 @@ const Login = () => {
                 required
               />
             </Form.Group>
+            <br></br>
             {msgError !== "" && <Alert variant="danger">{msgError}</Alert>}
             <Button className="w-100" type="submit">
               Ingresar
