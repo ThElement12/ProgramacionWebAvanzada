@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useHistory, Link } from "react-router-dom";
-import { Navbar, Nav, NavDropdown, Button, Container } from "react-bootstrap";
+import { Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
 
 import Auth from "../../Utils/auth.service.js";
 
@@ -8,12 +8,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navigation.css";
 
 export default function Navigation() {
-  const [usuario, setUsuario] = useState("");
   const history = useHistory();
 
   const logOut = () => {
     Auth.logout();
-    setUsuario("");
     history.push("/home");
   };
   const loggedNavBar = () => {
