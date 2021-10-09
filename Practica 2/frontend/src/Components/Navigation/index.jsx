@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Button, Container } from "react-bootstrap";
 
-import Auth from "../../Utils/auth.js";
+import Auth from "../../Utils/auth.service.js";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 //import Logo from "../../assets/img/Logo.png";
@@ -28,16 +28,13 @@ export default function Navigation() {
     history.push("/login");
   };
   const loggedNavBar = () => {
-    if (usuario === "") {
+    if (!sessionStorage.getItem('jwt')) {
       return <Nav className="me-auto">
         <Nav.Link className="MenuItem" as={Link} to="/home">
           Inicio
         </Nav.Link>
         <Nav.Link className="MenuItem" as={Link} to="/login">
           Ingresa
-        </Nav.Link>
-        <Nav.Link className="MenuItem" as={Link} to="/register">
-          Registrate
         </Nav.Link>
       </Nav>
     }else{
@@ -50,7 +47,10 @@ export default function Navigation() {
       </Nav.Link>
       <NavDropdown title="Cuenta" id="basic-nav-dropdown">
         <NavDropdown.Item as={Link} to="/users" className="link">
-          Usuarios
+          Administrar Usuarios
+        </NavDropdown.Item>
+        <NavDropdown.Item  as={Link} to="/register" className="link">
+          Registrar Usuario
         </NavDropdown.Item>
         <NavDropdown.Item onClick={logOut} className="link">
           Cerrar Sesion
@@ -58,7 +58,6 @@ export default function Navigation() {
       </NavDropdown>
     </Nav>
     }
-
   }
 
   return (

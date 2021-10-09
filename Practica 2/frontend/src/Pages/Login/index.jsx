@@ -1,33 +1,46 @@
 import React, { useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 //import { Auth } from "../../utils/firebase";
 //import logo from "../../assets/img/Logo.png";
 
+import  AuthService from '../../Utils/auth.service.js'
 import "./Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [credential, setUsername] = useState("");
+  const [password, setPass] = useState("");
   const [msgError, setmsgError] = useState("");
   const history = useHistory();
 
+
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log(event);
-    //firebaseAuthentication();
+    authentication();
   };
+  const authentication = async () => {
+    await AuthService.login(credential, password)
+      .then(res => {
+        console.log("Decodiao: ")
+        var decoded = jwt_decode(res);
+        console.log(decoded)
+      })
+      .catch(res => {
+        setmsgError(res.message)
+      });
+  }
 
   /*const firebaseAuthentication = () => {
-    Auth.signInWithEmailAndPassword(email, pass)
+    Auth.signInWithEmailAndPassword(username, pass)
       .then(firebaseSuccess)
       .catch(firebaseError);
   };*/
   const firebaseSuccess = () => {
     setmsgError("");
-    fetch(process.env.REACT_APP_BACK_URL + "usuarios/" + email)
+    fetch(process.env.REACT_APP_BACK_URL + "usuarios/" + credential)
       .then((res) => res.json())
       .then((res) => {
         const entries = Object.entries(res[0]);
@@ -69,12 +82,12 @@ const Login = () => {
           <h2 className="text-center mb-4">Ingresar</h2>
           <Form onSubmit={onSubmit}>
             <Form.Group id="correo">
-              <Form.Label>Correo</Form.Label>
+              <Form.Label>Usuario</Form.Label>
               <Form.Control
-                type="email"
-                name="email"
+                type="username"
+                name="username"
                 onChange={(e) => {
-                  setEmail(e.target.value);
+                  setUsername(e.target.value);
                 }}
                 required
               />

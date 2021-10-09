@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Form, Button, Card, Alert, Row, Col } from "react-bootstrap";
+import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Register.css"
 
+import  AuthService from '../../Utils/auth.service.js'
+
 const Register = () => {
     const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [pass, setPass] = useState("");
+    const [mail, setEmail] = useState("");
+    const [password, setPass] = useState("");
     const [confirm, setConfirm] = useState("");
 
     const [msgError, setmsgError] = useState("");
@@ -17,14 +19,15 @@ const Register = () => {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        if (pass !== confirm) {
+        if (password !== confirm) {
             setmsgError("Las contraseñas no coinciden");
         } else {
             register()
         }
     }
-    const register = () => {
-
+    const register = async () => {
+        await AuthService.register(username,password, mail)
+    
     }
     const onSucess = () => {
         setmsgError("")
