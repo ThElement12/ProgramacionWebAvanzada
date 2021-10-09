@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Modal, Table, Container } from "react-bootstrap";
 
+import Navigation from '../../Components/Navigation'
+
 import UserService from "../../Utils/user.service";
 
 const Users = () => {
@@ -176,6 +178,9 @@ const Users = () => {
 
   }
   return (
+    <div>
+    <Navigation/>
+    <br></br>
     <Container>
       <Table className="table table-bordered" hover size="sm" striped responsive>
         <thead>
@@ -218,6 +223,7 @@ const Users = () => {
       {success()}
       {confirm()}
     </Container>
+    </div>
   );
 }
 
