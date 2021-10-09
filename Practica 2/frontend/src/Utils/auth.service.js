@@ -22,7 +22,7 @@ class AuthService {
             })
     }
     logout() {
-        sessionStorage.removeItem("jwt");
+        sessionStorage.clear();
     }
     register(username, password, mail) {
         return axios.post(API_URL + 'user', {

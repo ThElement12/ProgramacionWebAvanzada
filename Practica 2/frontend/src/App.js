@@ -10,36 +10,60 @@ import {
 } from "react-router-dom";
 import Home from './Pages/Home';
 import Login from './Pages/Login';
-import Navigation from './Components/Navigation';
 import Register from './Pages/Register';
+import Mockups from './Pages/Mockups';
+import Users from './Pages/Users';
 
 function App() {
   return (
     <Router>
-      <Navigation/>
       <Switch>
-        <Route exact path='/home' render = {
-          () => {
-            return <Home/>
-          }
-        }/>
+        <Route exact path='/home' component={Home}/>
         <Route exact path='/login' render={
           () => {
-            return <Login/>
+            if(sessionStorage.getItem('username'))
+              return <Home/>
+            else
+              return <Login/>
           }
         }/>
         <Route exact path="/register" render = {
           () => {
-            return <Register/>
+            if(sessionStorage.getItem('rol') === 'admin')
+              return <Register/>
+            else
+              return <Home/>
           }
         }/>
+        <Route exact path='/mockups' render={
+          () => {
+            if(sessionStorage.getItem('username'))
+              return <Mockups/>
+            else
+              return <Home/>
+          }
+        }/>
+        <Route exact path="/users" render = {
+          () => {
+            if(sessionStorage.getItem('rol') === 'admin')
+              return <Users/>
+            else
+              return <Home/>
+          }
+        }/>
+        <Route exact path="/all-mockups" render = {
+          () => {
+            if(sessionStorage.getItem('rol') === 'admin')
+              return <Mockups/> //Agregar props para saber si es de el admin
+            else
+              return <Home/>
+          }
+        }/>
+        
         <Route exact path='/'
           render={
-            (props) => {
-              if (localStorage.getItem('email') !== null)
+            () => {
                 return <Redirect to='/home' />
-              else
-                return <Redirect to='login' />
             }
           }
         />

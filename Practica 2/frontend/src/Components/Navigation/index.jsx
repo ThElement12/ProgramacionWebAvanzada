@@ -5,27 +5,16 @@ import { Navbar, Nav, NavDropdown, Button, Container } from "react-bootstrap";
 import Auth from "../../Utils/auth.service.js";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-//import Logo from "../../assets/img/Logo.png";
 import "./Navigation.css";
 
 export default function Navigation() {
   const [usuario, setUsuario] = useState("");
   const history = useHistory();
 
-  useEffect(() => {
-   /* Auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUsuario(localStorage.getItem("email"));
-      }
-    });*/
-    setUsuario("")
-  }, [usuario]);
-
   const logOut = () => {
-    // Auth.signOut();
+    Auth.logout();
     setUsuario("");
-    localStorage.clear();
-    history.push("/login");
+    history.push("/home");
   };
   const loggedNavBar = () => {
     if (!sessionStorage.getItem('jwt')) {
@@ -37,26 +26,32 @@ export default function Navigation() {
           Ingresa
         </Nav.Link>
       </Nav>
-    }else{
+    } else {
       return <Nav className="me-auto">
-      <Nav.Link className="MenuItem" as={Link} to="/home">
-        Inicio
-      </Nav.Link>
-      <Nav.Link className="MenuItem" as={Link} to="/mokups">
-        Mis Mokups
-      </Nav.Link>
-      <NavDropdown title="Cuenta" id="basic-nav-dropdown">
-        <NavDropdown.Item as={Link} to="/users" className="link">
-          Administrar Usuarios
-        </NavDropdown.Item>
-        <NavDropdown.Item  as={Link} to="/register" className="link">
-          Registrar Usuario
-        </NavDropdown.Item>
-        <NavDropdown.Item onClick={logOut} className="link">
-          Cerrar Sesion
-        </NavDropdown.Item>
-      </NavDropdown>
-    </Nav>
+        <Nav.Link className="MenuItem" as={Link} to="/home">
+          Inicio
+        </Nav.Link>
+        <Nav.Link className="MenuItem" as={Link} to="/mockups">
+          Mis Mokups
+        </Nav.Link>
+        <NavDropdown title="Cuenta" id="basic-nav-dropdown">
+          {sessionStorage.getItem('rol') === "admin" &&
+            <>
+              <NavDropdown.Item as={Link} to="/users" className="link">
+                Administrar Usuarios
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/all-mockups" className="link">
+                Todos los Mockups
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/register" className="link">
+                Registrar Usuario
+              </NavDropdown.Item>
+            </>}
+          <NavDropdown.Item onClick={logOut} className="link">
+            Cerrar Sesion
+          </NavDropdown.Item>
+        </NavDropdown>
+      </Nav>
     }
   }
 
@@ -68,7 +63,7 @@ export default function Navigation() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-        {loggedNavBar()}
+          {loggedNavBar()}
         </Navbar.Collapse>
       </Container>
     </Navbar>

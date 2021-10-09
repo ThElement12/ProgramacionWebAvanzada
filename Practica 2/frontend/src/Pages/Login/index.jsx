@@ -5,8 +5,9 @@ import jwt_decode from "jwt-decode";
 
 //import { Auth } from "../../utils/firebase";
 //import logo from "../../assets/img/Logo.png";
+import Navigation from "../../Components/Navigation/index.jsx";
 
-import  AuthService from '../../Utils/auth.service.js'
+import AuthService from '../../Utils/auth.service.js'
 import "./Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -27,7 +28,7 @@ const Login = () => {
         console.log("Decodiao: ");
         var decoded = jwt_decode(res);
         sessionStorage.setItem('username', decoded.username);
-        if(decoded.roles.includes("admin")){
+        if (decoded.roles.includes("admin")) {
           sessionStorage.setItem('rol', "admin")
         }
         history.push("/home");
@@ -38,45 +39,49 @@ const Login = () => {
   }
 
   return (
-    <div
-      className="d-flex align-items-center justify-content-center"
-      style={{ minHeight: "100vh" }}
-    >
-      <Card className="card-login">
-        <Card.Body>
-          <h2 className="text-center mb-4">Ingresar</h2>
-          <Form onSubmit={onSubmit}>
-            <Form.Group id="correo">
-              <Form.Label>Usuario</Form.Label>
-              <Form.Control
-                type="username"
-                name="username"
-                onChange={(e) => {
-                  setUsername(e.target.value);
-                }}
-                required
-              />
-            </Form.Group>
-            <Form.Group id="pass">
-              <Form.Label>Contraseña</Form.Label>
-              <Form.Control
-                type="password"
-                name="password"
-                autoComplete="on"
-                onChange={(e) => {
-                  setPass(e.target.value);
-                }}
-                required
-              />
-            </Form.Group>
-            <br></br>
-            {msgError !== "" && <Alert variant="danger">{msgError}</Alert>}
-            <Button className="w-100" type="submit">
-              Ingresar
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
+    <div>
+      <Navigation />
+      <div
+        className="d-flex align-items-center justify-content-center"
+        style={{ minHeight: "100vh" }}
+      >
+
+        <Card className="card-login">
+          <Card.Body>
+            <h2 className="text-center mb-4">Ingresar</h2>
+            <Form onSubmit={onSubmit}>
+              <Form.Group id="correo">
+                <Form.Label>Usuario</Form.Label>
+                <Form.Control
+                  type="username"
+                  name="username"
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
+                  required
+                />
+              </Form.Group>
+              <Form.Group id="pass">
+                <Form.Label>Contraseña</Form.Label>
+                <Form.Control
+                  type="password"
+                  name="password"
+                  autoComplete="on"
+                  onChange={(e) => {
+                    setPass(e.target.value);
+                  }}
+                  required
+                />
+              </Form.Group>
+              <br></br>
+              {msgError !== "" && <Alert variant="danger">{msgError}</Alert>}
+              <Button className="w-100" type="submit">
+                Ingresar
+              </Button>
+            </Form>
+          </Card.Body>
+        </Card>
+      </div>
     </div>
   );
 };
