@@ -149,7 +149,7 @@ public class MockupController {
     }
 
 
-    @PatchMapping(value = "/mockup/{username}/{resource}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.ALL_VALUE}, consumes = MediaType.ALL_VALUE)
+    @PatchMapping(value = "/mockup/{resource}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.ALL_VALUE}, consumes = MediaType.ALL_VALUE)
     @PreAuthorize("hasAnyAuthority('admin','cliente')")
     public ResponseEntity<?> patchResource(@PathVariable String username, @PathVariable String resource, HttpServletResponse header) {
         Map<String, Object> response = new HashMap<>();
@@ -178,7 +178,7 @@ public class MockupController {
         }
     }
 
-    @DeleteMapping(value = "/mockup/{username}/{resource}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.ALL_VALUE}, consumes = MediaType.ALL_VALUE)
+    @DeleteMapping(value = "/mockup/{resource}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.ALL_VALUE}, consumes = MediaType.ALL_VALUE)
     @PreAuthorize("hasAnyAuthority('admin','cliente')")
     public ResponseEntity<?> deleteResource(@PathVariable String username, @PathVariable String resource, HttpServletResponse header) {
         Map<String, Object> response = new HashMap<>();
@@ -207,7 +207,7 @@ public class MockupController {
         }
     }
 
-    @RequestMapping(value = "/mockup/{username}/{resource}", method = RequestMethod.OPTIONS)
+    @RequestMapping(value = "/mockup/{resource}", method = RequestMethod.OPTIONS)
     @PreAuthorize("hasAnyAuthority('admin','cliente')")
     public ResponseEntity<?> optionResource() {
 
@@ -226,7 +226,7 @@ public class MockupController {
     }
 
 
-    @DeleteMapping("/mockup/{uuid}")
+    @DeleteMapping("/mockup/delete/{uuid}")
     @PreAuthorize("hasAnyAuthority('admin','cliente')")
     public ResponseEntity<?> delete(@PathVariable String uuid) {
 
