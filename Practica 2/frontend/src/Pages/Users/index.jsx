@@ -13,7 +13,7 @@ const Users = () => {
 
   const [id, setID] = useState("");
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  const [mail, setEmail] = useState("");
 
   const [userTarget, setUserTarget] = useState("");
   const [reload, setReload] = useState("");
@@ -56,27 +56,31 @@ const Users = () => {
     }else if(modalConfirm){
       setUserTarget("");
     }
-    
     setModalConfirm(false);
     setModalEdit(false);
     setModalSuccess(false);
     setReload(!reload);
+
   }
-  const onDelete = user => {
-    //Borrar el usuario del back
-    console.log(userTarget.username);
-    showModalSuccess();
+  const onDelete = () => {
+    UserService.deleteUser(userTarget.username)
+      .then(() => {
+        console.log("Usuario borrado: " + userTarget.username);
+        showModalSuccess();
+      })
+      .catch((res) => console.error(res));
   }
 
   const onSubmit = event => {
     event.preventDefault();
     var user = {
+      id,
       username,
-      email
+      mail
     }
-    console.log(user + "borrao'");
-    //POST AL BACK
-    showModalSuccess();
+    UserService.editUser(user)
+      .then(showModalSuccess)
+      .catch((res) => console.error(res));
   }
 
   const edit = () => {
@@ -122,7 +126,7 @@ const Users = () => {
                 setEmail(e.target.value)
               }
             }
-            value={email}
+            value={mail}
             required
           />
           <br></br>
@@ -208,12 +212,13 @@ const Users = () => {
                   onClick={() => showModalEdit(elemento)}
                 >
                   Editar
-                </Button>
+                 </Button>
                 {" "}
+                {elemento["roles"][0] !== "admin" &&
                 <Button variant="danger"
                   onClick={() => showModalConfirm(elemento)}>
                   Eliminar
-                </Button>
+                </Button>}
               </td>
             </tr>
           ))}
