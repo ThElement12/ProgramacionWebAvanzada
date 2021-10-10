@@ -32,6 +32,9 @@ export default function Navigation() {
         <Nav.Link className="MenuItem" as={Link} to="/mockups">
           Mis Mokups
         </Nav.Link>
+        <Nav.Link className="MenuItem" as={Link} to="/create-mockup">
+          Crear Mock
+        </Nav.Link>
         <NavDropdown title="Cuenta" id="basic-nav-dropdown">
           {sessionStorage.getItem('rol') === "admin" &&
             <>
