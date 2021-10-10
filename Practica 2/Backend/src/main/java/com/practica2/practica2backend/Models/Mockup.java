@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -56,6 +57,30 @@ public class Mockup {
     private String token;
 
     @Column()
-    private String expiryTime;
+    private LocalDateTime expiryTime;
+
+    @Column()
+    private String expiryType;
+
+    public void calculateExpiryTime(){
+        creation = LocalDateTime.now();
+        if(expiryType.equalsIgnoreCase("Hora")){
+            expiryTime = creation.plusHours(1);
+        }
+        else if(expiryType.equalsIgnoreCase("Dia")){
+            expiryTime = creation.plusDays(1);
+        }
+        else if(expiryType.equalsIgnoreCase("Semana")){
+            expiryTime = creation.plusWeeks(1);
+        }
+        else if(expiryType.equalsIgnoreCase("Mes")){
+            expiryTime = creation.plusMonths(1);
+        }
+        else{
+            expiryTime = creation.plusYears(1);
+        }
+
+
+    }
 
 }

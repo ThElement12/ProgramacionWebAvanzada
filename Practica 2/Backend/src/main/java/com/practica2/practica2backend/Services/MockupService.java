@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.security.SignatureException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -22,25 +23,25 @@ public class MockupService {
         this.mockupRepository = mockupRepository;
     }
 
-    public Mockup save(Mockup mockup){
+    public Mockup save(Mockup mockup) {
         return mockupRepository.save(mockup);
     }
 
-    public Iterable<Mockup> findAll(){
+    public Iterable<Mockup> findAll() {
         return mockupRepository.findAll();
     }
 
-    public Mockup findByUUID(String uuid){
+    public Mockup findByUUID(String uuid) {
         return mockupRepository.findByUuid(uuid);
     }
 
-    public void delete(Mockup mockup){
+    public void delete(Mockup mockup) {
         mockupRepository.delete(mockup);
     }
 
-    public Mockup generateUUID(Mockup mockup){
+    public Mockup generateUUID(Mockup mockup) {
         mockup.setUuid(UUID.randomUUID().toString());
-        if(mockup.getName().isEmpty()){
+        if (mockup.getName().isEmpty()) {
             mockup.setName(mockup.getUuid());
         }
         return mockup;
@@ -50,66 +51,53 @@ public class MockupService {
         Long expiryTimeMillseconds = Long.parseLong("31557600000");
         //Long expiryTimeMillseconds = Long.parseLong("1000");
 
-        if(mockup.getExpiryTime().equalsIgnoreCase("Hora")){
+        if (mockup.getExpiryType().equalsIgnoreCase("Hora")) {
             expiryTimeMillseconds = Long.parseLong("3600000");
         }
-        if(mockup.getExpiryTime().equalsIgnoreCase("Dia")){
+        if (mockup.getExpiryType().equalsIgnoreCase("Dia")) {
             expiryTimeMillseconds = Long.parseLong("86400000");
         }
-        if(mockup.getExpiryTime().equalsIgnoreCase("Semana")){
+        if (mockup.getExpiryType().equalsIgnoreCase("Semana")) {
             expiryTimeMillseconds = Long.parseLong("604800000");
         }
-        if(mockup.getExpiryTime().equalsIgnoreCase("Mes")){
+        if (mockup.getExpiryType().equalsIgnoreCase("Mes")) {
             expiryTimeMillseconds = Long.parseLong("2629750000");
         }
 
 
         return Jwts.builder()
                 .setSubject(mockup.getUuid())
-                .claim("owner",username)
+                .claim("owner", username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + expiryTimeMillseconds))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }
 
-    public boolean validateJwtToken(String authToken) {
+    public Boolean isValidMockup(Mockup mockup) {
+        LocalDateTime time = LocalDateTime.now();
+        if (mockup.getToken().isEmpty()) {
+            if (time.isAfter(mockup.getExpiryTime())) {
+                return false;
+            }
 
+            return !time.isAfter(mockup.getExpiryTime());
+        }
         try {
-            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(mockup.getToken());
             return true;
         } catch (MalformedJwtException e) {
-            System.out.println("Invalid JWT token: {}"+ e.getMessage());
+            System.out.println("Invalid JWT token: {}" + e.getMessage());
         } catch (ExpiredJwtException e) {
-            System.out.println("JWT token is expired: {}"+e.getMessage());
+            System.out.println("JWT token is expired: {}" + e.getMessage());
         } catch (UnsupportedJwtException e) {
-            System.out.println("JWT token is unsupported: {}"+e.getMessage());
+            System.out.println("JWT token is unsupported: {}" + e.getMessage());
         } catch (IllegalArgumentException e) {
-            System.out.println("JWT claims string is empty: {}"+e.getMessage());
+            System.out.println("JWT claims string is empty: {}" + e.getMessage());
         }
 
         return false;
     }
-
-    public String validateMessageJwtToken(String authToken) {
-
-        try {
-            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(authToken);
-
-        } catch (MalformedJwtException e) {
-            return ("Token invalido: {}"+ e.getMessage());
-
-        } catch (ExpiredJwtException e) {
-            return ("JWT token ha expirado: {}"+e.getMessage());
-        } catch (UnsupportedJwtException e) {
-            return ("JWT token no soportado: {}"+e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ("JWT la cadena está vacía: {}"+e.getMessage());
-        }
-
-        return ("no error");
-    }
-
 
 
 }

@@ -7,8 +7,10 @@ import com.practica2.practica2backend.Services.MockupService;
 import com.practica2.practica2backend.Services.UserService;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,15 +30,19 @@ public class MockupController {
         this.userService = userService;
     }
 
-    @PostMapping("/mockup/create/{username}")
+    @PostMapping("/mockup/{username}/{allowToken}")
     @PreAuthorize("hasAnyAuthority('admin','cliente')")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> create(@PathVariable String username, @RequestBody Mockup mockup) {
+    public ResponseEntity<?> create(@PathVariable String username, @PathVariable Boolean allowToken, @RequestBody Mockup mockup) {
         Map<String, Object> response = new HashMap<>();
         try {
             User user = userService.findByUsername(username);
-            String jwt = mockupService.generateJwtToken(mockup, username);
-            mockup.setToken(jwt);
+            mockup.calculateExpiryTime();
+            if (allowToken) {
+                String jwt = mockupService.generateJwtToken(mockup, username);
+                mockup.setToken(jwt);
+            }
+
             mockup = mockupService.generateUUID(mockup);
             mockupService.save(mockup);
             user.getMockups().add(mockup);
@@ -48,242 +54,155 @@ public class MockupController {
         }
     }
 
-    @GetMapping("/mockup/{username}/{resource}")
+    @RequestMapping(value = "/mockup/{resource}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.ALL_VALUE}, consumes = MediaType.ALL_VALUE)
     @PreAuthorize("hasAnyAuthority('admin','cliente')")
-    public ResponseEntity<?> getResource(@PathVariable String username, @PathVariable String resource, HttpServletResponse header) {
+    public ResponseEntity<?> getResource(@PathVariable String resource, HttpServletResponse header) {
 
         Map<String, Object> response = new HashMap<>();
-        User user = userService.findByUsername(username);
-        if (user.hasMockup(resource)) {
+        try{
             Mockup mockup = mockupService.findByUUID(resource);
-            if (mockupService.validateJwtToken(mockup.getToken())) {
-                if (!mockup.getHeaders().isEmpty()) {
-                    for (HttpHeader aux : mockup.getHeaders()) {
-                        header.addHeader(aux.getKey(), aux.getValue());
+            if(mockup.getMethod().equals("GET")){
+                if (mockupService.isValidMockup(mockup)) {
+                    if (!mockup.getHeaders().isEmpty()) {
+                        for (HttpHeader aux : mockup.getHeaders()) {
+                            header.addHeader(aux.getKey(), aux.getValue());
+                        }
                     }
+                    return new ResponseEntity<>(mockup.getBody(), HttpStatus.valueOf(mockup.getStatus()));
+                } else {
+                    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 }
-                return new ResponseEntity<>(mockup, HttpStatus.valueOf(mockup.getStatus()));
-            } else {
-                mockupService.delete(mockup);
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
-
+            else{
+                response.put("message","Recurso con método GET no encontrado");
+                return new ResponseEntity<>(resource, HttpStatus.NOT_FOUND);
+            }
+        }catch (NoSuchElementException e){
+            response.put("message", "el mockup no fue encontrado ");
+            response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        response.put("message", "este recurso no está permitido para ti");
-        return new ResponseEntity<>(response, HttpStatus.OK);
+
+
+
     }
 
-    @GetMapping("/mockup/{resource}")
-    @PreAuthorize("hasAnyAuthority('admin')")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getResourceAdmin(@PathVariable String resource, HttpServletResponse header) {
+    @PostMapping(value = "/mockup/{resource}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.ALL_VALUE}, consumes = MediaType.ALL_VALUE)
+    @PreAuthorize("hasAnyAuthority('admin','cliente')")
+    public ResponseEntity<?> postResource(@PathVariable String resource, HttpServletResponse header) {
+
         Map<String, Object> response = new HashMap<>();
-        Mockup mockup = mockupService.findByUUID(resource);
-        if (mockupService.validateJwtToken(mockup.getToken())) {
-            if (!mockup.getHeaders().isEmpty()) {
-                for (HttpHeader aux : mockup.getHeaders()) {
-                    header.addHeader(aux.getKey(), aux.getValue());
+        try{
+            Mockup mockup = mockupService.findByUUID(resource);
+            if(mockup.getMethod().equals("GET")){
+                if (mockupService.isValidMockup(mockup)) {
+                    if (!mockup.getHeaders().isEmpty()) {
+                        for (HttpHeader aux : mockup.getHeaders()) {
+                            header.addHeader(aux.getKey(), aux.getValue());
+                        }
+                    }
+                    return new ResponseEntity<>(mockup.getBody(), HttpStatus.valueOf(mockup.getStatus()));
+                } else {
+                    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 }
             }
-            return new ResponseEntity<>(mockup, HttpStatus.valueOf(mockup.getStatus()));
-        } else {
-            mockupService.delete(mockup);
+            else{
+                response.put("message","Recurso con método POST no encontrado");
+                return new ResponseEntity<>(resource, HttpStatus.NOT_FOUND);
+            }
+        }catch (NoSuchElementException e){
+            response.put("message", "el mockup no fue encontrado ");
+            response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @PutMapping(value = "/mockup/{resource}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.ALL_VALUE}, consumes = MediaType.ALL_VALUE)
+    @PreAuthorize("hasAnyAuthority('admin','cliente')")
+    public ResponseEntity<?> putResource( @PathVariable String resource, HttpServletResponse header) {
+
+        Map<String, Object> response = new HashMap<>();
+        try{
+            Mockup mockup = mockupService.findByUUID(resource);
+            if(mockup.getMethod().equals("GET")){
+                if (mockupService.isValidMockup(mockup)) {
+                    if (!mockup.getHeaders().isEmpty()) {
+                        for (HttpHeader aux : mockup.getHeaders()) {
+                            header.addHeader(aux.getKey(), aux.getValue());
+                        }
+                    }
+                    return new ResponseEntity<>(mockup.getBody(), HttpStatus.valueOf(mockup.getStatus()));
+                } else {
+                    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+                }
+            }
+            else{
+                response.put("message","Recurso con método PUT no encontrado");
+                return new ResponseEntity<>(resource, HttpStatus.NOT_FOUND);
+            }
+        }catch (NoSuchElementException e){
+            response.put("message", "el mockup no fue encontrado ");
+            response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping("/mockup/{username}/{resource}")
-    @PreAuthorize("hasAnyAuthority('admin','cliente')")
-    public ResponseEntity<?> postResource(@PathVariable String username, @PathVariable String resource, HttpServletResponse header) {
 
-        Map<String, Object> response = new HashMap<>();
-        User user = userService.findByUsername(username);
-        if (user.hasMockup(resource)) {
-            Mockup mockup = mockupService.findByUUID(resource);
-            if (mockupService.validateJwtToken(mockup.getToken())) {
-                /*if (!mockup.getHttpHeaders().isEmpty()) {
-                for (var entry : mockup.getHttpHeaders().entrySet()) {
-                    header.addHeader(entry.getKey(), entry.getValue());
-                }
-            }*/
-                if (!mockup.getHeaders().isEmpty()) {
-                    for (HttpHeader aux : mockup.getHeaders()) {
-                        header.addHeader(aux.getKey(), aux.getValue());
-                    }
-                }
-                return new ResponseEntity<>(mockup, HttpStatus.valueOf(mockup.getStatus()));
-            } else {
-                mockupService.delete(mockup);
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-            }
-
-        }
-        response.put("message", "este recurso no está permitido para ti");
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @PostMapping("/mockup/{resource}")
-    @PreAuthorize("hasAnyAuthority('admin')")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> postResourceAdmin(@PathVariable String resource, HttpServletResponse header) {
-        Map<String, Object> response = new HashMap<>();
-        Mockup mockup = mockupService.findByUUID(resource);
-        if (mockupService.validateJwtToken(mockup.getToken())) {
-            if (!mockup.getHeaders().isEmpty()) {
-                for (HttpHeader aux : mockup.getHeaders()) {
-                    header.addHeader(aux.getKey(), aux.getValue());
-                }
-            }
-            return new ResponseEntity<>(mockup, HttpStatus.valueOf(mockup.getStatus()));
-        } else {
-            mockupService.delete(mockup);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PutMapping("/mockup/{username}/{resource}")
-    @PreAuthorize("hasAnyAuthority('admin','cliente')")
-    public ResponseEntity<?> putResource(@PathVariable String username, @PathVariable String resource, HttpServletResponse header) {
-
-        Map<String, Object> response = new HashMap<>();
-        User user = userService.findByUsername(username);
-        if (user.hasMockup(resource)) {
-            Mockup mockup = mockupService.findByUUID(resource);
-            if (mockupService.validateJwtToken(mockup.getToken())) {
-                /*if (!mockup.getHttpHeaders().isEmpty()) {
-                for (var entry : mockup.getHttpHeaders().entrySet()) {
-                    header.addHeader(entry.getKey(), entry.getValue());
-                }
-            }*/
-                if (!mockup.getHeaders().isEmpty()) {
-                    for (HttpHeader aux : mockup.getHeaders()) {
-                        header.addHeader(aux.getKey(), aux.getValue());
-                    }
-                }
-                return new ResponseEntity<>(mockup, HttpStatus.valueOf(mockup.getStatus()));
-            } else {
-                mockupService.delete(mockup);
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-            }
-
-        }
-        response.put("message", "este recurso no está permitido para ti");
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @PutMapping("/mockup/{resource}")
-    @PreAuthorize("hasAnyAuthority('admin')")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> putResourceAdmin(@PathVariable String resource, HttpServletResponse header) {
-        Map<String, Object> response = new HashMap<>();
-        Mockup mockup = mockupService.findByUUID(resource);
-        if (mockupService.validateJwtToken(mockup.getToken())) {
-            if (!mockup.getHeaders().isEmpty()) {
-                for (HttpHeader aux : mockup.getHeaders()) {
-                    header.addHeader(aux.getKey(), aux.getValue());
-                }
-            }
-            return new ResponseEntity<>(mockup, HttpStatus.valueOf(mockup.getStatus()));
-        } else {
-            mockupService.delete(mockup);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PatchMapping("/mockup/{username}/{resource}")
+    @PatchMapping(value = "/mockup/{username}/{resource}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.ALL_VALUE}, consumes = MediaType.ALL_VALUE)
     @PreAuthorize("hasAnyAuthority('admin','cliente')")
     public ResponseEntity<?> patchResource(@PathVariable String username, @PathVariable String resource, HttpServletResponse header) {
-
         Map<String, Object> response = new HashMap<>();
-        User user = userService.findByUsername(username);
-        if (user.hasMockup(resource)) {
+        try{
             Mockup mockup = mockupService.findByUUID(resource);
-            if (mockupService.validateJwtToken(mockup.getToken())) {
-                /*if (!mockup.getHttpHeaders().isEmpty()) {
-                for (var entry : mockup.getHttpHeaders().entrySet()) {
-                    header.addHeader(entry.getKey(), entry.getValue());
-                }
-            }*/
-                if (!mockup.getHeaders().isEmpty()) {
-                    for (HttpHeader aux : mockup.getHeaders()) {
-                        header.addHeader(aux.getKey(), aux.getValue());
+            if(mockup.getMethod().equals("GET")){
+                if (mockupService.isValidMockup(mockup)) {
+                    if (!mockup.getHeaders().isEmpty()) {
+                        for (HttpHeader aux : mockup.getHeaders()) {
+                            header.addHeader(aux.getKey(), aux.getValue());
+                        }
                     }
-                }
-                return new ResponseEntity<>(mockup, HttpStatus.valueOf(mockup.getStatus()));
-            } else {
-                mockupService.delete(mockup);
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-            }
-
-        }
-        response.put("message", "este recurso no está permitido para ti");
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @PatchMapping("/mockup/{resource}")
-    @PreAuthorize("hasAnyAuthority('admin')")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> patchResourceAdmin(@PathVariable String resource, HttpServletResponse header) {
-        Map<String, Object> response = new HashMap<>();
-        Mockup mockup = mockupService.findByUUID(resource);
-        if (mockupService.validateJwtToken(mockup.getToken())) {
-            /*if (!mockup.getHttpHeaders().isEmpty()) {
-                for (var entry : mockup.getHttpHeaders().entrySet()) {
-                    header.addHeader(entry.getKey(), entry.getValue());
-                }
-            }*/
-            if (!mockup.getHeaders().isEmpty()) {
-                for (HttpHeader aux : mockup.getHeaders()) {
-                    header.addHeader(aux.getKey(), aux.getValue());
+                    return new ResponseEntity<>(mockup.getBody(), HttpStatus.valueOf(mockup.getStatus()));
+                } else {
+                    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 }
             }
-            return new ResponseEntity<>(mockup, HttpStatus.valueOf(mockup.getStatus()));
-        } else {
-            mockupService.delete(mockup);
+            else{
+                response.put("message","Recurso con método PATCH no encontrado");
+                return new ResponseEntity<>(resource, HttpStatus.NOT_FOUND);
+            }
+        }catch (NoSuchElementException e){
+            response.put("message", "el mockup no fue encontrado ");
+            response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/mockup/{username}/{resource}")
+    @DeleteMapping(value = "/mockup/{username}/{resource}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.ALL_VALUE}, consumes = MediaType.ALL_VALUE)
     @PreAuthorize("hasAnyAuthority('admin','cliente')")
     public ResponseEntity<?> deleteResource(@PathVariable String username, @PathVariable String resource, HttpServletResponse header) {
-
         Map<String, Object> response = new HashMap<>();
-        User user = userService.findByUsername(username);
-        if (user.hasMockup(resource)) {
+        try{
             Mockup mockup = mockupService.findByUUID(resource);
-            if (mockupService.validateJwtToken(mockup.getToken())) {
-                if (!mockup.getHeaders().isEmpty()) {
-                    for (HttpHeader aux : mockup.getHeaders()) {
-                        header.addHeader(aux.getKey(), aux.getValue());
+            if(mockup.getMethod().equals("GET")){
+                if (mockupService.isValidMockup(mockup)) {
+                    if (!mockup.getHeaders().isEmpty()) {
+                        for (HttpHeader aux : mockup.getHeaders()) {
+                            header.addHeader(aux.getKey(), aux.getValue());
+                        }
                     }
-                }
-                return new ResponseEntity<>(mockup, HttpStatus.valueOf(mockup.getStatus()));
-            } else {
-                mockupService.delete(mockup);
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-            }
-
-        }
-        response.put("message", "este recurso no está permitido para ti");
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/mockup/{resource}")
-    @PreAuthorize("hasAnyAuthority('admin')")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> deleteResourceAdmin(@PathVariable String resource, HttpServletResponse header) {
-        Map<String, Object> response = new HashMap<>();
-        Mockup mockup = mockupService.findByUUID(resource);
-        if (mockupService.validateJwtToken(mockup.getToken())) {
-            if (!mockup.getHeaders().isEmpty()) {
-                for (HttpHeader aux : mockup.getHeaders()) {
-                    header.addHeader(aux.getKey(), aux.getValue());
+                    return new ResponseEntity<>(mockup.getBody(), HttpStatus.valueOf(mockup.getStatus()));
+                } else {
+                    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 }
             }
-            return new ResponseEntity<>(mockup, HttpStatus.valueOf(mockup.getStatus()));
-        } else {
-            mockupService.delete(mockup);
+            else{
+                response.put("message","Recurso con método DELETE no encontrado");
+                return new ResponseEntity<>(resource, HttpStatus.NOT_FOUND);
+            }
+        }catch (NoSuchElementException e){
+            response.put("message", "el mockup no fue encontrado ");
+            response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -298,16 +217,6 @@ public class MockupController {
                 .build();
     }
 
-    @RequestMapping(value = "/mockup/{resource}", method = RequestMethod.OPTIONS)
-    @PreAuthorize("hasAnyAuthority('admin')")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> optionResourceAdmin() {
-
-        return ResponseEntity
-                .ok()
-                .allow(HttpMethod.GET, HttpMethod.DELETE, HttpMethod.PUT, HttpMethod.OPTIONS)
-                .build();
-    }
 
     @GetMapping("/mockup")
     @PreAuthorize("hasAuthority('admin')")
@@ -315,7 +224,6 @@ public class MockupController {
     public Iterable<Mockup> findAll() {
         return mockupService.findAll();
     }
-
 
 
     @DeleteMapping("/mockup/{uuid}")
