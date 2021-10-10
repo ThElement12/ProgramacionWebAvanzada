@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button, Card, Alert } from "react-bootstrap";
+import { Form, Button, Card, Alert, Modal } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 import Navigation from "../../Components/Navigation";
@@ -16,6 +16,7 @@ const Register = () => {
   const [confirm, setConfirm] = useState("");
 
   const [msgError, setmsgError] = useState("");
+  const [modalSuccess, setModalSuccess] = useState(false);
 
   const history = useHistory();
 
@@ -27,13 +28,48 @@ const Register = () => {
       register()
     }
   }
+  const onSuccess = () => {
+    setmsgError("");
+    setModalSuccess(true);
+  }
   const register = async () => {
     await AuthService.register(username, password, mail)
+      .then(onSuccess)
+      .catch(() => {
+        setmsgError("Hubo un error al registrar el usuario")
+      })
 
   }
-  const onSucess = () => {
-    setmsgError("")
+  const hideModalSuccess = () => {
+    setModalSuccess(false);
+    setUsername("");
+    setEmail("");
+    setPass("");
+    setConfirm("");
+    history.push('/home')
   }
+
+  const success = () => {
+    return <Modal
+      show={modalSuccess}
+      onHide={hideModalSuccess}
+      keyboard={false}
+    >
+      <Modal.Header>
+        <Modal.Title>Informacion</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        Operacion realizada con exito
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={() => hideModalSuccess()}>
+          Ok
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  }
+
+  
   return (
     <div>
       <Navigation />
@@ -59,7 +95,7 @@ const Register = () => {
             </Form>
           </Card.Body>
         </Card>
-
+        {success()}
       </div>
     </div>
 

@@ -9,7 +9,7 @@ const Users = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [modalEdit, setModalEdit] = useState(false);
   const [modalConfirm, setModalConfirm] = useState(false);
-  const [modalSucess, setModalSucess] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState(false);
 
   const [id, setID] = useState("");
   const [username, setUsername] = useState("");
@@ -46,7 +46,7 @@ const Users = () => {
   }
 
   const showModalSuccess = () => {
-    setModalSucess(true);
+    setModalSuccess(true);
   }
   const hideModalSuccess = () => {
     if (modalEdit) {
@@ -59,7 +59,7 @@ const Users = () => {
     
     setModalConfirm(false);
     setModalEdit(false);
-    setModalSucess(false);
+    setModalSuccess(false);
     setReload(!reload);
   }
   const onDelete = user => {
@@ -139,7 +139,7 @@ const Users = () => {
   }
   const success = () => {
     return <Modal
-      show={modalSucess}
+      show={modalSuccess}
       onHide={hideModalSuccess}
       keyboard={false}
     >
