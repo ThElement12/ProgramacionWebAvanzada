@@ -94,7 +94,7 @@ public class MockupController {
         Map<String, Object> response = new HashMap<>();
         try{
             Mockup mockup = mockupService.findByUUID(resource);
-            if(mockup.getMethod().equals("GET")){
+            if(mockup.getMethod().equals("POST")){
                 if (mockupService.isValidMockup(mockup)) {
                     if (!mockup.getHeaders().isEmpty()) {
                         for (HttpHeader aux : mockup.getHeaders()) {
@@ -125,7 +125,7 @@ public class MockupController {
         Map<String, Object> response = new HashMap<>();
         try{
             Mockup mockup = mockupService.findByUUID(resource);
-            if(mockup.getMethod().equals("GET")){
+            if(mockup.getMethod().equals("PUT")){
                 if (mockupService.isValidMockup(mockup)) {
                     if (!mockup.getHeaders().isEmpty()) {
                         for (HttpHeader aux : mockup.getHeaders()) {
@@ -155,7 +155,7 @@ public class MockupController {
         Map<String, Object> response = new HashMap<>();
         try{
             Mockup mockup = mockupService.findByUUID(resource);
-            if(mockup.getMethod().equals("GET")){
+            if(mockup.getMethod().equals("PATCH")){
                 if (mockupService.isValidMockup(mockup)) {
                     if (!mockup.getHeaders().isEmpty()) {
                         for (HttpHeader aux : mockup.getHeaders()) {
@@ -184,7 +184,7 @@ public class MockupController {
         Map<String, Object> response = new HashMap<>();
         try{
             Mockup mockup = mockupService.findByUUID(resource);
-            if(mockup.getMethod().equals("GET")){
+            if(mockup.getMethod().equals("DELETE")){
                 if (mockupService.isValidMockup(mockup)) {
                     if (!mockup.getHeaders().isEmpty()) {
                         for (HttpHeader aux : mockup.getHeaders()) {
