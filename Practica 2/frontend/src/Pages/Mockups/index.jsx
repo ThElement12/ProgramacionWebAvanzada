@@ -227,4 +227,4 @@ const Mockups = () => {
   );
 }
 
-export default Mockups
+export default Mockups;

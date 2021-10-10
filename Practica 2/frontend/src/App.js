@@ -11,6 +11,7 @@ import Login from './Pages/Login';
 import Register from './Pages/Register';
 import Mockups from './Pages/Mockups';
 import Users from './Pages/Users';
+import RegisterMockups from './Pages/RegisterMockups';
 
 function App() {
   return (
@@ -37,6 +38,14 @@ function App() {
           () => {
             if(sessionStorage.getItem('username'))
               return <Mockups/>
+            else
+              return <Home/>
+          }
+        }/>
+        <Route exact path='/create-mockup' render={
+          () => {
+            if(sessionStorage.getItem('username'))
+              return <RegisterMockups/>
             else
               return <Home/>
           }
