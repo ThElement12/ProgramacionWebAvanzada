@@ -20,7 +20,7 @@ import java.util.Set;
 @Table(name = "user_app")
 public class User implements Serializable{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(unique = true)
     private String username;

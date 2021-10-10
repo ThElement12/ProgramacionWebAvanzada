@@ -34,6 +34,10 @@ public class MockupService {
         return mockupRepository.findByUuid(uuid);
     }
 
+    public void delete(Mockup mockup){
+        mockupRepository.delete(mockup);
+    }
+
     public Mockup generateUUID(Mockup mockup){
         mockup.setUuid(UUID.randomUUID().toString());
         if(mockup.getName().isEmpty()){

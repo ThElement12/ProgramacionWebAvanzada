@@ -42,6 +42,9 @@ public class UserService implements UserDetailsService {
     public User findByUsername(String username){
         return userRepository.findByUsername(username);
     }
+    public void deleteUser(User user){
+        userRepository.delete(user);
+    }
     public Iterable<User> findAll(){
         return userRepository.findAll();
     }
