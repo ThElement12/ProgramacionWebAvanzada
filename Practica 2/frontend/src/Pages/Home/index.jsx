@@ -18,6 +18,7 @@ export default function Home() {
 
     <div>
       <Navigation />
+      <br></br>
       <Container>
         {welcome()}
       </Container>
