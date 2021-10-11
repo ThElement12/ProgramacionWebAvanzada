@@ -71,7 +71,8 @@ public class Mockup {
     @Column()
     private Integer responseTime;
 
-
+    @Column()
+    private String owner;
 
     public void calculateExpiryTime(){
         creation = LocalDateTime.now();

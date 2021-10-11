@@ -36,12 +36,13 @@ public class MockupController {
             if (allowToken) {
                 String jwt = mockupService.generateJwtToken(mockup, username);
                 mockup.setToken(jwt);
-
             }
             mockup.setAllowJWT(allowToken);
             mockup = mockupService.generateUUID(mockup);
+            mockup.setOwner(user.getUsername());
             mockupService.save(mockup);
             user.getMockups().add(mockup);
+
             userService.save(user);
             return new ResponseEntity<>(mockup, HttpStatus.OK);
         } catch (NoSuchElementException e) {
@@ -65,6 +66,7 @@ public class MockupController {
         Map<String, Object> response = new HashMap<>();
         try {
             Mockup mockup = mockupService.findByUUID(uuid);
+            userService.delete(userService.findByUsername(mockup.getOwner()));
             mockupService.delete(mockup);
             response.put("message", "mockup eliminado con éxito");
         } catch (NoSuchElementException e) {
