@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Form, Button, Card, Alert } from "react-bootstrap";
+import { Form, Button, Card, Alert, Modal } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 import Navigation from "../../Components/Navigation";
 
@@ -13,8 +14,13 @@ const Register = () => {
   const [mail, setEmail] = useState("");
   const [password, setPass] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [rol, setRol] = useState([]);
 
   const [msgError, setmsgError] = useState("");
+  const [modalSuccess, setModalSuccess] = useState(false);
+
+
+  const history = useHistory();
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -25,10 +31,43 @@ const Register = () => {
     }
   }
   const register = async () => {
-    await AuthService.register(username, password, mail)
+    await AuthService.register(username, password, mail, rol)
+      .then(onSuccess)
+      .catch(() => {
+        setmsgError("Hubo un error al registrar el usuario")
+      })
 
   }
-
+  const onSuccess = () => {
+    setModalSuccess(true);
+    setEmail("")
+    setPass("")
+    setConfirm("")
+    setmsgError("")
+  }
+  const hideModalSuccess = () => {
+    setModalSuccess(false);
+    history.push('/home')
+  }
+  const success = () => {
+    return <Modal
+      show={modalSuccess}
+      onHide={hideModalSuccess}
+      keyboard={false}
+    >
+      <Modal.Header>
+        <Modal.Title>Informacion</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        Operacion realizada con exito
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={() => hideModalSuccess()}>
+          Ok
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  }
   return (
     <div>
       <Navigation />
@@ -38,6 +77,16 @@ const Register = () => {
           <Card.Body>
             <h2 className="text-center mb-4">Registrate</h2>
             <Form onSubmit={onSubmit}>
+              <Form.Label>Rol: </Form.Label>
+              <Form.Control as="select" name="rol" defaultValue="Elige..."
+                onChange={(e) => {
+                  setRol([e.target.value])
+                }}
+                required>
+                <option>Elige...</option>
+                <option value={"admin"}>Admin</option>
+                <option value={"cliente"}>Cliente</option>
+              </Form.Control>
               <Form.Label>Nombre de Usuario:</Form.Label>
               <Form.Control type="username" name="username" onChange={(e) => { setUsername(e.target.value); }} required></Form.Control>
               <Form.Label>Correo:</Form.Label>
@@ -54,7 +103,7 @@ const Register = () => {
             </Form>
           </Card.Body>
         </Card>
-
+        {success()}
       </div>
     </div>
 

@@ -93,7 +93,7 @@ const RegisterMockups = () => {
         <Form.Label>
           <FormattedMessage id="lang" />
         </Form.Label>
-        <Form.Control value={language} as="select" defaulValue="es-es" onChange={(e) => {
+        <Form.Control value={language} as="select" defaultValue="es-es" onChange={(e) => {
                     setLanguage(e.target.value)
                   }} 
           style={{width: "auto"}}>
