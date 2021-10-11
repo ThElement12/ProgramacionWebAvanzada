@@ -12,8 +12,6 @@ import Mockups from './Pages/Mockups';
 import Users from './Pages/Users';
 import RegisterMockups from './Pages/RegisterMockups';
 
-import ProviderWrapper from './Components/ProviderWrapper'
-
 function App() {
 
   return (

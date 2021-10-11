@@ -14,7 +14,7 @@ import userService from "../../Utils/user.service";
 import statusCodes from "../../Utils/status-code.json";
 
 const RegisterMockups = () => {
-  const [language, setLanguage] = useState("es-es")
+  const [language, setLanguage] = useState(sessionStorage.getItem('lang') || "es-es")
 
   useEffect(() => {
     sessionStorage.setItem('lang', language);
@@ -44,7 +44,7 @@ const RegisterMockups = () => {
       "description": endPointDescription,
       "status": statusCodes[status].code,
       "method": accessMethod,
-      "headers": headers.length() === 0 ? [] : JSON.parse("[" + headers + "]"),
+      "headers": JSON.parse("[" + headers + "]"),
       "contentType": contentType,
       "body": contentBody,
       "creation": null, //Dia de creacion
@@ -93,7 +93,7 @@ const RegisterMockups = () => {
         <Form.Label>
           <FormattedMessage id="lang" />
         </Form.Label>
-        <Form.Control as="select" defaulValue="es-es" onChange={(e) => {
+        <Form.Control value={language} as="select" defaulValue="es-es" onChange={(e) => {
                     setLanguage(e.target.value)
                   }} 
           style={{width: "auto"}}>

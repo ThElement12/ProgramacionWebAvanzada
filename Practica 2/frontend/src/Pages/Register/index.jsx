@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
 
 import Navigation from "../../Components/Navigation";
 
@@ -17,8 +16,6 @@ const Register = () => {
 
   const [msgError, setmsgError] = useState("");
 
-  const history = useHistory();
-
   const onSubmit = (event) => {
     event.preventDefault();
     if (password !== confirm) {
@@ -31,9 +28,7 @@ const Register = () => {
     await AuthService.register(username, password, mail)
 
   }
-  const onSucess = () => {
-    setmsgError("")
-  }
+
   return (
     <div>
       <Navigation />

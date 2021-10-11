@@ -119,7 +119,7 @@ const Mockups = (props) => {
       "description": endPointDescription,
       "status": statusCodes[status].code,
       "method": accessMethod,
-      "headers": JSON.parse("[" + headers + "]"),
+      "headers": headers.length() ? [] : JSON.parse("[" + headers + "]"),
       "contentType": contentType,
       "body": contentBody,
       "creation": null, //Dia de creacion
@@ -338,7 +338,7 @@ const Mockups = (props) => {
                 <td>{elemento["status"]}</td>
                 <td>{elemento["method"]}</td>
                 <td>{`http://localhost:8082/${elemento["uuid"]}`}</td>
-                <td>{elemento["token"] === null ? "N/A" : <a href="#"><span onClick={() => { navigator.clipboard.writeText(elemento["token"]) }}>Copiar token</span></a>}</td>
+                <td>{elemento["token"] === null ? "N/A" : <a href="#/"><span onClick={() => { navigator.clipboard.writeText(elemento["token"]) }}>Copiar token</span></a>}</td>
                 <td>{elemento["expiryTime"].slice(0, 10)}</td>
                 <td>
                   <Button variant="warning"
