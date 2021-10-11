@@ -37,7 +37,7 @@ function App() {
         <Route exact path='/mockups' render={
           () => {
             if(sessionStorage.getItem('username'))
-              return <Mockups/>
+              return <Mockups all={false} />
             else
               return <Home/>
           }
@@ -61,7 +61,7 @@ function App() {
         <Route exact path="/all-mockups" render = {
           () => {
             if(sessionStorage.getItem('rol') === 'admin')
-              return <Mockups/> //Agregar props para saber si es de el admin
+              return <Mockups all={true}/> 
             else
               return <Home/>
           }

@@ -11,3 +11,10 @@
   float: left;
   display: inline;
 }
+.textarea--code {
+  font-size: 12px;
+  line-height: normal;
+  padding: 10px;
+  transition: none;
+  -webkit-transition: none;
+}

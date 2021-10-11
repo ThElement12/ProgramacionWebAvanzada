@@ -5,8 +5,9 @@ import Navigation from '../../Components/Navigation'
 
 import UserService from "../../Utils/user.service";
 
-const Mockups = () => {
-  const [usuarios, setUsuarios] = useState([]);
+const Mockups = (props) => {
+  const [mockups, setMockups] = useState([]);
+
   const [modalEdit, setModalEdit] = useState(false);
   const [modalConfirm, setModalConfirm] = useState(false);
   const [modalSucess, setModalSucess] = useState(false);
@@ -19,12 +20,19 @@ const Mockups = () => {
   const [reload, setReload] = useState("");
 
   useEffect(() => {
-    UserService.getUsers().then((response) => {
-      setUsuarios(response.data);
-    })
+    if(props.all){
+      UserService.getAllMockups().then((response) => {
+        setMockups(response.data);
 
-  }, [reload]);
+      });
+    }else{
+      UserService.getUserMockups(sessionStorage.getItem("username")).then((response)=>{
+        setMockups(response.data.mockups);
+      })
 
+    }
+  }, [reload, props.all]);
+  
 
   const showModalEdit = (user) => {
     setID(user["id"]);
@@ -87,7 +95,7 @@ const Mockups = () => {
       keyboard={false}
     >
       <Modal.Header>
-        <Modal.Title>Editar Estudiante</Modal.Title>
+        <Modal.Title>Editar Mockup</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={onSubmit}>
@@ -174,35 +182,37 @@ const Mockups = () => {
         <Button variante="secondary" onClick={hideModalConfirm}>No</Button>
       </Modal.Footer>
     </Modal>
-
-
   }
   return (
     <div>
     <Navigation/>
     <br></br>
     <Container>
-      <Table className="table table-bordered" hover size="sm" striped responsive>
+      <Table className="table table-bordered" hover striped responsive>
         <thead>
           <tr>
-            <th>ID</th>
             <th>Nombre</th>
-            <th>Correo</th>
-            <th>Rol</th>
-            <th>Cant. Mockups</th>
+            <th>Descripcion</th>
+            <th>Status</th>
+            <th>Metodo</th>
+            <th>Endpoint</th>
+            <th>JWT</th>
+            <th>Fecha de Expiracion</th>
             <th>Opciones</th>
           </tr>
         </thead>
         <tbody>
-          {usuarios.map((elemento, i) => (
+          {mockups.map((elemento, i) => (
             <tr
               key={i}
             >
-              <td>{elemento["id"]}</td>
-              <td>{elemento["username"]}</td>
-              <td>{elemento["mail"]}</td>
-              <td>{elemento["roles"].length === 0 ? "N/A" : elemento["roles"][0]}</td>
-              <td>{elemento["mockups"].length}</td>
+              <td>{elemento["name"]}</td>
+              <td>{elemento["description"]}</td>
+              <td>{elemento["status"]}</td>
+              <td>{elemento["method"]}</td>
+              <td>{`http://localhost:8082/${elemento["uuid"]}`}</td>
+              <td>{elemento["token"] === null ? "N/A" : <a href="#"><span onClick={() => {navigator.clipboard.writeText(elemento["token"])}}>Copiar token</span></a>}</td>
+              <td>{elemento["expiryTime"].slice(0,10)}</td>
               <td>
                 <Button variant="warning"
                   onClick={() => showModalEdit(elemento)}

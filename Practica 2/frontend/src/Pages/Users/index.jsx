@@ -91,7 +91,7 @@ const Users = () => {
       keyboard={false}
     >
       <Modal.Header>
-        <Modal.Title>Editar Estudiante</Modal.Title>
+        <Modal.Title>Editar Usuario</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={onSubmit}>
