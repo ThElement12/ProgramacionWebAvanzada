@@ -85,8 +85,8 @@ public class MockupController {
 
         Map<String, Object> response = new HashMap<>();
         try {
-            Mockup old = mockupService.findByUUID(mockup.getUuid());
-            mockupService.save(old);
+
+            mockupService.save(mockup);
         } catch (NoSuchElementException e) {
             response.put("message", "el mockup no fue encontrado ");
             response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
