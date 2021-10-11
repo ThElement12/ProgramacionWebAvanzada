@@ -1,16 +1,12 @@
 package com.practica2.practica2backend.Services;
 
 import com.practica2.practica2backend.Models.Mockup;
-import com.practica2.practica2backend.Models.User;
 import com.practica2.practica2backend.Repositories.MockupRepository;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 
 
-import java.security.SignatureException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -74,9 +70,9 @@ public class MockupService {
                 .compact();
     }
 
-    public Boolean isValidMockup(Mockup mockup) {
+    public Boolean isValidMockup(Mockup mockup, String token) {
         LocalDateTime time = LocalDateTime.now();
-        if (mockup.getToken().isEmpty()) {
+        if (!mockup.getAllowJWT()) {
             if (time.isAfter(mockup.getExpiryTime())) {
                 return false;
             }
@@ -85,8 +81,11 @@ public class MockupService {
         }
         try {
             Jwts.parser().setSigningKey(SECRET).parseClaimsJws(mockup.getToken());
+            if(mockup.getToken().equals(token)){
+                return false;
+            }
             return true;
-        } catch (MalformedJwtException e) {
+        } catch (MalformedJwtException | NullPointerException e) {
             System.out.println("Invalid JWT token: {}" + e.getMessage());
         } catch (ExpiredJwtException e) {
             System.out.println("JWT token is expired: {}" + e.getMessage());

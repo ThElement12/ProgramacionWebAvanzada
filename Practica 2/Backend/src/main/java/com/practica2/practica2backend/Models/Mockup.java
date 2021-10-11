@@ -62,6 +62,17 @@ public class Mockup {
     @Column()
     private String expiryType;
 
+    @Column()
+    private Boolean allowJWT;
+
+    @Column()
+    private String description;
+
+    @Column()
+    private Integer responseTime;
+
+
+
     public void calculateExpiryTime(){
         creation = LocalDateTime.now();
         if(expiryType.equalsIgnoreCase("Hora")){

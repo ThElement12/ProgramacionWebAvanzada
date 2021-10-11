@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-@CrossOrigin(origins = {"https://www.noisewatcher.systems", "http://localhost:3000", "*"})
+@CrossOrigin(origins = {"http://localhost:3000", "*"})
 @RestController
 public class UserController {
     private final UserService userService;
