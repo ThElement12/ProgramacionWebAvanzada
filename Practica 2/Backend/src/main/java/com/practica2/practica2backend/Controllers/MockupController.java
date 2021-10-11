@@ -66,7 +66,9 @@ public class MockupController {
         Map<String, Object> response = new HashMap<>();
         try {
             Mockup mockup = mockupService.findByUUID(uuid);
-            userService.delete(userService.findByUsername(mockup.getOwner()));
+            User user = userService.findByUsername(mockup.getOwner());
+            user.removeMockup(mockup.getUuid());
+            userService.save(user);
             mockupService.delete(mockup);
             response.put("message", "mockup eliminado con éxito");
         } catch (NoSuchElementException e) {

@@ -33,14 +33,19 @@ public class User implements Serializable{
     List<String> roles;
 
     @OneToMany( cascade = CascadeType.ALL)
-    private Set<Mockup> mockups;
+    private List<Mockup> mockups;
 
-    public Boolean hasMockup(String uuid){
-        for(Mockup mockup:mockups){
-            if(mockup.getUuid().equals(uuid)){
-                return true;
+    public Boolean removeMockup(String uuid){
+        int num = -1;
+
+        for (Mockup aux : mockups) {
+            num++;
+            if (aux.getUuid().equals(uuid)) {
+                break;
             }
         }
+        if(num > -1)
+            mockups.remove(num);
         return false;
     }
 
