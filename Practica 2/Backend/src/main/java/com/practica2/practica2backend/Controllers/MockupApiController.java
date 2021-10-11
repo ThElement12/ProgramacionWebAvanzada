@@ -47,8 +47,9 @@ public class MockupApiController {
                             header.addHeader(aux.getKey(), aux.getValue());
                         }
                     }
-                    header.addHeader("Content-Type",mockup.getContentType());
-                    return new ResponseEntity<>(mockup.getBody(), HttpStatus.valueOf(mockup.getStatus()));
+                    return ResponseEntity.status(mockup.getStatus())
+                            .contentType(MediaType.valueOf(mockup.getContentType()))
+                            .body(mockup.getBody());
                 } else {
                     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 }
@@ -85,18 +86,20 @@ public class MockupApiController {
                             header.addHeader(aux.getKey(), aux.getValue());
                         }
                     }
-                    return new ResponseEntity<>(mockup.getBody(), HttpStatus.valueOf(mockup.getStatus()));
+                    return ResponseEntity.status(mockup.getStatus())
+                            .contentType(MediaType.valueOf(mockup.getContentType()))
+                            .body(mockup.getBody());
                 } else {
                     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 }
             }
             else{
                 response.put("message","Recurso con método POST no encontrado");
+
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
         }catch (NoSuchElementException | NullPointerException e){
             response.put("message", "el mockup no fue encontrado ");
-            response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
@@ -121,7 +124,9 @@ public class MockupApiController {
                             header.addHeader(aux.getKey(), aux.getValue());
                         }
                     }
-                    return new ResponseEntity<>(mockup.getBody(), HttpStatus.valueOf(mockup.getStatus()));
+                    return ResponseEntity.status(mockup.getStatus())
+                            .contentType(MediaType.valueOf(mockup.getContentType()))
+                            .body(mockup.getBody());
                 } else {
                     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 }
@@ -132,7 +137,6 @@ public class MockupApiController {
             }
         }catch (NoSuchElementException | NullPointerException e){
             response.put("message", "el mockup no fue encontrado ");
-            response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -157,7 +161,9 @@ public class MockupApiController {
                             header.addHeader(aux.getKey(), aux.getValue());
                         }
                     }
-                    return new ResponseEntity<>(mockup.getBody(), HttpStatus.valueOf(mockup.getStatus()));
+                    return ResponseEntity.status(mockup.getStatus())
+                            .contentType(MediaType.valueOf(mockup.getContentType()))
+                            .body(mockup.getBody());
                 } else {
                     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 }
@@ -168,7 +174,6 @@ public class MockupApiController {
             }
         }catch (NoSuchElementException | NullPointerException e){
             response.put("message", "el mockup no fue encontrado ");
-            response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -193,7 +198,9 @@ public class MockupApiController {
                             header.addHeader(aux.getKey(), aux.getValue());
                         }
                     }
-                    return new ResponseEntity<>(mockup.getBody(), HttpStatus.valueOf(mockup.getStatus()));
+                    return ResponseEntity.status(mockup.getStatus())
+                            .contentType(MediaType.valueOf(mockup.getContentType()))
+                            .body(mockup.getBody());
                 } else {
                     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 }
@@ -204,7 +211,6 @@ public class MockupApiController {
             }
         }catch (NoSuchElementException | NullPointerException e){
             response.put("message", "el mockup no fue encontrado ");
-            response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
