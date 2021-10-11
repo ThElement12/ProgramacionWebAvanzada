@@ -1,5 +1,4 @@
 import './App.css';
-
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,64 +12,69 @@ import Mockups from './Pages/Mockups';
 import Users from './Pages/Users';
 import RegisterMockups from './Pages/RegisterMockups';
 
+import ProviderWrapper from './Components/ProviderWrapper'
+
 function App() {
+
   return (
     <Router>
       <Switch>
-        <Route exact path='/home' component={Home}/>
+        <Route exact path='/home' component={Home} />
         <Route exact path='/login' render={
           () => {
-            if(sessionStorage.getItem('username'))
-              return <Home/>
+            if (sessionStorage.getItem('username'))
+              return <Home />
             else
-              return <Login/>
+              return <Login />
           }
-        }/>
-        <Route exact path="/register" render = {
+        } />
+        <Route exact path="/register" render={
           () => {
-            if(sessionStorage.getItem('rol') === 'admin')
-              return <Register/>
+            if (sessionStorage.getItem('rol') === 'admin')
+              return <Register />
             else
-              return <Home/>
+              return <Home />
           }
-        }/>
+        } />
         <Route exact path='/mockups' render={
           () => {
-            if(sessionStorage.getItem('username'))
+            if (sessionStorage.getItem('username'))
               return <Mockups all={false} />
             else
-              return <Home/>
+              return <Home />
           }
-        }/>
+        } />
         <Route exact path='/create-mockup' render={
           () => {
-            if(sessionStorage.getItem('username'))
+            if (sessionStorage.getItem('username')) {
               return <RegisterMockups/>
+            }
+
             else
-              return <Home/>
+              return <Home />
           }
-        }/>
-        <Route exact path="/users" render = {
+        } />
+        <Route exact path="/users" render={
           () => {
-            if(sessionStorage.getItem('rol') === 'admin')
-              return <Users/>
+            if (sessionStorage.getItem('rol') === 'admin')
+              return <Users />
             else
-              return <Home/>
+              return <Home />
           }
-        }/>
-        <Route exact path="/all-mockups" render = {
+        } />
+        <Route exact path="/all-mockups" render={
           () => {
-            if(sessionStorage.getItem('rol') === 'admin')
-              return <Mockups all={true}/> 
+            if (sessionStorage.getItem('rol') === 'admin')
+              return <Mockups all={true} />
             else
-              return <Home/>
+              return <Home />
           }
-        }/>
-        
+        } />
+
         <Route exact path='/'
           render={
             () => {
-                return <Redirect to='/home' />
+              return <Redirect to='/home' />
             }
           }
         />
