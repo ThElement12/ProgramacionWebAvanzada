@@ -65,7 +65,6 @@ const Users = () => {
   const onDelete = () => {
     UserService.deleteUser(userTarget.username)
       .then(() => {
-        console.log("Usuario borrado: " + userTarget.username);
         showModalSuccess();
       })
       .catch((res) => console.error(res));

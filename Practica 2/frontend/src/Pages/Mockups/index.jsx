@@ -1,52 +1,67 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Modal, Table, Container } from "react-bootstrap";
+import { Form, Button, Modal, Table, Container, Col, Row } from "react-bootstrap";
 
 import Navigation from '../../Components/Navigation'
 
-import UserService from "../../Utils/user.service";
+import userService from "../../Utils/user.service";
+import statusCodes from "../../Utils/status-code.json";
 
 const Mockups = (props) => {
+  const [uuid, setUuid] = useState("")
+  const [endpointName, setEndpointName] = useState("")
+  const [status, setStatusCode] = useState("");
+  const [accessMethod, setAccessMethod] = useState("");
+  const [headers, setHeaders] = useState([]);
+  const [contentType, setContentType] = useState("");
+  const [contentBody, setContentBody] = useState("");
+  const [endPointDescription, setEndPointDescription] = useState("");
+  const [expiryType, setExpTime] = useState("año");
+  const [resTime, setResTime] = useState(0);
+  const [allowJWt, setAllowJWT] = useState(false);
+  const [owner, setOwner] = useState("")
   const [mockups, setMockups] = useState([]);
 
   const [modalEdit, setModalEdit] = useState(false);
   const [modalConfirm, setModalConfirm] = useState(false);
   const [modalSucess, setModalSucess] = useState(false);
 
-  const [id, setID] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-
-  const [userTarget, setUserTarget] = useState("");
+  const [mockupTarget, setMockupTarget] = useState("");
   const [reload, setReload] = useState("");
 
   useEffect(() => {
-    if(props.all){
-      UserService.getAllMockups().then((response) => {
+    if (props.all) {
+      userService.getAllMockups().then((response) => {
         setMockups(response.data);
 
       });
-    }else{
-      UserService.getUserMockups(sessionStorage.getItem("username")).then((response)=>{
+    } else {
+      userService.getUserMockups(sessionStorage.getItem("username")).then((response) => {
         setMockups(response.data.mockups);
       })
 
     }
   }, [reload, props.all]);
-  
 
-  const showModalEdit = (user) => {
-    setID(user["id"]);
-    setUsername(user["username"]);
-    setEmail(user["mail"]);
 
+  const showModalEdit = (mockup) => {
+    setUuid(mockup.uuid);
+    setEndpointName(mockup.name);
+    setStatusCode(mockup.status);
+    setAccessMethod(mockup.method);
+    setHeaders(JSON.stringify(mockup.headers));
+    setContentType(mockup.contentType);
+    setContentBody(mockup.body);
+    setEndPointDescription(mockup.description);
     setModalEdit(true);
+    setStatusCode(statusValue(status))
+    setOwner(mockup.owner)
   }
   const hideModalEdit = () => {
     setModalEdit(false);
   }
 
-  const showModalConfirm = (user) => {
-    setUserTarget(user)
+  const showModalConfirm = (mockup) => {
+    setMockupTarget(mockup)
     setModalConfirm(true);
   }
   const hideModalConfirm = () => {
@@ -58,33 +73,67 @@ const Mockups = (props) => {
   }
   const hideModalSuccess = () => {
     if (modalEdit) {
-      setID("");
-      setUsername("");
-      setEmail("");
-    }else if(modalConfirm){
-      setUserTarget("");
+        setUuid("")
+        setEndpointName("")
+        setStatusCode("")
+        setAccessMethod("")
+        setOwner("")
+        setHeaders([])
+        setContentType("")
+        setContentBody("")
+        setEndPointDescription("")
+        setModalEdit("")
+    } else if (modalConfirm) {
+      setMockupTarget("");
     }
-    
+
     setModalConfirm(false);
     setModalEdit(false);
     setModalSucess(false);
     setReload(!reload);
   }
-  const onDelete = user => {
+  const onDelete = ()=> {
     //Borrar el usuario del back
-    console.log(userTarget.username);
+    console.log(mockupTarget.uuid)
+    userService.deleteMockup(mockupTarget.uuid)
+      .then(()=>{
+        showModalSuccess()
+      })
+      .catch(res => console.error(res))
     showModalSuccess();
   }
+  const statusValue = code => {
+    for(let i = 0; i < statusCodes.length; i++){
 
+      if(statusCodes[i].code == code){
+        return i;
+      }
+    }
+    return 0;
+  }
   const onSubmit = event => {
     event.preventDefault();
-    var user = {
-      username,
-      email
+    const newMockup = {
+      "uuid": uuid, //Id lo pone el back
+      "name": endpointName,
+      "description": endPointDescription,
+      "status": statusCodes[status].code,
+      "method": accessMethod,
+      "headers": JSON.parse("[" + headers + "]"),
+      "contentType": contentType,
+      "body": contentBody,
+      "creation": null, //Dia de creacion
+      "expiryType": expiryType,  //1 dia, hora, semana, mes, año
+      "expiryTime": null,
+      "responseTime": resTime, //En segundos
+      "allowJWT": allowJWt, //Bool
+      "owner": owner
     }
-    console.log(user + "borrao'");
-    //POST AL BACK
-    showModalSuccess();
+    console.log(newMockup)
+    userService.editMockup(newMockup, owner)
+      .then(showModalSuccess)
+      .catch(res => console.error(res))
+
   }
 
   const edit = () => {
@@ -99,47 +148,125 @@ const Mockups = (props) => {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={onSubmit}>
-          <Form.Label>ID: </Form.Label>
-          <Form.Control
-            type="id"
-            name="id"
-            onChange={e => {
-              setID(e.target.value);
-            }}
-            value={id}
-            disabled
-          />
-          <Form.Label>Username: </Form.Label>
-          <Form.Control
-            type="username"
-            name="username"
-            onChange={
-              e => {
-                setUsername(e.target.value);
-              }
-            }
-            value={username}
-            required
-          />
-          <Form.Label>Correo: </Form.Label>
-          <Form.Control
-            type="email"
-            name="email"
-            onChange={
-              e => {
-                setEmail(e.target.value)
-              }
-            }
-            value={email}
-            required
-          />
-          <br></br>
-          <Button className="btn btn-primary" type="submit">
-            Editar
-          </Button>
-          {" "}
-          <Button className="btn btn-secondary" onClick={hideModalEdit}>Cancelar</Button>
+          <Row>
+            <Col>
+              <Form.Label>Nombre: </Form.Label>
+              <Form.Control value={endpointName} onChange={(e) => {
+                setEndpointName(e.target.value)
+              }} required></Form.Control>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Form.Label>HTTP Status: </Form.Label>
+              <Form.Control value={status} as="select" name="status" defaultValue="Elige..."
+                onChange={(e) => {
+                  setStatusCode(e.target.value);
+                }}
+                required>
+                <option>Elige...</option>
+                {statusCodes.map((codes, i) => (
+                  <option key={i} value={i}>
+                    {`${codes.code} - ${codes.message}`}
+                  </option>
+                ))}
+              </Form.Control>
+            </Col>
+            <Col>
+              <Form.Label>Access Method: </Form.Label>
+              <Form.Control value={accessMethod} as="select" name="content" defaultValue="Elige..."
+                onChange={(e) => {
+                  setAccessMethod(e.target.value)
+                }}
+                required>
+                <option>Elige...</option>
+                <option value={"GET"}>GET</option>
+                <option value={"POST"}>POST</option>
+                <option value={"PUT"}>PUT</option>
+                <option value={"PATCH"}>PATCH</option>
+                <option value={"DELETE"}>DELETE</option>
+                <option value={"OPTION"}>OPTION</option>
+              </Form.Control>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Form.Label>Content-type: </Form.Label>
+              <Form.Control  value={contentType} as="select" name="content" defaultValue="Elige..."
+                onChange={(e) => {
+                  setContentType(e.target.value)
+                }}
+                required>
+                <option>Elige...</option>
+                <option value={"application/json"}>Application/json</option>
+                <option value={"application/xml"}>Application/xml</option>
+                <option value={"text/plain"}>Text/Plain</option>
+              </Form.Control>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Form.Label>Descripcion</Form.Label>
+              <Form.Control value={endPointDescription} as="textarea" placeholder="Descripcion..."
+                onChange={(e) => {
+                  setEndPointDescription(e.target.value)
+                }} required></Form.Control>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Form.Label>HTTP Headers</Form.Label>
+              <Form.Control value={headers} className="textarea--code" as="textarea" placeholder='{ &#10;"X-Foo-Bar": "Hello World"&#10;}' style={{ height: "86px" }}
+                onChange={(e) => {
+                  setHeaders(e.target.value)
+                }} ></Form.Control>
+            </Col>
+          </Row><Row>
+            <Col>
+              <Form.Label>HTTP Response Body</Form.Label>
+              <Form.Control 
+              value={contentBody}
+              className="textarea--code" as="textarea" placeholder='{
+                        "identity": {&#10;"id": "b06cd03f-75d0-413a-b94b-35e155444d70",&#10;"login": "John Doe"&#10;},&#10;"permissions": {&#10;"roles": [&#10;"moderator"&#10;]&#10;}&#10;}' style={{ height: "209px" }}
+                onChange={(e) => {
+                  setContentBody(e.target.value)
+                }}
+              ></Form.Control>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Form.Label>Expiration Time</Form.Label>
+              <Form.Control as="select" name="expiration" defaultValue="1 year"
+                onChange={(e) => {
+                  setExpTime(e.target.value)
+                }}
+              >
+                <option value={"Agno"}>1 Year</option>
+                <option value={"Mes"}>1 Month</option>
+                <option value={"Semana"}>1 Week</option>
+                <option value={"Dia"}>1 Day</option>
+                <option value={"Hora"}>1 Hour</option>
 
+              </Form.Control>
+            </Col>
+            <Col>
+              <Form.Label>Response Time (in seconds) </Form.Label>
+              <Form.Control type="number" min="0" value={resTime}
+                onChange={(e) => {
+                  setResTime(e.target.value)
+                }}
+                required></Form.Control>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Button type="submit">Editar Mockup</Button>{" "}
+              <Button variant="secondary" onClick={()=> {
+              hideModalEdit();
+            }}>Cancelar</Button>
+            </Col>
+          </Row>
         </Form>
       </Modal.Body>
 
@@ -175,7 +302,7 @@ const Mockups = (props) => {
         <Modal.Title>ATENCION!</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Esta seguro que desea eliminar al usuario: {userTarget.username}?
+        Esta seguro que desea eliminar al usuario: {mockupTarget.uuid}?
       </Modal.Body>
       <Modal.Footer>
         <Button variant="danger" onClick={onDelete}>Si</Button>
@@ -185,54 +312,54 @@ const Mockups = (props) => {
   }
   return (
     <div>
-    <Navigation/>
-    <br></br>
-    <Container>
-      <Table className="table table-bordered" hover striped responsive>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Descripcion</th>
-            <th>Status</th>
-            <th>Metodo</th>
-            <th>Endpoint</th>
-            <th>JWT</th>
-            <th>Fecha de Expiracion</th>
-            <th>Opciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {mockups.map((elemento, i) => (
-            <tr
-              key={i}
-            >
-              <td>{elemento["name"]}</td>
-              <td>{elemento["description"]}</td>
-              <td>{elemento["status"]}</td>
-              <td>{elemento["method"]}</td>
-              <td>{`http://localhost:8082/${elemento["uuid"]}`}</td>
-              <td>{elemento["token"] === null ? "N/A" : <a href="#"><span onClick={() => {navigator.clipboard.writeText(elemento["token"])}}>Copiar token</span></a>}</td>
-              <td>{elemento["expiryTime"].slice(0,10)}</td>
-              <td>
-                <Button variant="warning"
-                  onClick={() => showModalEdit(elemento)}
-                >
-                  Editar
-                </Button>
-                {" "}
-                <Button variant="danger"
-                  onClick={() => showModalConfirm(elemento)}>
-                  Eliminar
-                </Button>
-              </td>
+      <Navigation />
+      <br></br>
+      <Container>
+        <Table className="table table-bordered" hover striped responsive>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Descripcion</th>
+              <th>Status</th>
+              <th>Metodo</th>
+              <th>Endpoint</th>
+              <th>JWT</th>
+              <th>Fecha de Expiracion</th>
+              <th>Opciones</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
-      {edit()}
-      {success()}
-      {confirm()}
-    </Container>
+          </thead>
+          <tbody>
+            {mockups.map((elemento, i) => (
+              <tr
+                key={i}
+              >
+                <td>{elemento["name"]}</td>
+                <td>{elemento["description"]}</td>
+                <td>{elemento["status"]}</td>
+                <td>{elemento["method"]}</td>
+                <td>{`http://localhost:8082/${elemento["uuid"]}`}</td>
+                <td>{elemento["token"] === null ? "N/A" : <a href="#"><span onClick={() => { navigator.clipboard.writeText(elemento["token"]) }}>Copiar token</span></a>}</td>
+                <td>{elemento["expiryTime"].slice(0, 10)}</td>
+                <td>
+                  <Button variant="warning"
+                    onClick={() => showModalEdit(elemento)}
+                  >
+                    Editar
+                  </Button>
+                  {" "}
+                  <Button variant="danger"
+                    onClick={() => showModalConfirm(elemento)}>
+                    Eliminar
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+        {edit()}
+        {success()}
+        {confirm()}
+      </Container>
     </div>
   );
 }
