@@ -14,6 +14,7 @@ const Register = () => {
   const [mail, setEmail] = useState("");
   const [password, setPass] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [rol, setRol] = useState([]);
 
   const [msgError, setmsgError] = useState("");
   const [modalSuccess, setModalSuccess] = useState(false);
@@ -33,7 +34,7 @@ const Register = () => {
     setModalSuccess(true);
   }
   const register = async () => {
-    await AuthService.register(username, password, mail)
+    await AuthService.register(username, password, mail, rol)
       .then(onSuccess)
       .catch(() => {
         setmsgError("Hubo un error al registrar el usuario")
@@ -87,6 +88,16 @@ const Register = () => {
               <Form.Control type="password" name="password" onChange={(e) => { setPass(e.target.value); }} required></Form.Control>
               <Form.Label>Confirmar Contraseña</Form.Label>
               <Form.Control type="password" name="confirmpass" onChange={(e) => { setConfirm(e.target.value); }} required></Form.Control>
+              <Form.Label>Rol: </Form.Label>
+              <Form.Control as="select" name="rol" defaultValue="Elige..."
+                    onChange={(e) => {
+                      setRol([e.target.value])
+                    }}
+                    required>
+                    <option>Elige...</option>
+                    <option value={"admin"}>Admin</option>
+                    <option value={"cliente"}>Cliente</option>
+              </Form.Control>
               <br></br>
               {msgError !== "" && <Alert variant="danger">{msgError}</Alert>}
               <Button className="w-100" type="submit">

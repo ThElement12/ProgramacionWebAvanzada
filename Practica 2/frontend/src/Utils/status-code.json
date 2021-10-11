@@ -1,10 +1,5 @@
 [
   {
-    "code": "1xx",
-    "message": "Information",
-    "description": ""
-  },
-  {
     "code": "100",
     "message": "Continue",
     "description": "The server has received the request headers, and the client should proceed to send the request body"
@@ -18,11 +13,6 @@
     "code": "103",
     "message": "Checkpoint",
     "description": "Used in the resumable requests proposal to resume aborted PUT or POST requests"
-  },
-  {
-    "code": "2xx",
-    "message": "Successful",
-    "description": ""
   },
   {
     "code": "200",
@@ -58,11 +48,6 @@
     "code": "206",
     "message": "Partial Content",
     "description": "The server is delivering only part of the resource due to a range header sent by the client"
-  },
-  {
-    "code": "3xx",
-    "message": "Redirection",
-    "description": ""
   },
   {
     "code": "300",
@@ -103,11 +88,6 @@
     "code": "308",
     "message": "Resume Incomplete",
     "description": "Used in the resumable requests proposal to resume aborted PUT or POST requests"
-  },
-  {
-    "code": "4xx",
-    "message": "Client Error",
-    "description": ""
   },
   {
     "code": "400",
@@ -248,11 +228,6 @@
     "code": "451",
     "message": "Unavailable For Legal Reasons",
     "description": "A server operator has received a legal demand to deny access to a resource or to a set of resources that includes the requested resource"
-  },
-  {
-    "code": "5xx",
-    "message": "Server Error",
-    "description": ""
   },
   {
     "code": "500",

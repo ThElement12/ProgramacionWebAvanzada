@@ -22,10 +22,10 @@ class UserService{
 
   }
   createNewMockup(mockup, username){
-    return axios.post(API_URL + `mockup/create/${username}`, mockup, {headers: authHeader()})
+    return axios.post(API_URL + `mockup/${username}/${mockup.allowJWT}`, mockup, {headers: authHeader()})
   }
   deleteMockup(mockupId){
-    return axios.delete(API_URL + `mockup/${mockupId}`, {headers: authHeader()})
+    return axios.delete(API_URL + `mockup/delete/${mockupId}`, {headers: authHeader()})
 
   }
   editMockup(mockup){

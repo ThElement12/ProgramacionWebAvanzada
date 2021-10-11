@@ -24,11 +24,12 @@ class AuthService {
     logout() {
         sessionStorage.clear();
     }
-    register(username, password, mail) {
+    register(username, password, mail, roles) {
         return axios.post(API_URL + 'user', {
             username,
             password,
-            mail
+            mail,
+            roles
         },
         {headers: authHeader()});
     }
