@@ -16,7 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-@CrossOrigin(origins = {"http://localhost:3000", "*"})
+
+@CrossOrigin()
 @RequestMapping("/")
 @RestController
 public class MockupApiController {
