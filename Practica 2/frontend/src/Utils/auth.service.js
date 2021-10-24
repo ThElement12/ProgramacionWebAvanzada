@@ -2,13 +2,10 @@ import axios from "axios";
 
 import authHeader from './auth-header';
 
-
-const API_URL = 'http://localhost:8082/';
-
 class AuthService {
     login(credential, password) {
         return axios
-            .post(API_URL + 'auth/login', {
+            .post(process.env.REACT_APP_API_URL + 'auth/login', {
                 credential,
                 password
             })
@@ -20,12 +17,13 @@ class AuthService {
                 }
                 return res.token
             })
+            .catch(err => console.error(err))
     }
     logout() {
         sessionStorage.clear();
     }
     register(username, password, mail, roles) {
-        return axios.post(API_URL + 'user', {
+        return axios.post(process.env.REACT_APP_API_URL + 'user', {
             username,
             password,
             mail,

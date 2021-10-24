@@ -105,7 +105,7 @@ const Mockups = (props) => {
   const statusValue = code => {
     for(let i = 0; i < statusCodes.length; i++){
 
-      if(statusCodes[i].code == code){
+      if(statusCodes[i].code === code.toString()){
         return i;
       }
     }
@@ -129,7 +129,6 @@ const Mockups = (props) => {
       "allowJWT": allowJWt, //Bool
       "owner": owner
     }
-    console.log(newMockup)
     userService.editMockup(newMockup, owner)
       .then(showModalSuccess)
       .catch(res => console.error(res))
