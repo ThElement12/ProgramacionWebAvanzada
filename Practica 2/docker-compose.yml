@@ -1,0 +1,57 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: '3.8'
+
+# Define services
+services:
+    # Frontend Service 
+  app-client:
+    image: 'thelement012/mockys-frontend'
+    build: .
+    environment:
+      REACT_APP_API_URL: http://127.0.0.1:8081/
+    ports:
+      - "3000:3000"
+    depends_on:
+      - app-server
+    networks:
+      - practica2
+  # App backend service
+  app-server:
+    # Configuration for building the docker image for the backend service
+    image: 'thelement012/mockys-backend'
+    build: .
+    ports:
+      - "8081:8081" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    depends_on: 
+      - db # This service depends on mysql. Start that first.
+    environment:
+      AMBIENTE: dev
+      DB_HOST: my-h2
+      DB_PORT: 8082
+      DB_NAME: mocki_to
+      DB_USER: sa
+      DB_PASSWORD: 1234
+      APP_NAME: 'mockito'
+      APP_PORT: 8081
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - practica2
+
+  # Database Service (H2)
+  db:
+    image: buildo/h2database:latest
+    build: .
+    ports:
+      - "8082:8082"
+    volumes:
+      - volumen:/tmp/
+    networks:
+      - practica2
+  
+# Volumes
+volumes:
+  volumen:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  practica2:    
