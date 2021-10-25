@@ -6,8 +6,7 @@ version: '3.8'
 services:
     # Frontend Service 
   app-client:
-    image: 'thelement012/mockys-frontend'
-    build: .
+    image: thelement012/mockys-frontend
     environment:
       REACT_APP_API_URL: http://127.0.0.1:8081/
     ports:
@@ -19,8 +18,7 @@ services:
   # App backend service
   app-server:
     # Configuration for building the docker image for the backend service
-    image: 'thelement012/mockys-backend'
-    build: .
+    image: thelement012/mockys-backend
     ports:
       - "8081:8081" # Forward the exposed port 8080 on the container to port 8080 on the host machine
     depends_on: 
@@ -40,7 +38,6 @@ services:
   # Database Service (H2)
   db:
     image: buildo/h2database:latest
-    build: .
     ports:
       - "8082:8082"
     volumes:
