@@ -23,7 +23,7 @@ public class SensorSubscriber {
         this.sensorService = sensorService;
     }
 
-    @JmsListener(destination = ActiveMQConfiguration.SENSOR_SUB)
+    @JmsListener(destination = "sensor-sub")
     public void receiveSensor(ActiveMQBytesMessage sensorMessage) throws JMSException, JsonProcessingException {
 
         //BytesMessage bm = (BytesMessage) textMessage;
@@ -37,4 +37,6 @@ public class SensorSubscriber {
         //log.info("Receive text message: " + textMessage.getText());
         //System.out.println("Receive object message: " + ((Sensor)objectMessage.getObject()).getIdDevice());
     }
+
+
 }
