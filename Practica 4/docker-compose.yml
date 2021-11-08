@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # Frontend Service 
+  app-client:
+    image: thelement012/frontend-practica4
+    environment:
+      REACT_APP_WEBSOCKET: http://localhost:8081/ws-sensor/
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    depends_on:
+      - app-server
+      - sensor-1
+      - sensor-2
+    networks:
+      - practica4
+  # App backend service
+  app-server:
+    image: thelement012/backend-practica4
+    ports:
+      - "8081:8081"
+      - "1883:1883"
+    depends_on: 
+      - db
+    environment:
+      AMBIENTE: dev
+      DB_HOST: my-h2
+      DB_PORT: 8082
+      DB_NAME: sensors
+      DB_USER: sa
+      DB_PASSWORD: 1234
+    networks: 
+      - practica4
+  # Database Service (H2)
+  db:
+    image: buildo/h2database:latest
+    ports:
+      - "8082:8082"
+    volumes:
+      - volumen:/tmp/
+    networks:
+      - practica4
+  #Sensor 1
+  sensor-1:
+    image: thelement012/sensor1
+    environment:
+      MQT_ROUTE: mqtt://app-server:1883
+    depends_on:
+      - app-server
+    networks:
+      - practica4
+  #Sensor 2
+  sensor-2:
+    image: thelement012/sensor2
+    environment:
+      MQT_ROUTE: mqtt://app-server:1883
+    depends_on:
+      - app-server
+    networks:
+      - practica4
+     
+volumes:
+  volumen:
+
+networks:
+  practica4:    
+
