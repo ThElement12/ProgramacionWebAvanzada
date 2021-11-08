@@ -43,19 +43,6 @@ client.on("connect", function () {
 
   console.log('connected!');
 
-  /*client.subscribe('sensor-sub', function() {
-    var msg = {
-      id:null,
-      idDevice:1,
-      generationDate:new Date().toLocaleString(),
-      temperature:Math.floor((Math.random() * 100)),
-      humidity:Math.floor((Math.random() * 100))
-    }
-    client.publish('sensor-sub', JSON.stringify(msg), {
-      retain: true,
-    });
-  });*/
-
 });
 
 var timer_id = setInterval(function () { publish( {
@@ -69,13 +56,14 @@ var timer_id = setInterval(function () { publish( {
 
 
 //publish function
-client.subscribe('sensor-sub')
+client.subscribe('notificacion_sensores')
 function publish(msg) {
   console.log("publishing", msg);
   if (client.connected == true) {
     //client.publish("sensor-sub", JSON.stringify(msg));
-    client.publish("sensor-sub", JSON.stringify(msg));
+    client.publish("notificacion_sensores", JSON.stringify(msg));
   }
 }
 
 timer_id
+

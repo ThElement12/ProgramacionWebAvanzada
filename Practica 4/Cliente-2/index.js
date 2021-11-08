@@ -69,12 +69,12 @@ var timer_id = setInterval(function () { publish( {
 
 
 //publish function
-client.subscribe('sensor-sub')
+client.subscribe('notificacion_sensores')
 function publish(msg) {
   console.log("publishing", msg);
   if (client.connected == true) {
     //client.publish("sensor-sub", JSON.stringify(msg));
-    client.publish("sensor-sub", JSON.stringify(msg));
+    client.publish("notificacion_sensores", JSON.stringify(msg));
   }
 }
 

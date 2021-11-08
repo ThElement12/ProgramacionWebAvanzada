@@ -1,4 +1,4 @@
-package com.example.backend.MessageQueue;
+package com.example.backend.Controllers;
 
 import com.example.backend.Configuration.ActiveMQConfiguration;
 import com.example.backend.Models.Sensor;
@@ -14,16 +14,18 @@ import org.springframework.stereotype.Component;
 import javax.jms.JMSException;
 
 @Component
-public class SensorSubscriber {
+public class SensorSubscriberController {
 
-    private static final Logger log = LoggerFactory.getLogger(SensorSubscriber.class);
+    private static final Logger log = LoggerFactory.getLogger(SensorSubscriberController.class);
     private final SensorService sensorService;
 
-    public SensorSubscriber(SensorService sensorService) {
+    public SensorSubscriberController(SensorService sensorService) {
         this.sensorService = sensorService;
     }
-
-    @JmsListener(destination = "sensor-sub")
+/*
+* Aqui recibe informacion de los 2 clientes sensores cada minuto
+* */
+    @JmsListener(destination = ActiveMQConfiguration.SENSOR_SUB)
     public void receiveSensor(ActiveMQBytesMessage sensorMessage) throws JMSException, JsonProcessingException {
 
         //BytesMessage bm = (BytesMessage) textMessage;
