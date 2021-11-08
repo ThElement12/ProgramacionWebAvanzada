@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 
 import { Line } from 'react-chartjs-2';
 
+import SockJS from 'sockjs-client';
+import { Stomp } from '@stomp/stompjs';
 export default class Graph extends Component {
+
   state = {
     data1: {
       labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
@@ -39,6 +42,35 @@ export default class Graph extends Component {
     }
   }
 
+  componentDidMount() {
+    const socketClient = new SockJS("http://localhost:8081/ws-sensor/");
+    const stompClient = Stomp.over(socketClient);
+    stompClient.connect({}, (frame) => {
+      console.log(frame);
+      stompClient.subscribe('/topic/sensor', function(sensor){
+        console.log(JSON.parse(sensor.body));
+      });
+    })
+
+    socketClient.onopen = () => {
+      console.log('connected')
+
+    }
+
+    socketClient.onmessage = evt => {
+      // listen to data sent from the websocket server
+      const message = evt.data
+      this.setState({ dataFromServer: message })
+      console.log(message)
+    }
+
+    socketClient.onclose = () => {
+      console.log('disconnected')
+      // automatically try to reconnect on connection loss
+
+    }
+
+  }
   render() {
     return (
       <div>
