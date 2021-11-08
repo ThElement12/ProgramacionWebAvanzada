@@ -16,14 +16,14 @@ var timer_id = setInterval(function () {
     temperature: Math.floor((Math.random() * 100)),
     humidity: Math.floor((Math.random() * 100))
   });
-}, 6000);
+}, 10000);
 
 //publish function
 client.subscribe('notificacion_sensores')
 function publish(msg) {
   console.log("publishing", msg);
   if (client.connected == true) {
-    client.publish("sensor-sub", JSON.stringify(msg));
+    client.publish("notificacion_sensores", JSON.stringify(msg));
   }
 }
 
