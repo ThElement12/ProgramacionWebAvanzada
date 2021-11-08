@@ -30,8 +30,7 @@ export default class Graph extends Component {
           borderColor: 'rgba(255, 99, 132)'
         }
       ]
-    }
-    ,
+    },
     option: {
       scales: {
         y: {
@@ -42,85 +41,57 @@ export default class Graph extends Component {
     }
   }
   componentDidMount() {
-    const socketClient = new SockJS("http://localhost:8081/ws-sensor/");
+    const socketClient = new SockJS(process.env.REACT_APP_WEBSOCKET);
     const stompClient = Stomp.over(socketClient);
     const global = this
     stompClient.connect({}, (frame) => {
       const out = global
-      console.log(frame);
-      stompClient.subscribe('/topic/sensor', function(sensor){
-        out.setDataSensor1(JSON.parse(sensor.body));
-        out.setDataSensor2(JSON.parse(sensor.body));
-        console.log(JSON.parse(sensor.body))
+      stompClient.subscribe('/topic/sensor', function (sensor) {
+        if (JSON.parse(sensor.body).length === 2) {
+          const body = JSON.parse(sensor.body)
+          out.setDataSensor(body, "1");
+          out.setDataSensor(body, "2");
+        }
       });
     })
-    socketClient.onopen = () => {
-      console.log('connected')
-
-    }
-    
-    socketClient.onclose = () => {
-      console.log('disconnected')
-      // automatically try to reconnect on connection loss
-
-    }
-
   }
-  setDataSensor1 = (body) => {
-    var dataSensor = body.filter(data => data.device === 1)
-    dataSensor = dataSensor.slice(Math.max(dataSensor.length - 10, 0));
-    const newData1 = {
-      labels: dataSensor.map(data => data.time),
-      datasets:[
-        {
-          label: "Temperatura",
-          data: dataSensor.map(data => data.temperature),
-          fill: false,
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgba(255, 99, 132)'
-        },
-        {
-          label: "Humedad",
-          data: dataSensor.map(data => data.humidity),
-          fill: false,
-          backgroundColor: 'rgb(66, 72, 247)',
-          borderColor: 'rgb(66, 72, 247)'
-
-        }
-      ]
+  setDataSensor = (body, device) => {
+    const dataSensor = body.filter(data => data.device === device)
+    if(dataSensor.length > 0){
+      const newData = {
+        labels: dataSensor[0].time.reverse(),
+        datasets: [
+          {
+            label: "Temperatura",
+            data: dataSensor[0].temperature.reverse(),
+            fill: false,
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgba(255, 99, 132)'
+          },
+          {
+            label: "Humedad",
+            data: dataSensor[0].humidity.reverse(),
+            fill: false,
+            backgroundColor: 'rgb(66, 72, 247)',
+            borderColor: 'rgb(66, 72, 247)'
+  
+          }
+        ]
+      }
+      if(device === "1"){
+        this.setState({ data1: newData })
+      }else{
+        this.setState({ data2: newData })
+      }
     }
-    this.setState({data1: newData1})
-  }
-  setDataSensor2 = (body) => {
-    var dataSensor = body.filter(data => data.device === 2)
-    dataSensor = dataSensor.slice(Math.max(dataSensor.length - 10, 0));
-    const newData1 = {
-      labels: dataSensor.map(data => data.time),
-      datasets:[
-        {
-          label: "Temperatura",
-          data: dataSensor.map(data => data.temperature),
-          fill: false,
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgba(255, 99, 132)'
-        },
-        {
-          label: "Humedad",
-          data: dataSensor.map(data => data.humidity),
-          fill: false,
-          backgroundColor: 'rgb(66, 72, 247)',
-          borderColor: 'rgb(66, 72, 247)'
-
-        }
-      ]
-    }
-    this.setState({data2: newData1})
   }
   render() {
     return (
       <div>
-        <Line height={50} data={this.state.data1} options={this.state.option}/>
-        <Line height={50} data={this.state.data2} options={this.state.option}/>
+        <h3>Sensor #1</h3>
+        <Line height={50} data={this.state.data1} options={this.state.option} />
+        <h3>Sensor #2</h3>
+        <Line height={50} data={this.state.data2} options={this.state.option} />
       </div>
     )
   }
