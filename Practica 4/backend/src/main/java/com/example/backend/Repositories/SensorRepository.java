@@ -8,10 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SensorRepository extends JpaRepository<Sensor,Integer> {
-    String queryBy = "select id,generation_date as generationDate, temperature, humidity from sensor where id_device = :device order by generation_date desc limit 10";
+    String queryBy = "select id,generation_date as generationDate, temperature, humidity,id_device as idDevice from sensor where id_device = :device order by generation_date desc limit 10";
     @Query(value = queryBy,nativeQuery = true)
-    List<Sensor> findLastStatusByEntity(Integer device);
+    List<Sensor> findLastStatusByDevice(Integer device);
 }

@@ -35,6 +35,7 @@ public class SensorSubscriberController {
         Sensor sensor = new ObjectMapper().readValue(s,Sensor.class);
         System.out.println("Recibiendo informacion desde -> ".concat(sensor.getIdDevice().toString()));
         sensorService.save(sensor);
+        sensorService.publishSensor();
 
         //log.info("Receive text message: " + textMessage.getText());
         //System.out.println("Receive object message: " + ((Sensor)objectMessage.getObject()).getIdDevice());

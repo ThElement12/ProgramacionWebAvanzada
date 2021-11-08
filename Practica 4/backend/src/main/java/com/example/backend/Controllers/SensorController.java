@@ -1,6 +1,7 @@
 package com.example.backend.Controllers;
 
 import com.example.backend.Models.Sensor;
+import com.example.backend.Models.SensorInfoDTO;
 import com.example.backend.Services.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class SensorController {
     }
 
     @SendTo("/topic/sensor")
-    public ResponseEntity<?> broadcastSensors(@Payload List<Sensor> sensors) {
+    public ResponseEntity<?> broadcastSensors(@Payload List<SensorInfoDTO> sensors) {
         Map<String,Object> response = new HashMap<>();
         System.out.println("ola como esta");
         response.put("sensors",sensors);
