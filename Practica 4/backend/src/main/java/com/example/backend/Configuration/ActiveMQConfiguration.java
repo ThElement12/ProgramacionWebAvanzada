@@ -15,7 +15,7 @@ public class ActiveMQConfiguration {
     @Bean(initMethod = "start", destroyMethod = "stop")
     public BrokerService broker() throws Exception {
         BrokerService broker = new BrokerService();
-        broker.addConnector("mqtt://localhost:1883");
+        broker.addConnector("mqtt://0.0.0.0:1883");
         //broker.addConnector("stomp://localhost:61613");
 
         //broker.addConnector("ws://localhost:1884");
