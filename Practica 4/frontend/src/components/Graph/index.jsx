@@ -8,11 +8,11 @@ export default class Graph extends Component {
 
   state = {
     data1: {
-      labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+      labels: [],
       datasets: [
         {
-          label: 'Scanner #1',
-          data: [ 1.6335105089090705, 7.100673694468565, 2.2232461154516834, 4.67244189115599, 3.8372975360001105, 6.367697452780637, 3.288008908029769, 5.722789081708081, 4.600790144100515, 6.973484380413999 ],
+          label: 'Cargando...',
+          data: [],
           fill: false,
           backgroundColor: 'rgb(255, 99, 132)',
           borderColor: 'rgba(255, 99, 132)'
@@ -20,11 +20,11 @@ export default class Graph extends Component {
       ]
     },
     data2: {
-      labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+      labels: [],
       datasets: [
         {
-          label: 'Scanner #2',
-          data: [ 9.377823922144163, 9.258441786204937, 1.7818697499100744, 7.3980392137741475, 7.237284230337685, 7.083682180024521, 2.9280417326604393, 3.7891568678943903, 4.9864892263922584, 7.888660745254845 ],
+          label: 'Cargando...',
+          data: [],
           fill: false,
           backgroundColor: 'rgb(255, 99, 132)',
           borderColor: 'rgba(255, 99, 132)'
@@ -41,35 +41,80 @@ export default class Graph extends Component {
 
     }
   }
-
   componentDidMount() {
     const socketClient = new SockJS("http://localhost:8081/ws-sensor/");
     const stompClient = Stomp.over(socketClient);
+    const global = this
     stompClient.connect({}, (frame) => {
+      const out = global
       console.log(frame);
       stompClient.subscribe('/topic/sensor', function(sensor){
-        console.log(JSON.parse(sensor.body));
+        out.setDataSensor1(JSON.parse(sensor.body));
+        out.setDataSensor2(JSON.parse(sensor.body));
+        console.log(JSON.parse(sensor.body))
       });
     })
-
     socketClient.onopen = () => {
       console.log('connected')
 
     }
-
-    socketClient.onmessage = evt => {
-      // listen to data sent from the websocket server
-      const message = evt.data
-      this.setState({ dataFromServer: message })
-      console.log(message)
-    }
-
+    
     socketClient.onclose = () => {
       console.log('disconnected')
       // automatically try to reconnect on connection loss
 
     }
 
+  }
+  setDataSensor1 = (body) => {
+    var dataSensor = body.filter(data => data.device === 1)
+    dataSensor = dataSensor.slice(Math.max(dataSensor.length - 10, 0));
+    const newData1 = {
+      labels: dataSensor.map(data => data.time),
+      datasets:[
+        {
+          label: "Temperatura",
+          data: dataSensor.map(data => data.temperature),
+          fill: false,
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgba(255, 99, 132)'
+        },
+        {
+          label: "Humedad",
+          data: dataSensor.map(data => data.humidity),
+          fill: false,
+          backgroundColor: 'rgb(66, 72, 247)',
+          borderColor: 'rgb(66, 72, 247)'
+
+        }
+      ]
+    }
+    this.setState({data1: newData1})
+  }
+  setDataSensor2 = (body) => {
+    var dataSensor = body.filter(data => data.device === 2)
+    dataSensor = dataSensor.slice(Math.max(dataSensor.length - 10, 0));
+    const newData1 = {
+      labels: dataSensor.map(data => data.time),
+      datasets:[
+        {
+          label: "Temperatura",
+          data: dataSensor.map(data => data.temperature),
+          fill: false,
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgba(255, 99, 132)'
+        },
+        {
+          label: "Humedad",
+          data: dataSensor.map(data => data.humidity),
+          fill: false,
+          backgroundColor: 'rgb(66, 72, 247)',
+          borderColor: 'rgb(66, 72, 247)'
+
+        }
+      ]
+    }
+    this.setState({data2: newData1})
   }
   render() {
     return (
