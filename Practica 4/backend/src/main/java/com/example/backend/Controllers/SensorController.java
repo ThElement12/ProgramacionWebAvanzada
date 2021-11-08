@@ -36,7 +36,6 @@ public class SensorController {
         response.put("sensors",sensors);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
     @Scheduled(fixedRate = 5000)
     public void greeting() {
         List<Sensor> sensors = sensorService.findAll();
