@@ -94,6 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Don't do this in production, use a proper list  of allowed origins
         List<String> allowed = new ArrayList<>();
         allowed.add("http://localhost:3000");
+        allowed.add("https://mockys.dl-santos-company.games");
         config.setAllowedOrigins(allowed);
         config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept","Authorization"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
