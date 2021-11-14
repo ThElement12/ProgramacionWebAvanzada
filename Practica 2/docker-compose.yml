@@ -5,7 +5,7 @@ services:
   app-client:
     image: thelement012/mockys-frontend
     environment:
-      REACT_APP_API_URL: http://127.0.0.1:8081/
+      REACT_APP_API_URL: http://app-server:8081/
     ports:
       - "3000:3000"
     depends_on:
@@ -16,7 +16,7 @@ services:
   app-server:
     image: thelement012/mockys-backend
     ports:
-      - "8081:8081" 
+      - "8081-8084:8081" 
     depends_on: 
       - db 
     environment:
