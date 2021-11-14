@@ -95,6 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         List<String> allowed = new ArrayList<>();
         allowed.add("http://localhost:3000");
         allowed.add("https://mockys.dl-santos-company.games");
+        allowed.add("https://54.156.150.48");
         config.setAllowedOrigins(allowed);
         config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept","Authorization"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
