@@ -5,14 +5,14 @@ COPY src /build/src/
 
 WORKDIR /build/
 RUN mvn package
-
+#mantenimiento
 MAINTAINER Robert Garcia <20171086@ce.pucmm.edu.do>
+
 ENV APP_NAME = 'mockito'
-# forma estandar para cambiar la configuracion
 ENV DB_NAME=mocki_to
-# Puedo pasar las variables directas que serán tomadas por Spring Boot.
 ENV spring.datasource.username='sa'
 ENV spring.datasource.password='1234'
+
 VOLUME /tmp
 FROM openjdk:11.0.11-slim
 
