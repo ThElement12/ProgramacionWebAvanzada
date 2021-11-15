@@ -18,10 +18,10 @@ public class HttpHeader {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column()
+    @Column(name = "http_key")
     private String key;
 
-    @Column()
+    @Column(name = "header_value")
     private String value;
 
 }

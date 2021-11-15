@@ -37,7 +37,8 @@ public class Practica2BackendApplication implements CommandLineRunner {
             admin.setPassword(bCryptPasswordEncoder.encode("admin"));
             admin.setMail("Administrador");
             admin.setRoles(Collections.singletonList("admin"));
-            usuarioRepository.save(admin);
+            if(usuarioRepository.findAll().isEmpty())
+                usuarioRepository.save(admin);
         };
     }
 
