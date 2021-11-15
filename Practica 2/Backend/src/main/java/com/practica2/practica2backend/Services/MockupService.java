@@ -5,7 +5,7 @@ import com.practica2.practica2backend.Repositories.MockupRepository;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 
-
+import org.springframework.cache.annotation.Cacheable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
@@ -23,6 +23,7 @@ public class MockupService {
         return mockupRepository.save(mockup);
     }
 
+    @Cacheable("mockups")
     public Iterable<Mockup> findAll() {
         return mockupRepository.findAll();
     }

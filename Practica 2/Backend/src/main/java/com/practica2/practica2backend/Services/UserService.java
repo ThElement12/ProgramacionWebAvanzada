@@ -2,6 +2,7 @@ package com.practica2.practica2backend.Services;
 
 import com.practica2.practica2backend.Models.User;
 import com.practica2.practica2backend.Repositories.UserRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,6 +46,7 @@ public class UserService implements UserDetailsService {
     public void deleteUser(User user){
         userRepository.delete(user);
     }
+    @Cacheable("User")
     public Iterable<User> findAll(){
         return userRepository.findAll();
     }

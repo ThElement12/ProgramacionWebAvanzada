@@ -2,6 +2,7 @@ package com.practica2.practica2backend;
 
 import com.practica2.practica2backend.Models.User;
 import com.practica2.practica2backend.Repositories.UserRepository;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @SpringBootApplication
+@EnableCaching
 public class Practica2BackendApplication implements CommandLineRunner {
 
     @Autowired
