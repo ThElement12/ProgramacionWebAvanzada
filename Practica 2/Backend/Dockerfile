@@ -10,7 +10,7 @@ MAINTAINER Robert Garcia <20171086@ce.pucmm.edu.do>
 
 ENV APP_NAME = 'mockito'
 ENV DB_NAME=mocki_to
-ENV spring.datasource.username='root'
+ENV spring.datasource.username='sa'
 ENV spring.datasource.password='1234'
 
 VOLUME /tmp

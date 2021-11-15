@@ -16,15 +16,15 @@ services:
   app-server:
     image: thelement012/mockys-backend
     ports:
-      - "8081-8083:8081" 
+      - "8081-8084:8081" 
     depends_on: 
       - db 
     environment:
       AMBIENTE: dev
       DB_HOST: my-sql
-      DB_PORT: 3306
+      DB_PORT: 8082
       DB_NAME: mocki_to
-      DB_USER: root
+      DB_USER: sa
       DB_PASSWORD: 1234
       APP_NAME: 'mockito'
       APP_PORT: 8081
@@ -33,9 +33,9 @@ services:
 
   # Database Service (H2)
   db:
-    image: mysql
+    image: buildo/h2database:latest
     ports:
-      - "3306:3306"
+      - "8082:8082"
     volumes:
       - volumen:/tmp/
     networks:

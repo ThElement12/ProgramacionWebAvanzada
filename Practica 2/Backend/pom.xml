@@ -62,10 +62,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.27</version>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
