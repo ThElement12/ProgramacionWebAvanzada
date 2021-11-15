@@ -2,7 +2,7 @@ package com.practica2.practica2backend;
 
 import com.practica2.practica2backend.Models.User;
 import com.practica2.practica2backend.Repositories.UserRepository;
-import org.h2.tools.Server;
+
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +45,10 @@ public class Practica2BackendApplication implements CommandLineRunner {
 
     }
 
-    @Bean(initMethod = "start", destroyMethod = "stop")
+    /*@Bean(initMethod = "start", destroyMethod = "stop")
     public Server h2Server() throws SQLException {
         return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "8082");
-    }
+    }*/
 
     @Override
     public void run(String... args) throws Exception {

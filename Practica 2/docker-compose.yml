@@ -21,8 +21,8 @@ services:
       - db 
     environment:
       AMBIENTE: dev
-      DB_HOST: my-sql
-      DB_PORT: 8082
+      DB_HOST: postgres
+      DB_PORT: 5432
       DB_NAME: mocki_to
       DB_USER: sa
       DB_PASSWORD: 1234
@@ -33,9 +33,13 @@ services:
 
   # Database Service (H2)
   db:
-    image: buildo/h2database:latest
+    image: postgres
     ports:
-      - "8082:8082"
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_USER=sa
+      - POSTGRES_DB=mocky_to
     volumes:
       - volumen:/tmp/
     networks:
