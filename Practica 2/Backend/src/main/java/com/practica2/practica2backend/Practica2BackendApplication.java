@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @SpringBootApplication
-@EnableCaching
 public class Practica2BackendApplication implements CommandLineRunner {
 
     @Autowired

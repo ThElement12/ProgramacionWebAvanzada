@@ -22,8 +22,6 @@ public class MockupService {
     public Mockup save(Mockup mockup) {
         return mockupRepository.save(mockup);
     }
-
-    @Cacheable("mockups")
     public Iterable<Mockup> findAll() {
         return mockupRepository.findAll();
     }

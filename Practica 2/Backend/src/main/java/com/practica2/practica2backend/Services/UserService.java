@@ -46,7 +46,6 @@ public class UserService implements UserDetailsService {
     public void deleteUser(User user){
         userRepository.delete(user);
     }
-    @Cacheable("User")
     public Iterable<User> findAll(){
         return userRepository.findAll();
     }
