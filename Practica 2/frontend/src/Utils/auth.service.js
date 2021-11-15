@@ -8,8 +8,8 @@ class AuthService {
             .post(process.env.REACT_APP_API_URL + 'auth/login', {
                 credential,
                 password
-            })
-            .then(res =>res.data)
+            }, {withCredentials: true})
+            .then(res => res.data)
             .then(res => {
                 if (res.token) {
                     sessionStorage.setItem("jwt", res.token)
