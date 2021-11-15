@@ -24,7 +24,7 @@ services:
       DB_HOST: my-sql
       DB_PORT: 3306
       DB_NAME: mocki_to
-      DB_USER: sa
+      DB_USER: root
       DB_PASSWORD: 1234
       APP_NAME: 'mockito'
       APP_PORT: 8081
