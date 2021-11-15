@@ -16,8 +16,6 @@ const Login = () => {
   const [password, setPass] = useState("");
   const [msgError, setmsgError] = useState("");
   const history = useHistory();
-
-
   const onSubmit = (event) => {
     event.preventDefault();
     authentication();
@@ -25,7 +23,6 @@ const Login = () => {
   const authentication = async () => {
     await AuthService.login(credential, password)
       .then(res => {
-        console.log("Decodiao: ");
         var decoded = jwt_decode(res);
         sessionStorage.setItem('username', decoded.username);
         if (decoded.roles.includes("admin")) {
