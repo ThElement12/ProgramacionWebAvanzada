@@ -41,7 +41,6 @@ services:
       - POSTGRES_USER=sa
       - POSTGRES_DB=mocky_to
     volumes:
-      - volumen:/tmp/
       - ./postgres-data:/var/lib/postgresql/data
       - ./postgres.sql:/docker-entrypoint-initdb.d/import.sql
     networks:
