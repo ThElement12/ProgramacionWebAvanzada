@@ -30,8 +30,6 @@ services:
       APP_PORT: 8081
     networks: 
       - practica2
-
-  # Database Service (H2)
   db:
     image: postgres
     ports:
@@ -51,3 +49,7 @@ volumes:
 
 networks:
   practica2:    
+
+
+
+  
