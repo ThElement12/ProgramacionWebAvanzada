@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Form, Row, Col, Button } from 'react-bootstrap';
+import { Container, Form, Row, Col, Button, Modal } from 'react-bootstrap';
+import Swal from 'sweetalert2';
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Reserv from '../../Components/Reserv';
@@ -11,6 +13,14 @@ export default function Home() {
   const [startDate, setStartDate] = useState(new Date());
   const [finishDate, setfinishDate] = useState(new Date());
   const [reserv, setReserv] = useState([]);
+
+  const [showRegister, setShowRegister] = useState(false);
+
+  const [id, setId] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [carrera, setCarrera] = useState("");
+  const [laboratorio, setLaboratio] = useState("");
+  const [fecha, setFecha] = useState("");
 
   useEffect(() => {
     setReserv([
@@ -26,7 +36,59 @@ export default function Home() {
 
   const onSubmit = e => {
     e.preventDefault();
+
     console.log(`Desde ${startDate} hasta ${finishDate}`);
+  }
+  const submitReserva = e => {
+    e.preventDefault();
+    
+    console.log(new Reservation(id, nombre, carrera, laboratorio, fecha));
+    Swal.fire(
+      'Registrado!',
+      'Reserva Realizada con exito',
+      'success'
+    );
+    clean();
+    setShowRegister(false);
+  }
+  const handleClose = () => setShowRegister(false);
+  
+  const clean = () => {
+    setId("");
+    setNombre("");
+    setCarrera("");
+    setLaboratio("");
+    setFecha("");
+  }
+
+  const modalRegister = () => {
+    return (
+      <Modal show={showRegister} onHide={handleClose} backdrop="static" keyboard={false}>
+        <Modal.Header>
+          <Modal.Title>Registrar Reserva</Modal.Title>
+        </Modal.Header>
+        <Form onSubmit={submitReserva}>
+          <Modal.Body>
+            <Form.Label>ID</Form.Label>
+            <Form.Control placerholder="ID" value={id} onChange={(e)=> {setId(e.target.value)}} required/>
+            <Form.Label>Nombre</Form.Label>
+            <Form.Control placeholder="Nombre" value={nombre} onChange={(e)=> {setNombre(e.target.value)}} required/>
+            <Form.Label>Carrera</Form.Label>
+            <Form.Control placeholder="Carrera"  value={carrera} onChange={(e)=> {setCarrera(e.target.value)}} required/>
+            <Form.Label>Laboratorio</Form.Label>
+            <Form.Control placeholder="Laboratorio" value={laboratorio} onChange={(e)=> {setLaboratio(e.target.value)}} required/>
+            <Form.Label>Fecha de Reserva</Form.Label>
+            <Form.Control type="date" value={fecha} onChange={(e)=> {setFecha(e.target.value)}} required/>
+          </Modal.Body>
+          <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancelar
+          </Button>
+          <Button variant="primary" type="submit">Registrar</Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+    );
   }
 
   const datePickers = () => {
@@ -48,7 +110,7 @@ export default function Home() {
   return (
     <Container>
       <Container>
-        <Button variant="outline-primary">Registrar</Button>{' '}
+        <Button variant="outline-primary" onClick={() => { setShowRegister(true)}}>Registrar</Button>{' '}
         <Button variant="outline-secondary" onClick={() => { sethideDates(false) }}>Historial</Button>
       </Container>
       <br></br>
@@ -57,6 +119,7 @@ export default function Home() {
       </Container>
       <br></br>
       <Reserv reservations={reserv}/>
+      {modalRegister()}
     </Container>
   )
 }
