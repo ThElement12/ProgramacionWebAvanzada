@@ -26,9 +26,11 @@ export default function Home() {
 
   useEffect(() => {
     reservationService.getReservation()
-    .then((response)=>{
+    .then(res => res.data)
+    .then(res => {
+      console.log(res)
       const reservations = [];
-      response.reservations.forEarch((reserv) => {
+      res.data.reservations.forEach((reserv) => {
         reservations.push(new Reservation(
           reserv.id,
           reserv.name,

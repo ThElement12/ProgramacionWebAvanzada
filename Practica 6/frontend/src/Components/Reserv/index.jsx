@@ -3,11 +3,6 @@ import { Table, Container } from 'react-bootstrap';
 
 export default function Reserv(props) {
   const reservation = props.reservations;
-
-  const formatDate = date => {
-    return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
-  }
-
   return (
     <Container>
       <Table className="table table-bordered" hover striped responsive>
@@ -25,7 +20,7 @@ export default function Reserv(props) {
               <td>{element.id}</td>
               <td>{element.name}</td>
               <td>{element.career}</td>
-              <td>{formatDate(element.date)}</td>
+              <td>{element.date}</td>
             </tr>
           ))}
         </tbody>
