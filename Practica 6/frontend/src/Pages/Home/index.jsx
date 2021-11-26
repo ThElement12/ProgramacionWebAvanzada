@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Reserv from '../../Components/Reserv';
 
 import Reservation from '../../Models/reservation'
+import reservationService from '../../Utils/reservation.service';
 
 export default function Home() {
   const [hideDates, sethideDates] = useState(true);
@@ -24,15 +25,21 @@ export default function Home() {
   const [hora, setHora] = useState(8)
 
   useEffect(() => {
-    setReserv([
-      new Reservation(1, "Joseph", "ISC", "ING", new Date(2021, 7, 12, 12, 30)),
-      new Reservation(2, "Robert", "ISC", "ING", new Date(2021, 7, 12, 12, 30)),
-      new Reservation(3, "Alicia", "ISC", "ING", new Date(2021, 7, 12, 12, 30)),
-      new Reservation(4, "Ruben", "ISC", "ING", new Date(2021, 7, 12, 12, 30)),
-      new Reservation(5, "Lendry", "ISC", "ING", new Date(2021, 7, 12, 12, 30)),
-      new Reservation(6, "Francisco", "ISC", "ING", new Date(2021, 7, 12, 12, 30)),
-      new Reservation(7, "Ariel", "ISC", "ING", new Date(2021, 7, 12, 12, 30))
-    ])
+    reservationService.getReservation()
+    .then((response)=>{
+      const reservations = [];
+      response.reservations.forEarch((reserv) => {
+        reservations.push(new Reservation(
+          reserv.id,
+          reserv.name,
+          reserv.career,
+          reserv.lab,
+          reserv.date
+        ));
+      });
+      setReserv(reservations);
+    })
+    .catch(err => console.error(err));
   }, [])
 
   const onSubmit = e => {
