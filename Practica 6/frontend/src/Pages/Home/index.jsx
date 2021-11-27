@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Container, Form, Row, Col, Button, Modal } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 
@@ -14,7 +14,7 @@ export default function Home() {
   const [forceReload, setReload] = useState(true);
   const [hideDates, sethideDates] = useState(true);
   const [startDate, setStartDate] = useState(new Date());
-  const [finishDate, setfinishDate] = useState(new Date());
+  const [finishDate, setfinishDate] = useState("");
   const [reserv, setReserv] = useState([]);
 
   const [showRegister, setShowRegister] = useState(false);
@@ -26,31 +26,38 @@ export default function Home() {
   const [fecha, setFecha] = useState("");
   const [hora, setHora] = useState(8);
 
-  useEffect(() => {
+  const fetchApi = useCallback(() => {
     reservationService.getReservation()
     .then(res => res.data)
     .then(res => {
-      const reservations = [];
+      var reservations = [];
       res.data.reservations.forEach((reserv) => {
-        reservations.push(new Reservation(
-          reserv.id,
-          reserv.name,
-          reserv.career,
-          reserv.lab,
-          reserv.date
-        ));
+        reservations.push(new Reservation(reserv.id, reserv.name, reserv.career, reserv.lab, reserv.date));
       });
+      reservations = reservations.filter(reservation => {
+        const date = reservation.date.substr(0,10);
+        if(new Date(startDate) > new Date(finishDate)){
+          Swal.fire('Error', 'La fecha inicial debe ser menor o igual a la final', 'error');
+          return false;
+        }else{
+          if(finishDate === ""){
+            return new Date(startDate) <= new Date(date);
+          }
+          else{
+            return new Date(startDate) <= new Date(date) && new Date(finishDate) >= new Date(date);
+          }
+        }
+      })
       setReserv(reservations);
     })
     .catch(err => console.error(err));
-  }, [forceReload])
+  },[finishDate, startDate])
 
-  const filter = e => {
-    e.preventDefault();
+  useEffect(() => {
+    fetchApi();
+  }, [forceReload, fetchApi])
 
-    console.log(`Desde ${startDate} hasta ${finishDate}`);
-  }
-
+  //Modal Registro y funcion registrar
   const submitReserva = e => {
     e.preventDefault();
     //TODO: Ponerle matricula xd
@@ -158,20 +165,23 @@ export default function Home() {
     );
   }
 
+  //Filtrar por fecha
   const datePickers = () => {
     return (
       <Container>
-        <Form onSubmit={filter}>
           <Row>
             <Col><Form.Control type="date" size="sm" name="startDate" value={startDate} onChange={(e) => { setStartDate(e.target.value) }} required /></Col>
             a
             <Col><Form.Control type="date" size="sm" name="finishDate" value={finishDate} onChange={(e) => { setfinishDate(e.target.value) }} required /></Col>
-            <Col><Button variant="outline-info" size="sm" type="submit">Buscar</Button></Col>
           </Row>
-        </Form>
         <Button variant="link" onClick={() => { sethideDates(true) }}>Ocultar</Button>
+        <Button variant="link" onClick={() => { reset() }}>Restablecer</Button>
       </Container>
     );
+  }
+  const reset = () => {
+    setStartDate(new Date())
+    setfinishDate("")
   }
 
   return (
