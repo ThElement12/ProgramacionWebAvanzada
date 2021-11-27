@@ -129,7 +129,16 @@ export default function Home() {
               <Form.Label>Carrera</Form.Label>
               <Form.Control placeholder="Carrera" value={carrera} onChange={(e) => { setCarrera(e.target.value) }} required />
               <Form.Label>Laboratorio</Form.Label>
-              <Form.Control placeholder="Laboratorio" value={laboratorio} onChange={(e) => { setLaboratio(e.target.value) }} required />
+              <Form.Select  value={laboratorio} onChange={(e) => {setLaboratio(e.target.value)}} required>
+                <option value={""}>Seleccione</option>
+                <option value={"Laboratorio de Redes I"}>Laboratorio de Redes I</option>
+                <option value={"Laboratorio de Redes II"}>Laboratorio de Redes II</option>
+                <option value={"Laboratorio Padre Arroyo I"}>Laboratorio Padre Arroyo I</option>
+                <option value={"Laboratorio Padre Arroyo II"}>Laboratorio Padre Arroyo II</option>
+                <option value={"Laboratorio de Fisica"}>Laboratorio de Fisica</option>
+                <option value={"Laboratorio de Quimica"}>Laboratorio de Quimica</option>
+                <option value={"Laboratorio de Biologia"}>Laboratorio de Biologia</option>
+              </Form.Select>
             </Form.Group>
             {' '}
             <Form.Group>
