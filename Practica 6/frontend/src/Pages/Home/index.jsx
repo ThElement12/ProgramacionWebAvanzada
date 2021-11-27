@@ -6,10 +6,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import Reserv from '../../Components/Reserv';
 
-import Reservation from '../../Models/reservation'
 import reservationService from '../../Utils/reservation.service';
 
+import Reservation from '../../Models/reservation';
+
 export default function Home() {
+  const [forceReload, setReload] = useState(true);
   const [hideDates, sethideDates] = useState(true);
   const [startDate, setStartDate] = useState(new Date());
   const [finishDate, setfinishDate] = useState(new Date());
@@ -22,13 +24,12 @@ export default function Home() {
   const [carrera, setCarrera] = useState("");
   const [laboratorio, setLaboratio] = useState("");
   const [fecha, setFecha] = useState("");
-  const [hora, setHora] = useState(8)
+  const [hora, setHora] = useState(8);
 
   useEffect(() => {
     reservationService.getReservation()
     .then(res => res.data)
     .then(res => {
-      console.log(res)
       const reservations = [];
       res.data.reservations.forEach((reserv) => {
         reservations.push(new Reservation(
@@ -42,25 +43,40 @@ export default function Home() {
       setReserv(reservations);
     })
     .catch(err => console.error(err));
-  }, [])
+  }, [forceReload])
 
-  const onSubmit = e => {
+  const filter = e => {
     e.preventDefault();
 
     console.log(`Desde ${startDate} hasta ${finishDate}`);
   }
   const submitReserva = e => {
     e.preventDefault();
-
-    console.log(new Reservation(id, nombre, carrera, laboratorio, fecha));
-    Swal.fire(
-      'Registrado!',
-      'Reserva Realizada con exito',
-      'success'
-    );
-    clean();
-    setShowRegister(false);
+    //TODO: Ponerle matricula xd
+    //TODO: Y el id tome el ultimo y le sume 1
+    e.preventDefault();
+    const reservation = {
+      "id": id,
+      "name": nombre,
+      "career":carrera,
+      "lab": laboratorio,
+      "date": `${fecha} ${hora}:00`
+    }
+    reservationService.postReservation(reservation)
+    .then(res => {
+      Swal.fire(
+        'Registrado!',
+        'Reserva Realizada con exito',
+        'success'
+      );
+      clean();
+      setShowRegister(false);
+    })
+    .catch(err => console.error(err))
+    //TODO: Manejar los errores de mas de 7 en un mismo laboratorio
+    
   }
+
   const handleClose = () => setShowRegister(false);
 
   const clean = () => {
@@ -70,6 +86,7 @@ export default function Home() {
     setLaboratio("");
     setFecha("");
     setHora(8);
+    setReload(!forceReload);
   }
 
   const modalRegister = () => {
@@ -127,7 +144,7 @@ export default function Home() {
   const datePickers = () => {
     return (
       <Container>
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={filter}>
           <Row>
             <Col><Form.Control type="date" size="sm" name="startDate" value={startDate} onChange={(e) => { setStartDate(e.target.value) }} required /></Col>
             a
