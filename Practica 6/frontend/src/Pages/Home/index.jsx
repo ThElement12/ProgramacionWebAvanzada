@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Form, Row, Col, Button, Modal } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 
@@ -26,36 +26,34 @@ export default function Home() {
   const [fecha, setFecha] = useState("");
   const [hora, setHora] = useState(8);
 
-  const fetchApi = useCallback(() => {
-    reservationService.getReservation()
-    .then(res => res.data)
-    .then(res => {
-      var reservations = [];
-      res.data.reservations.forEach((reserv) => {
-        reservations.push(new Reservation(reserv.id, reserv.name, reserv.career, reserv.lab, reserv.date));
-      });
-      reservations = reservations.filter(reservation => {
-        const date = reservation.date.substr(0,10);
-        if(new Date(startDate) > new Date(finishDate)){
-          Swal.fire('Error', 'La fecha inicial debe ser menor o igual a la final', 'error');
-          return false;
-        }else{
-          if(finishDate === ""){
-            return new Date(startDate) <= new Date(date);
-          }
-          else{
-            return new Date(startDate) <= new Date(date) && new Date(finishDate) >= new Date(date);
-          }
-        }
-      })
-      setReserv(reservations);
-    })
-    .catch(err => console.error(err));
-  },[finishDate, startDate])
-
   useEffect(() => {
-    fetchApi();
-  }, [forceReload, fetchApi])
+    (() => {
+      reservationService.getReservation()
+      .then(res => res.data)
+      .then(res => {
+        var reservations = [];
+        res.data.reservations.forEach((reserv) => {
+          reservations.push(new Reservation(reserv.id, reserv.name, reserv.career, reserv.lab, reserv.date));
+        });
+        reservations = reservations.filter(reservation => {
+          const date = reservation.date.substr(0,10);
+          if(new Date(startDate) > new Date(finishDate)){
+            Swal.fire('Error', 'La fecha inicial debe ser menor o igual a la final', 'error');
+            return false;
+          }else{
+            if(finishDate === ""){
+              return new Date(startDate) <= new Date(date);
+            }
+            else{
+              return new Date(startDate) <= new Date(date) && new Date(finishDate) >= new Date(date);
+            }
+          }
+        })
+        setReserv(reservations);
+      })
+      .catch(err => console.error(err));
+    })()
+  }, [forceReload, finishDate, startDate])
 
   //Modal Registro y funcion registrar
   const submitReserva = e => {
