@@ -10,6 +10,7 @@ export default function Reserv(props) {
           <tr>
             <th>ID</th>
             <th>Nombre</th>
+            <th>Carrera</th>
             <th>Laboratorio</th>
             <th>Fecha y Hora</th>
           </tr>
@@ -20,6 +21,7 @@ export default function Reserv(props) {
               <td>{element.id}</td>
               <td>{element.name}</td>
               <td>{element.career}</td>
+              <td>{element.lab}</td>
               <td>{element.date}</td>
             </tr>
           ))}

@@ -50,31 +50,48 @@ export default function Home() {
 
     console.log(`Desde ${startDate} hasta ${finishDate}`);
   }
+
   const submitReserva = e => {
     e.preventDefault();
     //TODO: Ponerle matricula xd
     //TODO: Y el id tome el ultimo y le sume 1
-    e.preventDefault();
-    const reservation = {
-      "id": id,
-      "name": nombre,
-      "career":carrera,
-      "lab": laboratorio,
-      "date": `${fecha} ${hora}:00`
-    }
-    reservationService.postReservation(reservation)
-    .then(res => {
+
+    if(checkAvailability()){
+      const reservation = {
+        "id": id,
+        "name": nombre,
+        "career":carrera,
+        "lab": laboratorio,
+        "date": `${fecha} ${hora}:00`
+      }
+      reservationService.postReservation(reservation)
+      .then(res => {
+        Swal.fire(
+          'Registrado!',
+          'Reserva Realizada con exito',
+          'success'
+        );
+        clean();
+        setShowRegister(false);
+      })
+      .catch(err => console.error(err))
+    }else{
       Swal.fire(
-        'Registrado!',
-        'Reserva Realizada con exito',
-        'success'
-      );
-      clean();
-      setShowRegister(false);
+        'Error',
+        'No pueden haber mas de 7 personas a la misma hora en el mismo laboratorio',
+        'error'
+      )
+    }
+  }
+
+  const checkAvailability = () => {
+    var count = 0;
+    reserv.forEach((reservation) => {
+      if(reservation.date === `${fecha} ${hora}:00` && reservation.lab === laboratorio){
+        count++;
+      }
     })
-    .catch(err => console.error(err))
-    //TODO: Manejar los errores de mas de 7 en un mismo laboratorio
-    
+    return count < 7 ? true : false;
   }
 
   const handleClose = () => setShowRegister(false);
