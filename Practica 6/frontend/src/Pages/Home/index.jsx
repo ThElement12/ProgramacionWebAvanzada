@@ -33,8 +33,9 @@ export default function Home() {
       .then(res => {
         var reservations = [];
         res.data.reservations.forEach((reserv) => {
-          reservations.push(new Reservation(reserv.id, reserv.name, reserv.career, reserv.lab, reserv.date));
+          reservations.push(new Reservation(reserv.enrollment, reserv.name, reserv.career, reserv.lab, reserv.date));
         });
+        console.log(reservations)
         reservations = reservations.filter(reservation => {
           const date = reservation.date.substr(0,10);
           if(new Date(startDate) > new Date(finishDate)){
@@ -63,7 +64,8 @@ export default function Home() {
 
     if(checkAvailability()){
       const reservation = {
-        "id": id,
+        "uuid":null,
+        "enrollment": id,
         "name": nombre,
         "career":carrera,
         "lab": laboratorio,
@@ -120,7 +122,7 @@ export default function Home() {
         <Form onSubmit={submitReserva}>
           <Modal.Body>
             <Form.Group>
-              <Form.Label>ID</Form.Label>
+              <Form.Label>Matricula</Form.Label>
               <Form.Control placerholder="ID" value={id} onChange={(e) => { setId(e.target.value) }} required />
               <Form.Label>Nombre</Form.Label>
               <Form.Control placeholder="Nombre" value={nombre} onChange={(e) => { setNombre(e.target.value) }} required />

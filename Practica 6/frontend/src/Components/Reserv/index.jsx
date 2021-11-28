@@ -8,7 +8,7 @@ export default function Reserv(props) {
       <Table className="table table-bordered" hover striped responsive>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Matricula</th>
             <th>Nombre</th>
             <th>Carrera</th>
             <th>Laboratorio</th>
@@ -18,7 +18,7 @@ export default function Reserv(props) {
         <tbody>
           {reservation.map((element, i) => (
             <tr key={i}>
-              <td>{element.id}</td>
+              <td>{element.enrollment}</td>
               <td>{element.name}</td>
               <td>{element.career}</td>
               <td>{element.lab}</td>
