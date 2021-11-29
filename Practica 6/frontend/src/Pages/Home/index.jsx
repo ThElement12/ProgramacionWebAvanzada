@@ -13,7 +13,7 @@ import Reservation from '../../Models/reservation';
 export default function Home() {
   const [forceReload, setReload] = useState(true);
   const [hideDates, sethideDates] = useState(true);
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date().setDate(new Date().getDate() - 1));
   const [finishDate, setfinishDate] = useState("");
   const [reserv, setReserv] = useState([]);
 
@@ -35,7 +35,6 @@ export default function Home() {
         res.data.reservations.forEach((reserv) => {
           reservations.push(new Reservation(reserv.enrollment, reserv.name, reserv.career, reserv.lab, reserv.date));
         });
-        console.log(reservations)
         reservations = reservations.filter(reservation => {
           const date = reservation.date.substr(0,10);
           if(new Date(startDate) > new Date(finishDate)){
@@ -189,8 +188,9 @@ export default function Home() {
     );
   }
   const reset = () => {
-    setStartDate(new Date())
+    setStartDate(new Date().setDate(new Date().getDate() - 1))
     setfinishDate("")
+    console.log(startDate)
   }
 
   return (
