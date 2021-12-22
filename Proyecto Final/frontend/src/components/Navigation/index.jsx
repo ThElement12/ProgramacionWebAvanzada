@@ -27,25 +27,41 @@ export default function Navigation() {
           Registrate
         </Nav.Link>
       </Nav>
-    } else {
+    }
+    else if(sessionStorage.getItem('rol') === "cliente"){
+      return <Nav className="me-auto">
+         <Nav.Link className="MenuItem" as={Link} to="/home">
+          Inicio
+        </Nav.Link>
+        <Nav.Link className="MenuItem" as={Link} to="/mockups">
+          Mis Eventos
+        </Nav.Link>
+        <Nav.Link className="MenuItem" as={Link} to="/create-mockup">
+          Reservar Evento
+        </Nav.Link>
+        <NavDropdown title="Cuenta" id="basic-nav-dropdown">
+          <NavDropdown.Item onClick={logOut} className="link">
+            Cerrar Sesion
+          </NavDropdown.Item>
+        </NavDropdown>
+      </Nav>
+    }
+    else{
       return <Nav className="me-auto">
         <Nav.Link className="MenuItem" as={Link} to="/home">
           Inicio
         </Nav.Link>
         <Nav.Link className="MenuItem" as={Link} to="/mockups">
-          Mis Mokups
+          Inventario
         </Nav.Link>
         <Nav.Link className="MenuItem" as={Link} to="/create-mockup">
-          Crear Mock
+          Todos Los Eventos
         </Nav.Link>
         <NavDropdown title="Cuenta" id="basic-nav-dropdown">
           {sessionStorage.getItem('rol') === "admin" &&
             <>
               <NavDropdown.Item as={Link} to="/users" className="link">
                 Administrar Usuarios
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/all-mockups" className="link">
-                Todos los Mockups
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/register" className="link">
                 Registrar Usuario
