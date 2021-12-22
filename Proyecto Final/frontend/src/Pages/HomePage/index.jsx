@@ -12,7 +12,7 @@ export default function Home() {
         Bienvenido de nuevo, {sessionStorage.getItem('username')}!
       </h2>
     else
-      return <h2>Bienvenido a Mockys</h2>
+      return <h2>{"Bienvenido a Yosef & Rove Party Supply"}</h2>
   }
   return (
 

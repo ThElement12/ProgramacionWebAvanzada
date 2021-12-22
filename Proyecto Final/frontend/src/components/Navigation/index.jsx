@@ -23,6 +23,9 @@ export default function Navigation() {
         <Nav.Link className="MenuItem" as={Link} to="/login">
           Ingresa
         </Nav.Link>
+        <Nav.Link className="MenuItem" as={Link} to="/register">
+          Registrate
+        </Nav.Link>
       </Nav>
     } else {
       return <Nav className="me-auto">
@@ -60,7 +63,7 @@ export default function Navigation() {
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
         <Navbar.Brand as={Link} to="/home">
-          Mockito
+          {"Y & R Party Supply"}
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
