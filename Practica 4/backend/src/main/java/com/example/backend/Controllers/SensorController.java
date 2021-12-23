@@ -33,10 +33,11 @@ public class SensorController {
     @SendTo("/topic/sensor")
     public ResponseEntity<?> broadcastSensors(@Payload List<SensorInfoDTO> sensors) {
         Map<String,Object> response = new HashMap<>();
-        System.out.println("ola como esta");
         response.put("sensors",sensors);
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }/*
+    }
+
+    /*
     @Scheduled(fixedRate = 5000)
     public void greeting() {
         List<Sensor> sensors = sensorService.findAll();

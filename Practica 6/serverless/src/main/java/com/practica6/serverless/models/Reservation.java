@@ -9,8 +9,10 @@ import java.time.LocalDateTime;
 
 @DynamoDBTable(tableName="Reservation")
 public class Reservation {
-    @DynamoDBHashKey(attributeName="id")
-    private int id;
+    @DynamoDBHashKey(attributeName="uuid")
+    private String uuid;
+    @DynamoDBAttribute(attributeName = "enrollment")
+    private String enrollment;
     @DynamoDBAttribute(attributeName="name")
     private String name;
     @DynamoDBAttribute(attributeName="career")
@@ -20,12 +22,13 @@ public class Reservation {
     @DynamoDBAttribute(attributeName="date")
     private String date;
 
-    public int getId() {
-        return id;
+
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getName() {
@@ -60,14 +63,24 @@ public class Reservation {
         this.date = date;
     }
 
+    public String getEnrollment() {
+        return enrollment;
+    }
+
+    public void setEnrollment(String enrollment) {
+        this.enrollment = enrollment;
+    }
+
     @Override
     public String toString() {
         return "Reservation{" +
-                "id=" + id +
+                "uuid='" + uuid + '\'' +
+                ", enrollment='" + enrollment + '\'' +
                 ", name='" + name + '\'' +
                 ", career='" + career + '\'' +
                 ", lab='" + lab + '\'' +
                 ", date='" + date + '\'' +
                 '}';
     }
+
 }

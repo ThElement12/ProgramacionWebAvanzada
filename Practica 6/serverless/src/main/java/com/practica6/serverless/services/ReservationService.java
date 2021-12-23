@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class ReservationService {
 
@@ -26,7 +27,8 @@ public class ReservationService {
 
         try {
             DynamoDBMapper mapper = new DynamoDBMapper(ddb);
-            mapper.save(reservation);
+
+            mapper.save(generateUUID(reservation));
         }catch (Exception e){
             return new ReservationResponse(true,e.getMessage(),null);
         }
@@ -57,14 +59,15 @@ public class ReservationService {
                     for (Map<String, AttributeValue> mapReservation : rows) {
                         System.out.println("" + mapReservation);
                         //
-                        AttributeValue id = mapReservation.get("id");
+                        AttributeValue id = mapReservation.get("uuid");
                         AttributeValue name = mapReservation.get("name");
+                        AttributeValue enrollment = mapReservation.get("enrollment");
                         AttributeValue career = mapReservation.get("career");
                         AttributeValue lab = mapReservation.get("lab");
                         AttributeValue date = mapReservation.get("date");
                         //
                         Reservation tmp = new Reservation();
-                        tmp.setId(Integer.valueOf(id.getN()));
+                        tmp.setUuid(id.getS());
                         if (name != null) {
                             tmp.setName(name.getS());
                         }
@@ -77,6 +80,9 @@ public class ReservationService {
 
                         if (date != null) {
                             tmp.setDate(date.getS());
+                        }
+                        if (enrollment != null) {
+                            tmp.setEnrollment(enrollment.getS());
                         }
                         //
                         reservations.add(tmp);
@@ -92,13 +98,9 @@ public class ReservationService {
         return new ListReservarionResponse(false, "", reservations);
     }
 
-    public Boolean isValidReservation(Reservation reservation){
-        ListReservarionResponse listReservarionResponse = findAll(null);
-
-        for(Reservation aux: listReservarionResponse.getReservations()){
-
-        }
-        return true;
+    public Reservation generateUUID(Reservation reservation){
+        reservation.setUuid(UUID.randomUUID().toString());
+        return reservation;
     }
 
     public Reservation getReservationBodyJson(JSONObject json) throws IllegalArgumentException{

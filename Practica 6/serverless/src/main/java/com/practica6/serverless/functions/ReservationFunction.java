@@ -59,9 +59,8 @@ public class ReservationFunction implements RequestStreamHandler {
 
             JSONObject headerJson = new JSONObject();
             headerJson.put("Content-Type", "application/json");
-            //TODO mandar header
             headerJson.put("Access-Control-Allow-Origin", "*");
-
+            headerJson.put("Access-Control-Allow-Headers", "Content-Type");
 
             responseJson.put("statusCode", 200);
             responseJson.put("headers", headerJson);

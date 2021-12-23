@@ -7,21 +7,17 @@
       <change beforePath="$PROJECT_DIR$/../Practica 4/backend/src/main/java/com/example/backend/Configuration/ActiveMQConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Practica 4/backend/src/main/java/com/example/backend/Configuration/ActiveMQConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Practica 4/backend/src/main/java/com/example/backend/Configuration/WebSocketConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Practica 4/backend/src/main/java/com/example/backend/Configuration/WebSocketConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Practica 4/backend/src/main/java/com/example/backend/Controllers/SensorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Practica 4/backend/src/main/java/com/example/backend/Controllers/SensorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/robots.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Components/Reserv/index.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Models/reservation.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Pages/Home/index.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Utils/fetch-service.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/reportWebVitals.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverless/.gradle/7.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/serverless/.gradle/7.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverless/.gradle/7.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/serverless/.gradle/7.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverless/.gradle/7.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/serverless/.gradle/7.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverless/.gradle/7.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/serverless/.gradle/7.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverless/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/serverless/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverless/build/classes/java/main/com/practica6/serverless/functions/ReservationFunction.class" beforeDir="false" afterPath="$PROJECT_DIR$/serverless/build/classes/java/main/com/practica6/serverless/functions/ReservationFunction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverless/build/libs/app-0.0.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/serverless/build/libs/app-0.0.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverless/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/serverless/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverless/build/tmp/shadowJar/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/serverless/build/tmp/shadowJar/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverless/src/main/java/com/practica6/serverless/functions/ReservationFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverless/src/main/java/com/practica6/serverless/functions/ReservationFunction.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +34,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -53,10 +50,14 @@
       <updated>1637766994384</updated>
       <workItem from="1637766995941" duration="37000" />
       <workItem from="1637769431360" duration="143000" />
+      <workItem from="1638045178612" duration="1398000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>
