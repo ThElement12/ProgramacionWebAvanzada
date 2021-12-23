@@ -7,7 +7,7 @@ spring:
       server:
         git:
           uri: https://github.com/ThElement12/ProgramacionWebAvanzada.git
-          search-paths: Proyecto Final/backend/config-data
+          search-paths: Proyecto_Final/backend/config-data
           username: ${GIT_USERNAME}
           password: ${GIT_PASSWORD}
   security:
