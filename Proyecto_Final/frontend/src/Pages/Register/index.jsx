@@ -20,6 +20,8 @@ const Register = () => {
   const [modalSuccess, setModalSuccess] = useState(false);
 
 
+  //TODO: Enviar por props si será usuario o empleado
+
   const navigate = useNavigate();
 
   const onSubmit = (event) => {
@@ -77,16 +79,6 @@ const Register = () => {
           <Card.Body>
             <h2 className="text-center mb-4">Registrate</h2>
             <Form onSubmit={onSubmit}>
-              <Form.Label>Rol: </Form.Label>
-              <Form.Control as="select" name="rol" defaultValue="Elige..."
-                onChange={(e) => {
-                  setRol([e.target.value])
-                }}
-                required>
-                <option>Elige...</option>
-                <option value={"admin"}>Admin</option>
-                <option value={"cliente"}>Cliente</option>
-              </Form.Control>
               <Form.Label>Nombre de Usuario:</Form.Label>
               <Form.Control type="username" name="username" onChange={(e) => { setUsername(e.target.value); }} required></Form.Control>
               <Form.Label>Correo:</Form.Label>
