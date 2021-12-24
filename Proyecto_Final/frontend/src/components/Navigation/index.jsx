@@ -33,10 +33,10 @@ export default function Navigation() {
          <Nav.Link className="MenuItem" as={Link} to="/home">
           Inicio
         </Nav.Link>
-        <Nav.Link className="MenuItem" as={Link} to="/mockups">
+        <Nav.Link className="MenuItem" as={Link} to="/events">
           Mis Eventos
         </Nav.Link>
-        <Nav.Link className="MenuItem" as={Link} to="/create-mockup">
+        <Nav.Link className="MenuItem" as={Link} to="/create-events">
           Reservar Evento
         </Nav.Link>
         <NavDropdown title="Cuenta" id="basic-nav-dropdown">
@@ -51,10 +51,10 @@ export default function Navigation() {
         <Nav.Link className="MenuItem" as={Link} to="/home">
           Inicio
         </Nav.Link>
-        <Nav.Link className="MenuItem" as={Link} to="/mockups">
+        <Nav.Link className="MenuItem" as={Link} to="/inventory">
           Inventario
         </Nav.Link>
-        <Nav.Link className="MenuItem" as={Link} to="/create-mockup">
+        <Nav.Link className="MenuItem" as={Link} to="/events">
           Todos Los Eventos
         </Nav.Link>
         <NavDropdown title="Cuenta" id="basic-nav-dropdown">
