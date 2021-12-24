@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import { Form, Button, Card, Alert, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-import Navigation from "../../components/Navigation";
+import Navigation from "../../Components/Navigation";
+
+import Client from "../../Models/Client";
+import Employee from "../../Models/Employee";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Register.css"
 
 //import AuthService from '../../Utils/auth.service.js'
 
-const Register = () => {
+const Register = (props) => {
   const [username, setUsername] = useState("");
   const [mail, setEmail] = useState("");
   const [password, setPass] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [rol, setRol] = useState([]);
 
   const [msgError, setmsgError] = useState("");
   const [modalSuccess, setModalSuccess] = useState(false);
@@ -33,6 +35,12 @@ const Register = () => {
     }
   }
   const register = async () => {
+    if(props.rol === "employee"){
+      let newUser = new Employee(username,mail,password,true);
+    }else{
+      let newUser = new Client(username,mail,password,[]);
+
+    }
     /*await AuthService.register(username, password, mail, rol)
       .then(onSuccess)
       .catch(() => {

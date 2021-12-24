@@ -1,7 +1,8 @@
 import React from 'react'
 import { Container } from "react-bootstrap";
-import Navigation from '../../components/Navigation'
+import Navigation from '../../Components/Navigation'
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./Home.css"
 
 
 export default function Home() {
@@ -19,7 +20,7 @@ export default function Home() {
     <div>
       <Navigation />
       <br></br>
-      <Container>
+      <Container classname="principal">
         {welcome()}
       </Container>
 
