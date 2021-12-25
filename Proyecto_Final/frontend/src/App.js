@@ -28,14 +28,10 @@ function App() {
         <Route exact path='/login' element={sessionStorage.getItem('username') ? <Navigate to='/home'/> : <Login />} />
         <Route exact path="/register" element={sessionStorage.getItem('username') ? <Navigate to='/home'/> : <Register rol="user"/>} />
         <Route exact path='/events' element={!sessionStorage.getItem('username')? <Navigate to='/home'/> : <ListEvents/>} />
-        <Route exact path='/inventory' element={sessionStorage.getItem('rol') !== "user" ? <Navigate to='/home'/> : <Inventory/>} />
-        <Route exact path="/register-employee" element={sessionStorage.getItem('rol') === "admin" ? <Navigate to='/home'/> : <Register rol="employee"/>} />
-        <Route exact path='/users' element={sessionStorage.getItem('rol') === "admin" ? <Navigate to='/home'/> :<ListUser/>} />
-        <Route exact path='/create-events' element={<HomePage/>} />
-
-
-
-
+        <Route exact path='/inventory' element={sessionStorage.getItem('rol') === "cliente" ? <Navigate to='/home'/> : <Inventory/>} />
+        <Route exact path="/register-employee" element={sessionStorage.getItem('rol') !== "admin" ? <Navigate to='/home'/> : <Register rol="employee"/>} />
+        <Route exact path='/users' element={sessionStorage.getItem('rol') !== "admin" ? <Navigate to='/home'/> :<ListUser/>} />
+        <Route exact path='/create-events' element={sessionStorage.getItem('rol') !== "cliente" ? <Navigate to='/home'/> :<ListUser/>} />
         <Route path="*" element={<Navigate to='/home'/>}/>
       </Routes>
     </Router>
