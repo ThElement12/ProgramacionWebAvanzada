@@ -5,7 +5,7 @@ import jwt_decode from "jwt-decode";
 
 //import { Auth } from "../../utils/firebase";
 //import logo from "../../assets/img/Logo.png";
-import Navigation from "../../components/Navigation/index.jsx";
+import Navigation from "../../Components/Navigation/index.jsx";
 
 //import AuthService from '../../Utils/auth.service.js'
 import "./Login.css";

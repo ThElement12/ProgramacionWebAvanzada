@@ -63,7 +63,7 @@ export default function Navigation() {
               <NavDropdown.Item as={Link} to="/users" className="link">
                 Administrar Usuarios
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/register" className="link">
+              <NavDropdown.Item as={Link} to="/register-employee" className="link">
                 Registrar Usuario
               </NavDropdown.Item>
             </>}
