@@ -17,11 +17,15 @@ public class User {
     private Integer id;
     @Column(unique = true)
     private String username;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String password;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String mail;
     @ElementCollection(targetClass = String.class,fetch = FetchType.EAGER)
     List<String> roles;
+    @ElementCollection(targetClass = Integer.class,fetch = FetchType.EAGER)
+    List<Integer> eventsId;
+
+
 
 }

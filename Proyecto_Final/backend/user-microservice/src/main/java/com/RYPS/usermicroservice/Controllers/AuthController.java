@@ -7,10 +7,7 @@ import com.RYPS.usermicroservice.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +15,7 @@ import java.util.NoSuchElementException;
 
 @CrossOrigin()
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
 
     private final UserService userService;
@@ -28,7 +26,7 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public ResponseEntity<?> logIn(@RequestBody LogInRequest loginRequest) {
         Map<String, Object> response = new HashMap<>();
         User user = null;

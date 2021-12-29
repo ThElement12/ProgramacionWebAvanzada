@@ -15,6 +15,7 @@ import java.util.NoSuchElementException;
 
 @CrossOrigin()
 @RestController
+@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 
@@ -23,7 +24,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/user")
+    @PostMapping("/")
     @PreAuthorize("hasAuthority('admin')")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> createUser(@RequestBody User user) {
@@ -39,16 +40,17 @@ public class UserController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(user, HttpStatus.CREATED);
+
     }
 
-    @GetMapping("/user/employments")
+    @GetMapping("/employments")
     @PreAuthorize("hasAnyAuthority('admin','empleado')")
     @ResponseStatus(HttpStatus.OK)
     public Iterable<User> findAll() {
         return userService.findAll();
     }
 
-    @GetMapping("/user/{username}")
+    @GetMapping("/{username}")
     @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> findByUsername(@PathVariable String username) {
@@ -64,7 +66,23 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/user/{username}")
+    @GetMapping("/events/{username}")
+    @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> findAllEventsIdByUsername(@PathVariable String username) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            response.put("eventsId",userService.findByUsername(username).getEventsId());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } catch (NoSuchElementException e) {
+
+            response.put("message", "el mockup no fue encontrado ");
+            response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{username}")
     @PreAuthorize("hasAnyAuthority('admin')")
     public ResponseEntity<?> delete(@PathVariable String username) {
 
@@ -80,7 +98,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/user/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
     public ResponseEntity<?> update(@RequestBody User user, @PathVariable Integer id) {
 
