@@ -7,6 +7,8 @@ import jwt_decode from "jwt-decode";
 //import logo from "../../assets/img/Logo.png";
 import Navigation from "../../Components/Navigation/index.jsx";
 
+//TODO: quitar comentarios cuando se conecte con el back
+
 //import AuthService from '../../Utils/auth.service.js'
 import "./Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";

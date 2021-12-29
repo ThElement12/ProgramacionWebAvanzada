@@ -9,6 +9,7 @@ import Employee from "../../Models/Employee";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Register.css"
+//TODO: quitar comentarios cuando se conecte con el back
 
 //import AuthService from '../../Utils/auth.service.js'
 

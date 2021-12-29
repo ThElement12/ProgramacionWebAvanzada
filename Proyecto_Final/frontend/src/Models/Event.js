@@ -1,10 +1,9 @@
 export default class Event{
-  constructor(id, client, plan, products, employees){
-    this.id = id;
-    this.client = client;
+  constructor(plan, products, cost, date_init, date_finish){
     this.plan = plan;
     this.products = products;
-    this.employees = employees;
-
+    this.cost = cost;
+    this.date_init = date_init;
+    this.date_finish = date_finish;
   }
 }
