@@ -9,6 +9,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 @EnableEurekaClient
@@ -31,6 +32,7 @@ public class UserMicroserviceApplication {
 			admin.setPassword(bCryptPasswordEncoder.encode("admin"));
 			admin.setMail("Administrador");
 			admin.setRoles(Collections.singletonList("admin"));
+			admin.setEventsId(new ArrayList<>());
 			if(usuarioRepository.findAll().isEmpty())
 				usuarioRepository.save(admin);
 		};

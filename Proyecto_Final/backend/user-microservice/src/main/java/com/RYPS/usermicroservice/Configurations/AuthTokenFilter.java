@@ -91,7 +91,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 .claim("username",user.getUsername())
                 .claim("roles",user.getRoles())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + 10800000)) //3 horas 10800000
+                .setExpiration(new Date((new Date()).getTime() + 28800000)) //3 horas 10800000 8 horas 28800000
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }

@@ -23,7 +23,7 @@ public class User {
     private String mail;
     @ElementCollection(targetClass = String.class,fetch = FetchType.EAGER)
     List<String> roles;
-    @ElementCollection(targetClass = Integer.class,fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Integer.class)
     List<Integer> eventsId;
 
 

@@ -9,9 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @CrossOrigin()
 @RestController
@@ -69,16 +67,32 @@ public class UserController {
     @GetMapping("/events/{username}")
     @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> findAllEventsIdByUsername(@PathVariable String username) {
+    public List<Integer> findAllEventsIdByUsername(@PathVariable String username,
+                                                   @RequestHeader(value = "Authorization") String authorizationHeader) {
         Map<String, Object> response = new HashMap<>();
         try {
             response.put("eventsId",userService.findByUsername(username).getEventsId());
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            return userService.findByUsername(username).getEventsId();
         } catch (NoSuchElementException e) {
 
             response.put("message", "el mockup no fue encontrado ");
             response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            return new ArrayList<>();
+        }
+    }
+
+    @PostMapping("/events/{username}/{eventId}")
+    @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
+    @ResponseStatus(HttpStatus.OK)
+    public Boolean saveEventIdByUsername(@PathVariable String username,@PathVariable Integer eventId,
+                                                   @RequestHeader(value = "Authorization") String authorizationHeader) {
+        try {
+            User user = userService.findByUsername(username);
+            user.getEventsId().add(eventId);
+            userService.save(user);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
         }
     }
 
