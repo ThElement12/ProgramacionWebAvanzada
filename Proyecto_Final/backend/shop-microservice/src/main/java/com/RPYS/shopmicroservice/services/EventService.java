@@ -1,6 +1,7 @@
 package com.RPYS.shopmicroservice.services;
 
 import com.RPYS.shopmicroservice.entities.Event;
+import com.RPYS.shopmicroservice.entities.ProductRequest;
 import com.RPYS.shopmicroservice.repositories.EventRepository;
 import org.springframework.stereotype.Service;
 
@@ -32,13 +33,16 @@ public class EventService {
         eventRepository.delete(event);
     }
 
-    /*public Event generateUUID(Event event) {
-        event.setUuid(UUID.randomUUID().toString());
-        if (event.getName().isEmpty()) {
-            event.setName(event.getUuid());
+    public Event generateProductRequestsUUID(Event event) {
+        for(ProductRequest request: event.getProductRequests()){
+            request.setUuid(UUID.randomUUID().toString());
+            if (event.getName().isEmpty()) {
+                event.setName(request.getUuid());
+            }
         }
+
         return event;
-    }*/
+    }
 
     public List<Event> findAllEventsByEventsId(List<Integer> e){
         List<Event> events = new ArrayList<>();

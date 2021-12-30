@@ -66,7 +66,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     private Claims getTokenBody(HttpServletRequest request) {
         String jwtToken = request.getHeader(HEADER).replace(PREFIX, "");
-        return Jwts.parser().setSigningKey(SECRET.getBytes()).parseClaimsJws(jwtToken).getBody();
+        Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(jwtToken).getBody();
+        return claims;
     }
 
     public boolean validateJwtToken(String authToken) throws SignatureException {
@@ -89,10 +90,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private void setUpSpringAuthentication(Claims claims) {
 
         List authorities = (List) claims.get("roles");
- //       List<SimpleGrantedAuthority> listaAuto = new ArrayList<>();
- //       listaAuto.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        List<SimpleGrantedAuthority> listaAuto = new ArrayList<>();
+        authorities.stream().forEach( role -> {
+            listaAuto.add(new SimpleGrantedAuthority((String) role));
 
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null,authorities);
+        } );
+
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null,listaAuto);
         SecurityContextHolder.getContext().setAuthentication(auth);
 
     }

@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -24,11 +26,18 @@ public class Event {
     @Column()
     private LocalDateTime endTime;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name = "id_plan")
     private Plan plan;
 
     @Column(name = "user_username")
     private String username;
+
+    @Column()
+    private Double totalPrice;
+
+    @OneToMany()
+    private List<ProductRequest> productRequests;
 
     @Transient()
     private User user;
