@@ -5,27 +5,44 @@ import { useNavigate } from "react-router-dom";
 import Navigation from "../../Components/Navigation";
 
 import Event from "../../Models/Event";
+import Plan from "../../Models/Plan";
+import Product from "../../Models/Product";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./RegEvent.css"
 
 const RegEvent = (props) => {
   const [plan, setPlan] = useState("");
-  const [products, setProducts] = useState({});
+  const [products, setProducts] = useState([]);
   const [cost, setCost] = useState(0.00);
   const [initDate, setInitDate] = useState(new Date());
   const [finishDate, setFinishDate] = useState(new Date());
 
-  const [basePlan, setBasePlan] = useState({});
+  const [basePlan, setBasePlan] = useState([]);
   const [msgError, setmsgError] = useState("");
   const [modalSuccess, setModalSuccess] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    /*fetch plans */
+    console.log(basePlan)
+    if(basePlan.length === 0){
+      //TODO: Fetch planes del api
+      const plans = [
+        new Plan("Pre-Boda", [new Product("mesa", 30), new Product("silla", 50)],5000),
+        new Plan("Boda", [new Product("mesa", 20), new Product("silla", 50), new Product("Padre", 10)],5000),
+        new Plan("Birthday", [new Product("mesa", 10), new Product("silla", 50), new Product("bicocho", 30)],5000),
+        new Plan("Video Evento", [new Product("video", 100), new Product("foto", 50)],5000),
+      ]
+      setBasePlan(plans);
+    }
+    if(plan !== "" && plan !== "Selecciona un plan..."){
+      setProducts(basePlan.find(element => element.name === plan).products)
+    }else{
+      setProducts([])
+    }
 
-  }, [])
+  }, [plan])
 
   const onSubmit = (event) => {
 
@@ -87,7 +104,6 @@ const RegEvent = (props) => {
   }
 
   const productPlanTable = () => {
-    const productos = [{ producto: "Mesa", cantidad: 30 }, { producto: "Silla", cantidad: 40 }] //TODO: Fetch productos del plan actual
     return <Table className="table table-bordered" hover striped responsive>
       <thead>
         <tr>
@@ -96,17 +112,20 @@ const RegEvent = (props) => {
         </tr>
       </thead>
       <tbody>
-        {productos.map((elemento, i) => (
+        {products.map((elemento, i) => (
           <tr key={i}>
-            <td>{elemento["producto"]}</td>
-            <td>{<input type="number" min={1} value={1} max={elemento["cantidad"]}
-              onChange={e => onChangeProduct(elemento["producto"], e.target.value)} />}</td>
+            <td>{elemento.name}</td>
+            <td>{<input type="number" min={1} value={1} max={elemento.count}
+              onChange={e => onChangeProduct(elemento.name, e.target.value)} />}</td>
           </tr>
         ))}
       </tbody>
 
     </Table>
 
+  }
+  const handleChangePlan = (value) => {
+    setPlan(value);
   }
 
   return (
@@ -122,7 +141,7 @@ const RegEvent = (props) => {
               <Form.Label>Plan: </Form.Label>
               <Form.Control as="select" name="plan" defaultValue="Selecciona un plan..."
                 onChange={(e) => {
-                  setPlan([e.target.value])
+                  handleChangePlan(e.target.value)
                 }}
                 required>
                 <option>Selecciona un plan...</option>
@@ -134,7 +153,7 @@ const RegEvent = (props) => {
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Inicio del Evento</Form.Label>
-                <Form.Control type="datetime-local" name="init_date" onChange={(e) => { setInitDate(e.target.value); }} required></Form.Control>
+                <Form.Control type="datetime-local" name="init_date" onChange={(e) => { setInitDate(e.target.value);}} required></Form.Control>
                 <Form.Label>Fin del Evento:</Form.Label>
                 <Form.Control type="datetime-local" name="finish_date" onChange={(e) => { setFinishDate(e.target.value); }} required></Form.Control>
               </Form.Group>

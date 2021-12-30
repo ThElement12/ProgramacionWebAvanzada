@@ -1,6 +1,5 @@
 export default class Product {
-  constructor(id, name, count){
-    this.id = id;
+  constructor(name, count){
     this.name = name;
     this.count = count;
   }

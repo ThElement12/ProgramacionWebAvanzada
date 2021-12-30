@@ -1,8 +1,7 @@
 export default class Plan{
-  constructor(id, name, available_products, price){
-    this.id = id;
+  constructor(name, products, price){
     this.name = name;
-    this.available_products = available_products;
+    this.products = products;
     this.price = price;
   }
 }
