@@ -10,6 +10,7 @@ import Product from "../../Models/Product";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./RegEvent.css"
+import Paypal from "../../Components/Paypal";
 
 const RegEvent = (props) => {
   const [plan, setPlan] = useState("");
@@ -26,19 +27,19 @@ const RegEvent = (props) => {
 
   useEffect(() => {
     console.log(basePlan)
-    if(basePlan.length === 0){
+    if (basePlan.length === 0) {
       //TODO: Fetch planes del api
       const plans = [
-        new Plan("Pre-Boda", [new Product("mesa", 30), new Product("silla", 50)],5000),
-        new Plan("Boda", [new Product("mesa", 20), new Product("silla", 50), new Product("Padre", 10)],5000),
-        new Plan("Birthday", [new Product("mesa", 10), new Product("silla", 50), new Product("bicocho", 30)],5000),
-        new Plan("Video Evento", [new Product("video", 100), new Product("foto", 50)],5000),
+        new Plan("Pre-Boda", [new Product("mesa", 30), new Product("silla", 50)], 5000),
+        new Plan("Boda", [new Product("mesa", 20), new Product("silla", 50), new Product("Padre", 10)], 5000),
+        new Plan("Birthday", [new Product("mesa", 10), new Product("silla", 50), new Product("bicocho", 30)], 5000),
+        new Plan("Video Evento", [new Product("video", 100), new Product("foto", 50)], 5000),
       ]
       setBasePlan(plans);
     }
-    if(plan !== "" && plan !== "Selecciona un plan..."){
+    if (plan !== "" && plan !== "Selecciona un plan...") {
       setProducts(basePlan.find(element => element.name === plan).products)
-    }else{
+    } else {
       setProducts([])
     }
 
@@ -99,7 +100,7 @@ const RegEvent = (props) => {
     let selectedProducts = products;
     selectedProducts[productName] = cant;
     setProducts(selectedProducts);
-    
+
 
   }
 
@@ -137,23 +138,23 @@ const RegEvent = (props) => {
           <Card.Body>
             <h2 className="text-center mb-4">Arma tu evento</h2>
             <Form onSubmit={onSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Plan: </Form.Label>
-              <Form.Control as="select" name="plan" defaultValue="Selecciona un plan..."
-                onChange={(e) => {
-                  handleChangePlan(e.target.value)
-                }}
-                required>
-                <option>Selecciona un plan...</option>
-                <option value={"Pre-Boda"}>Pre-Boda</option>
-                <option value={"Boda"}>Boda</option>
-                <option value={"Birthday"}>Cumpleaños</option>
-                <option value={"Video Evento"}>Video de Evento</option>
-              </Form.Control>
+              <Form.Group className="mb-3">
+                <Form.Label>Plan: </Form.Label>
+                <Form.Control as="select" name="plan" defaultValue="Selecciona un plan..."
+                  onChange={(e) => {
+                    handleChangePlan(e.target.value)
+                  }}
+                  required>
+                  <option>Selecciona un plan...</option>
+                  <option value={"Pre-Boda"}>Pre-Boda</option>
+                  <option value={"Boda"}>Boda</option>
+                  <option value={"Birthday"}>Cumpleaños</option>
+                  <option value={"Video Evento"}>Video de Evento</option>
+                </Form.Control>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Inicio del Evento</Form.Label>
-                <Form.Control type="datetime-local" name="init_date" onChange={(e) => { setInitDate(e.target.value);}} required></Form.Control>
+                <Form.Control type="datetime-local" name="init_date" onChange={(e) => { setInitDate(e.target.value); }} required></Form.Control>
                 <Form.Label>Fin del Evento:</Form.Label>
                 <Form.Control type="datetime-local" name="finish_date" onChange={(e) => { setFinishDate(e.target.value); }} required></Form.Control>
               </Form.Group>
@@ -161,10 +162,8 @@ const RegEvent = (props) => {
                 {productPlanTable()}
               </Form.Group>
               <Form.Group className="mb-3">
-              {msgError !== "" && <Alert variant="danger">{msgError}</Alert>}
-              <Button className="w-100" type="submit">
-                Registrar
-              </Button>
+                {msgError !== "" && <Alert variant="danger">{msgError}</Alert>}
+                <Paypal/>
               </Form.Group>
             </Form>
           </Card.Body>
