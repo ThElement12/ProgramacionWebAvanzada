@@ -19,26 +19,33 @@ const RegEvent = (props) => {
   const [initDate, setInitDate] = useState(new Date());
   const [finishDate, setFinishDate] = useState(new Date());
 
+  const [checkout, setCheckout] = useState(false);
+
   const [basePlan, setBasePlan] = useState([]);
   const [msgError, setmsgError] = useState("");
   const [modalSuccess, setModalSuccess] = useState(false);
 
+  const [event, setEvent] = useState(null);
+  
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(basePlan)
     if (basePlan.length === 0) {
       //TODO: Fetch planes del api
       const plans = [
         new Plan("Pre-Boda", [new Product("mesa", 30), new Product("silla", 50)], 5000),
-        new Plan("Boda", [new Product("mesa", 20), new Product("silla", 50), new Product("Padre", 10)], 5000),
-        new Plan("Birthday", [new Product("mesa", 10), new Product("silla", 50), new Product("bicocho", 30)], 5000),
-        new Plan("Video Evento", [new Product("video", 100), new Product("foto", 50)], 5000),
+        new Plan("Boda", [new Product("mesa", 20), new Product("silla", 50), new Product("Padre", 10)], 8000),
+        new Plan("Birthday", [new Product("mesa", 10), new Product("silla", 50), new Product("bicocho", 30)], 4000),
+        new Plan("Video Evento", [new Product("video", 100), new Product("foto", 50)], 3500),
       ]
       setBasePlan(plans);
     }
     if (plan !== "" && plan !== "Selecciona un plan...") {
-      setProducts(basePlan.find(element => element.name === plan).products)
+      const n_plan = basePlan.find(element => element.name === plan);
+      setProducts(n_plan.products);
+      setCost(n_plan.price);
+
     } else {
       setProducts([])
     }
@@ -53,17 +60,14 @@ const RegEvent = (props) => {
 
     } else {
       let newEvent = new Event(plan, products, cost, initDate, finishDate);
-      /*await AuthService.register(username, password, mail, rol)
-        .then(onSuccess)
-        .catch(() => {
-          setmsgError("Hubo un error al registrar el usuario")
-        })*/
-
+      setEvent(newEvent);
+      setCheckout(true);
     }
 
   }
 
   const onSuccess = () => {
+    setCheckout(false);
     setModalSuccess(true);
     setPlan("")
     setProducts([])
@@ -116,7 +120,7 @@ const RegEvent = (props) => {
         {products.map((elemento, i) => (
           <tr key={i}>
             <td>{elemento.name}</td>
-            <td>{<input type="number" min={1} value={1} max={elemento.count}
+            <td>{<input type="number" min={1} defaultValue={1} max={elemento.count}
               onChange={e => onChangeProduct(elemento.name, e.target.value)} />}</td>
           </tr>
         ))}
@@ -132,7 +136,17 @@ const RegEvent = (props) => {
   return (
     <div>
       <Navigation />
-      <div className="d-flex align-items-center justify-content-center"
+      {checkout && <div className="d-flex align-items-center justify-content-center"
+        style={{ minHeight: "100vh" }}>
+        <Card className="card-register">
+          <Card.Body>
+            <Button className="btn btn-secondary" onClick={() => { setCheckout(false) }}>{"<Volver"}</Button>
+            <Paypal plan={plan} price={cost} event={event} onSuccess={onSuccess}/>
+          </Card.Body>
+        </Card>
+      </div>
+      }
+      {!checkout && <div className="d-flex align-items-center justify-content-center"
         style={{ minHeight: "100vh" }}>
         <Card className="card-register">
           <Card.Body>
@@ -162,14 +176,18 @@ const RegEvent = (props) => {
                 {productPlanTable()}
               </Form.Group>
               <Form.Group className="mb-3">
-                {msgError !== "" && <Alert variant="danger">{msgError}</Alert>}
-                <Paypal/>
+                <Form.Label><h5><b>Costo:</b> ${cost} USD</h5></Form.Label>
               </Form.Group>
+              <Form.Group className="mb-3">
+                {msgError !== "" && <Alert variant="danger">{msgError}</Alert>}
+                <Button type="submit" className="w-100" disabled={plan === "Selecciona un plan..."}>Proceed Checkout</Button>
+              </Form.Group>
+
             </Form>
           </Card.Body>
         </Card>
         {success()}
-      </div>
+      </div>}
     </div>
 
   );
