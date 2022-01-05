@@ -10,7 +10,9 @@ import Product from "../../Models/Product";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./RegEvent.css"
+
 import Paypal from "../../Components/Paypal";
+import AfterPay from "../../Components/AfterPay";
 
 const RegEvent = (props) => {
   const [plan, setPlan] = useState("");
@@ -24,9 +26,9 @@ const RegEvent = (props) => {
   const [basePlan, setBasePlan] = useState([]);
   const [msgError, setmsgError] = useState("");
   const [modalSuccess, setModalSuccess] = useState(false);
+  const [afterpay, setAfterPay] = useState(false);
 
   const [event, setEvent] = useState(null);
-  
 
   const navigate = useNavigate();
 
@@ -68,6 +70,7 @@ const RegEvent = (props) => {
 
   const onSuccess = () => {
     setCheckout(false);
+    setAfterPay(true);
     setModalSuccess(true);
     setPlan("")
     setProducts([])
@@ -136,6 +139,7 @@ const RegEvent = (props) => {
   return (
     <div>
       <Navigation />
+      {afterpay && <AfterPay event={event}/>}
       {checkout && <div className="d-flex align-items-center justify-content-center"
         style={{ minHeight: "100vh" }}>
         <Card className="card-register">
@@ -146,7 +150,7 @@ const RegEvent = (props) => {
         </Card>
       </div>
       }
-      {!checkout && <div className="d-flex align-items-center justify-content-center"
+      {!(checkout || afterpay) && <div className="d-flex align-items-center justify-content-center"
         style={{ minHeight: "100vh" }}>
         <Card className="card-register">
           <Card.Body>

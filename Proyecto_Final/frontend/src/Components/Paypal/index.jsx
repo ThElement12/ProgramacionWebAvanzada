@@ -20,11 +20,12 @@ export default function Paypal(props) {
         })
       },
       onApprove: async (data, actions) => {
-        const order = await (actions.order.capture());
-        props.onSuccess();
+        await (actions.order.capture())
+        .then(props.onSuccess())
+        
       },
       onError: (err)=> {
-        console.log(err);
+        console.error(err);
       }
     }).render(paypal.current)
   })
