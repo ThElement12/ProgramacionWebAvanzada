@@ -42,4 +42,7 @@ public class Event {
     @Transient()
     private User user;
 
+    @Column()
+    private Boolean active = true;
+
 }

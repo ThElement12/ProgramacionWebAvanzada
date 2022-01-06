@@ -1,16 +1,20 @@
 package com.RPYS.shopmicroservice.controllers;
 
 import com.RPYS.shopmicroservice.entities.Event;
+import com.RPYS.shopmicroservice.entities.Product;
+import com.RPYS.shopmicroservice.entities.ProductRequest;
 import com.RPYS.shopmicroservice.repositories.UserClient;
 import com.RPYS.shopmicroservice.services.EventService;
 import com.RPYS.shopmicroservice.services.ProductService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,9 +73,8 @@ public class EventController {
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> findByUsername(@PathVariable String username,
-                                            HttpServletResponse header,
-                                            @RequestHeader(value = "Authorization",required = false) String token) {
-        Map<String, Object> response = new HashMap<>(),request;
+                                            @RequestHeader(value = "Authorization", required = false) String token) {
+        Map<String, Object> response = new HashMap<>();
         try {
 
             List<Integer> events = userClient.findAllEventsIdByUsername(username,token);
@@ -84,6 +87,33 @@ public class EventController {
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
+
+    @Scheduled(fixedRate=60*60*1000)
+    public void updateStock(){
+        List<Event> events = eventService.findAllActive();
+        for(Event event:events){
+            if(event.getStartTime().isBefore(LocalDateTime.now()) || event.getStartTime().isEqual(LocalDateTime.now()) ){
+                for(ProductRequest productRequest:event.getProductRequests()){
+                    Product product = productService.findById(productRequest.getProductId());
+                    product.setStock(product.getStock() - productRequest.getRequested());
+                    productService.save(product);
+                }
+                eventService.save(event);
+            }
+            else if(event.getEndTime().isBefore(LocalDateTime.now()) || event.getEndTime().isEqual(LocalDateTime.now())){
+                for(ProductRequest productRequest:event.getProductRequests()){
+                    Product product = productService.findById(productRequest.getProductId());
+                    product.setStock(product.getStock() + productRequest.getRequested());
+                    productService.save(product);
+                }
+                event.setActive(false);
+                eventService.save(event);
+            }
+
+        }
+    }
+
+
 
 
 }
