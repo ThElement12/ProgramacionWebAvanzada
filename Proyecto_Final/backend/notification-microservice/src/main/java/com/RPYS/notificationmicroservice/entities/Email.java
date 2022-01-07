@@ -1,4 +1,4 @@
-package com.RPYS.notificationmicroservice.models;
+package com.RPYS.notificationmicroservice.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

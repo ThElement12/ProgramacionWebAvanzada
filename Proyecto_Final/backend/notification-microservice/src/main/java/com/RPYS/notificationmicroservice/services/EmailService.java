@@ -1,6 +1,8 @@
 package com.RPYS.notificationmicroservice.services;
 
-import com.RPYS.notificationmicroservice.models.Email;
+import com.RPYS.notificationmicroservice.entities.Email;
+import com.RPYS.notificationmicroservice.models.Event;
+import com.RPYS.notificationmicroservice.models.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -14,6 +16,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Service
 @EnableAsync
@@ -27,34 +30,44 @@ public class EmailService {
     }
 
     @Async
-    public void sendTemplateEmail(Email email, String template, File file) {
+    public void sendBroadcastEmail(String template, List<User> users, Event event) {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper;
-
+        Email email = new Email();
         try {
             email.setFrom("prestalialoans@gmail.com");
-            helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-                    StandardCharsets.UTF_8.name());
-            Context context = new Context();
-            context.setVariable("data", email);
-            String htmlContent = templateEngine.process(template, context);
-            if(file != null){
-                helper.addAttachment(file.getName(),file);
-            }
-            helper.setTo(email.getTo());
-            helper.setText(htmlContent, true);
-            helper.setSubject(email.getTitle());
-            helper.setFrom(email.getFrom());
+            email.setTitle("Creacion de nuevo evento");
 
-            emailSender.send(message);
-            if(file.delete())
-            {
-                System.out.println("File deleted successfully");
+            for(User user:users){
+                email.setTo(user.getMail());
+                email.setFullName(user.getFullName());
+                email.setMessage("Hola, ".concat(user.getFullName())
+                        +" este correo es para informar que se acaba de crear un nuevo evento a nombre de: "
+                        .concat(event.getUser().getFullName())
+                        .concat(" el cual se estará celebrando desde el -> ")
+                        .concat(event.getStartTime().toString()).concat(" hasta ")
+                        .concat(event.getEndTime().toString())
+                        .concat("Los productos que se ocuparan ese dia para la celebracion del evento son los siguientes:")
+                );
+
+                helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                        StandardCharsets.UTF_8.name());
+                Context context = new Context();
+                context.setVariable("data", email);
+                context.setVariable("name", "RYPS");
+                context.setVariable("products", event.getProductRequests());
+                String htmlContent = templateEngine.process(template, context);
+
+                helper.setTo(email.getTo());
+                helper.setText(htmlContent, true);
+                helper.setSubject(email.getTitle());
+                helper.setFrom(email.getFrom());
+
+                emailSender.send(message);
+
             }
-            else
-            {
-                System.out.println("Failed to delete the file");
-            }
+
+
         } catch (MessagingException e) {
             e.printStackTrace();
         }

@@ -3,6 +3,7 @@ package com.RPYS.shopmicroservice.controllers;
 import com.RPYS.shopmicroservice.entities.Event;
 import com.RPYS.shopmicroservice.entities.Product;
 import com.RPYS.shopmicroservice.entities.ProductRequest;
+import com.RPYS.shopmicroservice.repositories.NotificationClient;
 import com.RPYS.shopmicroservice.repositories.UserClient;
 import com.RPYS.shopmicroservice.services.EventService;
 import com.RPYS.shopmicroservice.services.ProductService;
@@ -13,7 +14,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -28,11 +28,13 @@ public class EventController {
     private final EventService eventService;
     private final ProductService productService;
     private final UserClient userClient;
+    private final NotificationClient notificationClient;
 
-    public EventController(EventService eventService, ProductService productService, UserClient userClient) {
+    public EventController(EventService eventService, ProductService productService, UserClient userClient, NotificationClient notificationClient) {
         this.eventService = eventService;
         this.productService = productService;
         this.userClient = userClient;
+        this.notificationClient = notificationClient;
     }
 
     @PostMapping("/")
@@ -45,14 +47,22 @@ public class EventController {
             event = eventService.generateProductRequestsUUID(event);
             event.getProductRequests().forEach(productService::saveProductRequest);
             eventService.save(event);
-            // se le envia una notificacion al usuario de que se acaba de crear un evento
             if(userClient.saveEventIdByUsername(event.getUsername(), event.getId(),token)){
-                return new ResponseEntity<>(event, HttpStatus.CREATED);
+                if(notificationClient.broadcast(event,token)){
+                    return new ResponseEntity<>(event, HttpStatus.CREATED);
+                }
+                else {
+                    response.put("message", "error al comunicarse con el microservice de notificaciones");
+                    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+
             }
             else {
-                response.put("message", "error al comunicarse con el microservicio de usuario");
+                response.put("message", "error al comunicarse con el microservice de usuario");
                 return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
+
+
 
         } catch (DataAccessException e) {
             response.put("message", "No se pudo crear el evento en la base de datos");

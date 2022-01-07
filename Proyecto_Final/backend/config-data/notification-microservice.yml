@@ -7,6 +7,17 @@ server:
 # http://localhost:8091/h2-console
 # Enabling H2 Console
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: prestalialoans@gmail.com
+    password: gjjoxurzhbdbqfjp
+    protocol: smtp
+    tls: true
+    properties.mail.smtp:
+        auth: true
+        starttls.enable: true
+        ssl.trust: smtp.gmail.com
   h2:
     console:
       enabled: true

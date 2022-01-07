@@ -42,10 +42,10 @@ public class UserController {
     }
 
     @GetMapping("/employments")
-    @PreAuthorize("hasAnyAuthority('admin','empleado')")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<User> findAll() {
-        return userService.findAll();
+    public List<User> findAllEmployments() {
+        return userService.findAllEmployments();
     }
 
     @GetMapping("/{username}")

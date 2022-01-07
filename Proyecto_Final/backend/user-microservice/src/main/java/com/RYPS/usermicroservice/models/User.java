@@ -17,6 +17,8 @@ public class User {
     private Integer id;
     @Column(unique = true)
     private String username;
+    @Column()
+    private String fullName;
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
@@ -26,6 +28,14 @@ public class User {
     @ElementCollection(targetClass = Integer.class)
     List<Integer> eventsId;
 
+    public Boolean hasRole(String r) {
+        for(var role : roles) {
+            if(role.equalsIgnoreCase(r)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }
