@@ -1,4 +1,4 @@
-package com.RPYS.shopmicroservice.models;
+package com.RPYS.notificationmicroservice.models;
 
 import lombok.Data;
 

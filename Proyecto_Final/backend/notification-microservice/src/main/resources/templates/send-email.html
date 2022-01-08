@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<section style="align-items: center; padding: 150px 0;">
+    <div class="container">
+        <div class="row" style="justify-content: center;">
+            <div class="col-lg-6 col-md-8">
+                <table style="box-sizing: border-box; width: 100%; border-radius: 6px; overflow: hidden; background-color: #fff; box-shadow: 0 0 3px rgba(60, 72, 88, 0.15);">
+                    <thead>
+                    <tr style="background-color: #45D081; padding: 3px 0; line-height: 68px; text-align: center; color: #fff; font-size: 24px; font-weight: 700; letter-spacing: 1px;">
+                        <th th:text="${name}" scope="col"></th>
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr >
+                        <td style="padding: 48px 24px 0; text-align: center; color: #161c2d; font-size: 18px; font-weight: 600;" >
+
+                    </td>
+
+                    </tr>
+
+                    <tr>
+
+
+                        <td style="padding: 48px 24px 0; color: #161c2d; font-size: 18px; font-weight: 600;">
+                            <b th:text="${data.message}"></b>
+                        </td>
+
+                        <table style="box-sizing: border-box; width: 100%; border-radius: 6px; overflow: hidden; background-color: #fff; box-shadow: 0 0 3px rgba(60, 72, 88, 0.15);">
+                            <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Cantidad</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="aux : ${products}">
+                                <td th:text="${aux.name}">Nombre</td>
+                                <td th:text="${aux.quantity}">Cantidad</td>
+                            </tr>
+                        </table>
+                    </tr>
+
+                    <tr>
+                        <td style="padding: 16px 8px; color: #8492a6; background-color: #f8f9fc; text-align: center;">
+                            © 2022 RYPS.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div><!--end col-->
+        </div><!--end row-->
+    </div> <!--end container-->
+</section><!--end section-->

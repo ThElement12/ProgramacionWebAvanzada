@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,9 +48,18 @@ public class UserService implements UserDetailsService {
     public void deleteUser(User user){
         userRepository.delete(user);
     }
-    public Iterable<User> findAll(){
-        return userRepository.findAll();
+
+    public List<User> findAllEmployments(){
+        List<User> users = userRepository.findAll();
+        List<User> employments = new ArrayList<>();
+        for (User user:users){
+            if(user.hasRole("empleado")){
+                employments.add(user);
+            }
+        }
+        return users;
     }
+
     public void delete(User user){
         userRepository.delete(user);
     }

@@ -30,7 +30,7 @@ public class UserMicroserviceApplication {
 			User admin = new User();
 			admin.setUsername("admin");
 			admin.setPassword(bCryptPasswordEncoder.encode("admin"));
-			admin.setMail("Administrador");
+			admin.setMail("r_rokstar@hotmail.com");
 			admin.setRoles(Collections.singletonList("admin"));
 			admin.setEventsId(new ArrayList<>());
 			if(usuarioRepository.findAll().isEmpty())

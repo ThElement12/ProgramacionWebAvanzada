@@ -1,16 +1,20 @@
 package com.RPYS.shopmicroservice.controllers;
 
 import com.RPYS.shopmicroservice.entities.Event;
+import com.RPYS.shopmicroservice.entities.Product;
+import com.RPYS.shopmicroservice.entities.ProductRequest;
+import com.RPYS.shopmicroservice.repositories.NotificationClient;
 import com.RPYS.shopmicroservice.repositories.UserClient;
 import com.RPYS.shopmicroservice.services.EventService;
 import com.RPYS.shopmicroservice.services.ProductService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +28,13 @@ public class EventController {
     private final EventService eventService;
     private final ProductService productService;
     private final UserClient userClient;
+    private final NotificationClient notificationClient;
 
-    public EventController(EventService eventService, ProductService productService, UserClient userClient) {
+    public EventController(EventService eventService, ProductService productService, UserClient userClient, NotificationClient notificationClient) {
         this.eventService = eventService;
         this.productService = productService;
         this.userClient = userClient;
+        this.notificationClient = notificationClient;
     }
 
     @PostMapping("/")
@@ -41,14 +47,22 @@ public class EventController {
             event = eventService.generateProductRequestsUUID(event);
             event.getProductRequests().forEach(productService::saveProductRequest);
             eventService.save(event);
-            // se le envia una notificacion al usuario de que se acaba de crear un evento
             if(userClient.saveEventIdByUsername(event.getUsername(), event.getId(),token)){
-                return new ResponseEntity<>(event, HttpStatus.CREATED);
+                if(notificationClient.broadcast(event,token)){
+                    return new ResponseEntity<>(event, HttpStatus.CREATED);
+                }
+                else {
+                    response.put("message", "error al comunicarse con el microservice de notificaciones");
+                    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+
             }
             else {
-                response.put("message", "error al comunicarse con el microservicio de usuario");
+                response.put("message", "error al comunicarse con el microservice de usuario");
                 return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
+
+
 
         } catch (DataAccessException e) {
             response.put("message", "No se pudo crear el evento en la base de datos");
@@ -69,9 +83,8 @@ public class EventController {
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> findByUsername(@PathVariable String username,
-                                            HttpServletResponse header,
-                                            @RequestHeader(value = "Authorization",required = false) String token) {
-        Map<String, Object> response = new HashMap<>(),request;
+                                            @RequestHeader(value = "Authorization", required = false) String token) {
+        Map<String, Object> response = new HashMap<>();
         try {
 
             List<Integer> events = userClient.findAllEventsIdByUsername(username,token);
@@ -84,6 +97,33 @@ public class EventController {
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
+
+    @Scheduled(fixedRate=60*60*1000)
+    public void updateStock(){
+        List<Event> events = eventService.findAllActive();
+        for(Event event:events){
+            if(event.getStartTime().isBefore(LocalDateTime.now()) || event.getStartTime().isEqual(LocalDateTime.now()) ){
+                for(ProductRequest productRequest:event.getProductRequests()){
+                    Product product = productService.findById(productRequest.getProductId());
+                    product.setStock(product.getStock() - productRequest.getRequested());
+                    productService.save(product);
+                }
+                eventService.save(event);
+            }
+            else if(event.getEndTime().isBefore(LocalDateTime.now()) || event.getEndTime().isEqual(LocalDateTime.now())){
+                for(ProductRequest productRequest:event.getProductRequests()){
+                    Product product = productService.findById(productRequest.getProductId());
+                    product.setStock(product.getStock() + productRequest.getRequested());
+                    productService.save(product);
+                }
+                event.setActive(false);
+                eventService.save(event);
+            }
+
+        }
+    }
+
+
 
 
 }

@@ -25,6 +25,10 @@ public class EventService {
         return eventRepository.findAll();
     }
 
+    public List<Event> findAllActive(){
+        return eventRepository.findAllByActiveIsTrue();
+    }
+
     public Event findByID(Integer id) {
         return eventRepository.findById(id).get();
     }

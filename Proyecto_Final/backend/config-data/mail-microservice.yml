@@ -1,4 +1,3 @@
-
 #Application Configuration
 server:
   port: 8093
@@ -14,7 +13,7 @@ spring:
   # DB
   # ===============================
   datasource:
-          url: jdbc:h2:mem:notificationDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:mailDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driverClassName: org.h2.Driver
     username: sa
     password:

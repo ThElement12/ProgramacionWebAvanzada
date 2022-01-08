@@ -16,6 +16,9 @@ public class ProductRequest {
     private Integer productId;
 
     @Column()
+    private String name;
+
+    @Column()
     private Integer requested;
 
 }
