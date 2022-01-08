@@ -6,9 +6,6 @@ import ListElement from '../ListElement';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function AfterPay(props) {
-  //TODO: Mostrar factura y resumen de pago aqui
-
-
   return (
     <Container>
       <Card>
@@ -20,10 +17,10 @@ export default function AfterPay(props) {
             Plan seleccionado: {props.event.plan}
           </ListGroupItem>
           <ListGroupItem>
-            Fecha y hora de inicio: {props.event.date_init}
+            Fecha y hora de inicio: {props.event.date_init.replace("T", " ")}
           </ListGroupItem>
           <ListGroupItem>
-            Fecha y hora de fin: {props.event.date_finish}
+            Fecha y hora de fin: {props.event.date_finish.replace("T", " ")}
           </ListGroupItem>
           <ListGroupItem>
             Productos Seleccionados:

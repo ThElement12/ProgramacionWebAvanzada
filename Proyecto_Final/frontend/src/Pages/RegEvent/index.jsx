@@ -52,7 +52,7 @@ const RegEvent = (props) => {
       setProducts([])
     }
 
-  }, [plan])
+  }, [plan, basePlan])
 
   const onSubmit = (event) => {
 
@@ -184,7 +184,7 @@ const RegEvent = (props) => {
               </Form.Group>
               <Form.Group className="mb-3">
                 {msgError !== "" && <Alert variant="danger">{msgError}</Alert>}
-                <Button type="submit" className="w-100" disabled={plan === "Selecciona un plan..."}>Proceed Checkout</Button>
+                <Button type="submit" className="w-100" disabled={plan === "Selecciona un plan..."}>Procesar Pago</Button>
               </Form.Group>
 
             </Form>
