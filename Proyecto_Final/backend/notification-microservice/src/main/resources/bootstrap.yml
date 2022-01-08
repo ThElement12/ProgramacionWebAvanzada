@@ -1,6 +1,6 @@
 spring:
   application:
-    name: notification-microservice
+    name: mail-microservice
   cloud:
     config:
       uri: http://localhost:8081
