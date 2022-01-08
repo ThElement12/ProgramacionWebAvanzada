@@ -7,11 +7,6 @@ server:
 # http://localhost:8091/h2-console
 # Enabling H2 Console
 spring:
-  cloud:
-  config:
-    server:
-      git:
-        default-label: main
   h2:
     console:
       enabled: true
