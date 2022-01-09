@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 
 @CrossOrigin()
 @RestController
-//@RequestMapping("/auth")
+@RequestMapping("/auth")
 
 public class AuthController {
 
@@ -27,7 +27,7 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public ResponseEntity<?> logIn(@RequestBody LogInRequest loginRequest) {
         Map<String, Object> response = new HashMap<>();
         User user = null;

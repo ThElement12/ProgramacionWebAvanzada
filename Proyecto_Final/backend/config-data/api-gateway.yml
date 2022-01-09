@@ -1,29 +1,23 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+logging:
+  level:
+    org:
+      springframework: ERROR
+    edu:
+      pucmm: DEBUG
+  pattern:
+    console: '%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n'
 server:
-  port: 8080
-
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8099/eureka/
-
-spring:
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-      routes:
-        - id: user-microservice  
-          uri: lb://user-microservice
-          predicates:
-            - Path=/user/**
-        - id: shop-microservice
-          uri: lb://shop-microservice
-          predicates:
-            - Path=/shop/**
-        - id: mail-microservice
-          uri: lb://mail-microservice
-          predicates:
-            - Path=/invoices/**
+  port: '8080'
+zuul:
+  routes:
+    user:
+      service-id: user-microservice
+    shop:
+      service-id: shop-microservice
+    mail:
+      service-id: mail-microservice
