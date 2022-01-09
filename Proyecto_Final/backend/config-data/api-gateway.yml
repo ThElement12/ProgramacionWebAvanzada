@@ -18,11 +18,11 @@ spring:
         - id: user-microservice  
           uri: lb://user-microservice
           predicates:
-            - Path=/auth/**
+            - Path=/user/**
         - id: shop-microservice
           uri: lb://shop-microservice
           predicates:
-            - Path=/products/**
+            - Path=/shop/**
         - id: mail-microservice
           uri: lb://mail-microservice
           predicates:

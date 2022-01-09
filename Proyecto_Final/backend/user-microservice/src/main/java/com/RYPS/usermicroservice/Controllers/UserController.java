@@ -13,7 +13,7 @@ import java.util.*;
 
 @CrossOrigin()
 @RestController
-@RequestMapping("/user")
+//@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 

@@ -23,7 +23,7 @@ import java.util.NoSuchElementException;
 
 @CrossOrigin()
 @RestController
-@RequestMapping("/event")
+//@RequestMapping("/event")
 public class EventController {
 
     private final EventService eventService;
@@ -38,7 +38,7 @@ public class EventController {
         this.notificationClient = notificationClient;
     }
 
-    @PostMapping("/")
+    @PostMapping("/event/")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> create(@RequestBody Event event,@RequestHeader(value = "Authorization",required = false) String token) {
@@ -75,14 +75,14 @@ public class EventController {
 
     }
 
-    @GetMapping("/")
+    @GetMapping("/event/")
     @PreAuthorize("hasAnyAuthority('admin','empleado')")
     @ResponseStatus(HttpStatus.OK)
     public Iterable<Event> findAll() {
         return eventService.findAll();
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/event/{username}")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> findByUsername(@PathVariable String username,

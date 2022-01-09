@@ -11,18 +11,18 @@ import java.util.List;
 
 @FeignClient(name = "user-microservice")
 public interface UserClient {
-    @GetMapping("/user/{username}")
+    @GetMapping("/{username}")
     @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
     @ResponseStatus(HttpStatus.OK)
     User findByUsername(@PathVariable String username,@RequestHeader(value = "Authorization") String authorizationHeader);
 
-    @GetMapping("/user/events/{username}")
+    @GetMapping("/events/{username}")
     @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
     @ResponseStatus(HttpStatus.OK)
     List<Integer> findAllEventsIdByUsername(@PathVariable String username,
                                             @RequestHeader(value = "Authorization") String authorizationHeader);
 
-    @PostMapping("/user/events/{username}/{eventId}")
+    @PostMapping("/events/{username}/{eventId}")
     @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
     @ResponseStatus(HttpStatus.OK)
     Boolean saveEventIdByUsername(@PathVariable String username, @PathVariable Integer eventId,

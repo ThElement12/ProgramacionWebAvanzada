@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin()
 @RestController
-@RequestMapping("/plan")
+//@RequestMapping("/plan")
 public class PlanController {
 
     private final PlanService planService;
@@ -18,7 +18,7 @@ public class PlanController {
         this.planService = planService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/plan/")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public Iterable<Plan> findAll() {

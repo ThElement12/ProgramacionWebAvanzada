@@ -11,12 +11,12 @@ import java.util.List;
 
 @FeignClient(name = "user-microservice")
 public interface UserClient {
-    @GetMapping("/user/{username}")
+    @GetMapping("/{username}")
     @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<?> findByUsername(@PathVariable String username);
 
-    @GetMapping("/user/employments")
+    @GetMapping("/employments")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     List<User> findAllEmployments(@RequestHeader(value = "Authorization") String authorizationHeader);

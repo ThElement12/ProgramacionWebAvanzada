@@ -16,7 +16,7 @@ import java.util.Map;
 
 @CrossOrigin()
 @RestController
-@RequestMapping("/")
+//@RequestMapping("/")
 public class NotificationController {
 
     private final UserClient userClient;
