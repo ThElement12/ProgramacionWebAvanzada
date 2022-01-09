@@ -14,10 +14,13 @@ zuul:
   routes:
     user:
       service-id: user-microservice
+      sensitiveHeaders: Cookie,Set-Cookie,Authorization
     shop:
       service-id: shop-microservice
+      sensitiveHeaders: Cookie,Set-Cookie,Authorization
     mail:
       service-id: mail-microservice
+      sensitiveHeaders: Cookie,Set-Cookie,Authorization
 eureka:
   instance:
     prefer-ip-address: true

@@ -9,6 +9,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.Arrays;
+
 @EnableDiscoveryClient
 @EnableZuulProxy
 @SpringBootApplication
@@ -32,7 +34,9 @@ public class ServidorPerimetralZuulApplication {
         config.addAllowedMethod("POST");
         config.addAllowedMethod("DELETE");
         config.addAllowedMethod("PATCH");
+        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept","Authorization"));
         source.registerCorsConfiguration("/**", config);
+
         return new CorsFilter(source);
     }
 }
