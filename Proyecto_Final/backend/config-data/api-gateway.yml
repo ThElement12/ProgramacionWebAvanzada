@@ -4,13 +4,8 @@ management:
       exposure:
         include: '*'
 logging:
-  level:
-    org:
-      springframework: ERROR
-    edu:
-      pucmm: DEBUG
   pattern:
-    console: '%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n'
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
 server:
   port: '8080'
 zuul:
@@ -21,3 +16,9 @@ zuul:
       service-id: shop-microservice
     mail:
       service-id: mail-microservice
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8099/eureka/
