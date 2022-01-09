@@ -1,5 +1,7 @@
 management:
   endpoints:
+    routes:
+      enabled: true
     web:
       exposure:
         include: '*'
