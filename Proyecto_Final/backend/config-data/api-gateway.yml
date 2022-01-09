@@ -2,6 +2,8 @@ server:
   port: 8080
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     serviceUrl:
       defaultZone: http://localhost:8099/eureka/
@@ -16,7 +18,7 @@ spring:
         - id: user-microservice  
           uri: lb://user-microservice
           predicates:
-            - Path=/customers/**
+            - Path=/auth/**
         - id: shop-microservice
           uri: lb://shop-microservice
           predicates:
