@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 
 @CrossOrigin()
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/customers")
 
 public class AuthController {
 
