@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8099/eureka/
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: user-microservice  
+          uri: lb://user-microservice
+          predicates:
+            - Path=/customers/**
+        - id: shop-microservice
+          uri: lb://shop-microservice
+          predicates:
+            - Path=/products/**
+        - id: mail-microservice
+          uri: lb://mail-microservice
+          predicates:
+            - Path=/invoices/**
