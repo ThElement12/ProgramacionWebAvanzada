@@ -17,5 +17,9 @@ zuul:
     mail:
       service-id: mail-microservice
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8099/eureka/
