@@ -53,11 +53,11 @@ public class UserService implements UserDetailsService {
         List<User> users = userRepository.findAll();
         List<User> employments = new ArrayList<>();
         for (User user:users){
-            if(user.hasRole("empleado")){
+            if(user.hasRole("empleado") || user.hasRole("admin")){
                 employments.add(user);
             }
         }
-        return users;
+        return employments;
     }
 
     public void delete(User user){

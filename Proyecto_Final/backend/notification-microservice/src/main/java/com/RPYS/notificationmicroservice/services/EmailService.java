@@ -47,7 +47,7 @@ public class EmailService {
                         .concat(" el cual se estará celebrando desde el -> ")
                         .concat(event.getStartTime().toString()).concat(" hasta ")
                         .concat(event.getEndTime().toString())
-                        .concat("Los productos que se ocuparan ese dia para la celebracion del evento son los siguientes:")
+                        .concat(" Los productos que se ocuparan ese dia para la celebracion del evento son los siguientes:")
                 );
 
                 helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,

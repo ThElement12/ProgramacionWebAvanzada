@@ -30,22 +30,22 @@ public class NotificationController {
     @PostMapping("/")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> broadcast(@RequestBody Event event,
+    public Boolean broadcast(@RequestBody Event event,
                                        @RequestHeader(value = "Authorization",required = false) String token) {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            List<User> users = userClient.findAllEmployments();
+            List<User> users = userClient.findAllEmployments(token);
             emailService.sendBroadcastEmail("send-email",users,event);
 
         } catch (DataAccessException e) {
             response.put("message", "No se pudo crear el evento en la base de datos");
             response.put("Error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            return false;
         }
 
         response.put("message", "Los correos se enviaron con éxito...");
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return true;
 
     }
 }

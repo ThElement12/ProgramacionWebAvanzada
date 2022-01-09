@@ -1,5 +1,6 @@
 package com.RPYS.shopmicroservice.repositories;
 
+import com.RPYS.shopmicroservice.models.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +14,13 @@ public interface UserClient {
     @GetMapping("/user/{username}")
     @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<?> findByUsername(@PathVariable String username);
+    User findByUsername(@PathVariable String username,@RequestHeader(value = "Authorization") String authorizationHeader);
 
     @GetMapping("/user/events/{username}")
     @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
     @ResponseStatus(HttpStatus.OK)
     List<Integer> findAllEventsIdByUsername(@PathVariable String username,
-                                            @RequestHeader(value = "Authorization", required = true) String authorizationHeader);
+                                            @RequestHeader(value = "Authorization") String authorizationHeader);
 
     @PostMapping("/user/events/{username}/{eventId}")
     @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")

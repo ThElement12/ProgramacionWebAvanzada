@@ -44,23 +44,19 @@ public class UserController {
     @GetMapping("/employments")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
-    public List<User> findAllEmployments() {
+    public List<User> findAllEmployments(@RequestHeader(value = "Authorization") String authorizationHeader) {
         return userService.findAllEmployments();
     }
 
     @GetMapping("/{username}")
     @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> findByUsername(@PathVariable String username) {
-        Map<String, Object> response = new HashMap<>();
+    public User findByUsername(@PathVariable String username,
+                               @RequestHeader(value = "Authorization") String authorizationHeader) {
         try {
-            response.put("user",userService.findByUsername(username));
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            return userService.findByUsername(username);
         } catch (NoSuchElementException e) {
-
-            response.put("message", "el mockup no fue encontrado ");
-            response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            return null;
         }
     }
 

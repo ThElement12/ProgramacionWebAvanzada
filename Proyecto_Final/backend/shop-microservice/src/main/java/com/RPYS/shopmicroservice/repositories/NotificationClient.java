@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@FeignClient(name = "notification-microservice")
+@FeignClient(name = "mail-microservice")
 public interface NotificationClient {
     @PostMapping("/")
     @PreAuthorize("isAuthenticated()")

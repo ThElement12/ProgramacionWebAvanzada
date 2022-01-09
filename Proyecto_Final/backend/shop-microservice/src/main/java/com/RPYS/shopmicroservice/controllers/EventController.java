@@ -3,6 +3,7 @@ package com.RPYS.shopmicroservice.controllers;
 import com.RPYS.shopmicroservice.entities.Event;
 import com.RPYS.shopmicroservice.entities.Product;
 import com.RPYS.shopmicroservice.entities.ProductRequest;
+import com.RPYS.shopmicroservice.models.User;
 import com.RPYS.shopmicroservice.repositories.NotificationClient;
 import com.RPYS.shopmicroservice.repositories.UserClient;
 import com.RPYS.shopmicroservice.services.EventService;
@@ -47,6 +48,8 @@ public class EventController {
             event = eventService.generateProductRequestsUUID(event);
             event.getProductRequests().forEach(productService::saveProductRequest);
             eventService.save(event);
+            User user = userClient.findByUsername(event.getUsername(),token);
+            event.setUser(user);
             if(userClient.saveEventIdByUsername(event.getUsername(), event.getId(),token)){
                 if(notificationClient.broadcast(event,token)){
                     return new ResponseEntity<>(event, HttpStatus.CREATED);

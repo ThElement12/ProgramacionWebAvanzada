@@ -19,5 +19,5 @@ public interface UserClient {
     @GetMapping("/user/employments")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
-    List<User> findAllEmployments();
+    List<User> findAllEmployments(@RequestHeader(value = "Authorization") String authorizationHeader);
 }

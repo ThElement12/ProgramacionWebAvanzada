@@ -22,13 +22,14 @@ public class UserMicroserviceApplication {
 
 	@Bean
 	public CommandLineRunner loadData(UserRepository usuarioRepository){
-		System.out.println("Inicializando los datos.");
+		System.out.println("Inicializando los datos. ->");
 		return args -> {
 			//
 			BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
 			//Cargando la información.
 			User admin = new User();
 			admin.setUsername("admin");
+			admin.setFullName("Robert García");
 			admin.setPassword(bCryptPasswordEncoder.encode("admin"));
 			admin.setMail("r_rokstar@hotmail.com");
 			admin.setRoles(Collections.singletonList("admin"));
