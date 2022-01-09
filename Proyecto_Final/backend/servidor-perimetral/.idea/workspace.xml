@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="198e72e8-2615-41fa-980d-2d19a0c5e6c9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../config-data/servidor-perimetral.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/src/main/java/edu/pucmm/servidorperimetralzuul/ServidorPerimetralZuulApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/src/main/resources/bootstrap.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/src/test/java/edu/pucmm/servidorperimetralzuul/ServidorPerimetralZuulApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inicio/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inicio/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inicio/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inicio/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inicio/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inicio/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inicio/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inicio/src/main/java/edu/pucmm/servidorperimetralzuul/ServidorPerimetralZuulApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inicio/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inicio/src/test/java/edu/pucmm/servidorperimetralzuul/ServidorPerimetralZuulApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/.mvn/wrapper/MavenWrapperDownloader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/src/main/java/com/RYPS/apigateway/ApiGatewayApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/src/main/java/com/RYPS/apigateway/configurations/ZuulConfiguration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/src/main/resources/bootstrap.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/src/test/java/com/RYPS/apigateway/ApiGatewayApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../config-data/api-gateway.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user-microservice/src/main/java/com/RYPS/usermicroservice/UserMicroserviceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../user-microservice/src/main/java/com/RYPS/usermicroservice/UserMicroserviceApplication.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectId" id="23TR9byvgA76o0EmYlpQvsJQvc1" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/final" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="198e72e8-2615-41fa-980d-2d19a0c5e6c9" name="Changes" comment="" />
+      <created>1641755940545</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1641755940545</updated>
+      <workItem from="1641755942543" duration="23000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
