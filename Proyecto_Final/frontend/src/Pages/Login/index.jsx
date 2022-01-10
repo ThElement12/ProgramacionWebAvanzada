@@ -33,6 +33,9 @@ const Login = () => {
         else if(decoded.roles.includes("empleado")){
           sessionStorage.setItem('rol', "empleado");
         }
+        else{
+          sessionStorage.setItem('rol', "cliente");
+        }
         navigate("/home");
       })
       .catch(res => {
