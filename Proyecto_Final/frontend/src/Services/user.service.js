@@ -21,7 +21,6 @@ class UserService {
     sessionStorage.clear();
   }
   register(user) {
-    console.log(user)
     return axios.post(process.env.REACT_APP_API_URL + 'user/auth/user',user);
   }
   getUsers(){
