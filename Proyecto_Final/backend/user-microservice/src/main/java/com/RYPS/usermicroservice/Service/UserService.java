@@ -49,6 +49,10 @@ public class UserService implements UserDetailsService {
         userRepository.delete(user);
     }
 
+    public List<User> findAll(){
+        return userRepository.findAll();
+    }
+
     public List<User> findAllEmployments(){
         List<User> users = userRepository.findAll();
         List<User> employments = new ArrayList<>();

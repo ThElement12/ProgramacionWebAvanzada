@@ -28,6 +28,13 @@ public class UserController {
         return userService.findAllEmployments();
     }
 
+    @GetMapping("/all")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    @ResponseStatus(HttpStatus.OK)
+    public List<User> findAll(@RequestHeader(value = "Authorization") String authorizationHeader) {
+        return userService.findAll();
+    }
+
     @GetMapping("/{username}")
     @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
     @ResponseStatus(HttpStatus.OK)
