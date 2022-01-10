@@ -6,12 +6,13 @@ import { Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navigation.css";
+import UserService from '../../Services/user.service.js'
 
 export default function Navigation() {
   const navigate = useNavigate();
 
   const logOut = () => {
-    //Auth.logout();
+    UserService.logout();
     navigate("/home");
   };
   const loggedNavBar = () => {
@@ -36,7 +37,7 @@ export default function Navigation() {
         <Nav.Link className="MenuItem" as={Link} to="/events">
           Mis Eventos
         </Nav.Link>
-        <Nav.Link className="MenuItem" as={Link} to="/create-events">
+        <Nav.Link className="MenuItem" as={Link} to="/create-event">
           Reservar Evento
         </Nav.Link>
         <NavDropdown title="Cuenta" id="basic-nav-dropdown">
