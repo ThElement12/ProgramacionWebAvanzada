@@ -1,23 +1,31 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 
 import ListElement from '../../Components/ListElement';
 import Navigation from '../../Components/Navigation';
-import User from '../../Models/User';
 
-
+import UserService from '../../Services/user.service.js'
 
 export default function ListUser() {
-  const users = [
-    new User('Prueba', "Joe@doe.com", "no"),
-    new User('Prueba1', "joe@doe.com", "Ola"),
-    new User('Prueba2', "Joe@doe.com", "ke")
-  ]
+  const [users, setusers] = useState([])
+
+  useEffect(() => {
+    UserService.getUsers()
+    .then(res => {
+      const newData = res.data;
+      for(let data of newData){
+        delete data.password
+      }
+      setusers(res.data)
+    })
+    .catch(err => console.error(err));
+  }, [])
+
   return (
     <div>
       <Navigation />
       <br></br>
       <div>
-        <ListElement headers={['Nombre', 'Email', 'Eventos']} data={users} />
+        <ListElement headers={['Id', 'Nombre de Usuario', 'Nombre Completo', 'Email', 'Rol']} data={users} />
       </div>
     </div>
   )
