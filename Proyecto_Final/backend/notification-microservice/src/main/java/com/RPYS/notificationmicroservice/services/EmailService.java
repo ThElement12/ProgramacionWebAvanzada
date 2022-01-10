@@ -45,8 +45,8 @@ public class EmailService {
                         +" este correo es para informar que se acaba de crear un nuevo evento a nombre de: "
                         .concat(event.getUser().getFullName())
                         .concat(" el cual se estará celebrando desde el -> ")
-                        .concat(event.getStartTime().toString()).concat(" hasta ")
-                        .concat(event.getEndTime().toString())
+                        .concat(event.getStartTime().toString().replace("T"," a las ")).concat(" hasta ")
+                        .concat(event.getEndTime().toString().replace("T"," a las "))
                         .concat(" Los productos que se ocuparan ese dia para la celebracion del evento son los siguientes:")
                 );
 

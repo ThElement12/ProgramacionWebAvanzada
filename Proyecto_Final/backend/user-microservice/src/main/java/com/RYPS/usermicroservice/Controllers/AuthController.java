@@ -4,8 +4,10 @@ import com.RYPS.usermicroservice.Configurations.AuthTokenFilter;
 import com.RYPS.usermicroservice.Service.UserService;
 import com.RYPS.usermicroservice.models.LogInRequest;
 import com.RYPS.usermicroservice.models.User;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,5 +58,23 @@ public class AuthController {
 
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/user")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        Map<String, Object> response = new HashMap<>();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        try {
+            userService.save(user);
+        } catch (DataAccessException e) {
+            response.put("message", "No se pudo crear el usuario en la base de datos");
+            response.put("Error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
+
     }
 }

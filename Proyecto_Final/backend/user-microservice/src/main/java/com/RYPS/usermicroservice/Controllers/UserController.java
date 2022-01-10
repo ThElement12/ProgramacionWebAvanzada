@@ -21,26 +21,6 @@ public class UserController {
         this.userService = userService;
     }
 
-
-    @PostMapping("/")
-    @PreAuthorize("hasAuthority('admin')")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        Map<String, Object> response = new HashMap<>();
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        try {
-            userService.save(user);
-        } catch (DataAccessException e) {
-            response.put("message", "No se pudo crear el usuario en la base de datos");
-            response.put("Error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
-
-    }
-
     @GetMapping("/employments")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
