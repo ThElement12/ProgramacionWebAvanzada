@@ -1,3 +1,12 @@
+spring:
+  # GATEWAY CONFIG
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
 management:
   endpoints:
     routes:
