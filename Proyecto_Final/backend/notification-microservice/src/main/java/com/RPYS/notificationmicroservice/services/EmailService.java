@@ -30,7 +30,7 @@ public class EmailService {
     }
 
     @Async
-    public void sendBroadcastEmail(String template, List<User> users, Event event) {
+    public void sendBroadcastEventEmail( List<User> users, Event event) {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper;
         Email email = new Email();
@@ -38,15 +38,15 @@ public class EmailService {
             email.setFrom("prestalialoans@gmail.com");
             email.setTitle("Creacion de nuevo evento");
 
-            for(User user:users){
+            for (User user : users) {
                 email.setTo(user.getMail());
                 email.setFullName(user.getFullName());
                 email.setMessage("Hola, ".concat(user.getFullName())
-                        +" este correo es para informar que se acaba de crear un nuevo evento a nombre de: "
+                        + " este correo es para informar que se acaba de crear un nuevo evento a nombre de: "
                         .concat(event.getUser().getFullName())
                         .concat(" el cual se estará celebrando desde el -> ")
-                        .concat(event.getStartTime().toString().replace("T"," a las ")).concat(" hasta ")
-                        .concat(event.getEndTime().toString().replace("T"," a las "))
+                        .concat(event.getStartTime().toString().replace("T", " a las ")).concat(" hasta ")
+                        .concat(event.getEndTime().toString().replace("T", " a las "))
                         .concat(" Los productos que se ocuparan ese dia para la celebracion del evento son los siguientes:")
                 );
 
@@ -56,7 +56,7 @@ public class EmailService {
                 context.setVariable("data", email);
                 context.setVariable("name", "RYPS");
                 context.setVariable("products", event.getProductRequests());
-                String htmlContent = templateEngine.process(template, context);
+                String htmlContent = templateEngine.process("event-email", context);
 
                 helper.setTo(email.getTo());
                 helper.setText(htmlContent, true);
@@ -73,5 +73,87 @@ public class EmailService {
         }
 
     }
+
+
+    @Async
+    public void sendNewEventEmail( Event event) {
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper;
+        Email email = new Email();
+        try {
+            email.setFrom("prestalialoans@gmail.com");
+            email.setTitle("Gracias por preferirnos.");
+            email.setTo(event.getUser().getMail());
+            email.setFullName(event.getUser().getFullName());
+            email.setMessage("Hola, ".concat(event.getUser().getFullName())
+                    + " este correo es para informar que se acaba de crear un"
+                    .concat(event.getPlan().getName().equalsIgnoreCase
+                            ("boda")?"a "+event.getPlan().getName():" "+event.getPlan().getName())
+                    .concat(event.getPlan().getName().equalsIgnoreCase
+                            ("boda")?" la ":" el ").concat("cual se estara celebrando el -> ")
+                    .concat(event.getStartTime().toString().replace("T", " a las ")).concat(" hasta ")
+                    .concat(event.getEndTime().toString().replace("T", " a las "))
+                    .concat(" Los productos que se ocuparan ese dia para la celebracion del evento son los siguientes:")
+            );
+
+            helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                    StandardCharsets.UTF_8.name());
+            Context context = new Context();
+            context.setVariable("data", email);
+            context.setVariable("name", "RYPS");
+            context.setVariable("products", event.getProductRequests());
+            String htmlContent = templateEngine.process("event-email", context);
+
+            helper.setTo(email.getTo());
+            helper.setText(htmlContent, true);
+            helper.setSubject(email.getTitle());
+            helper.setFrom(email.getFrom());
+
+            emailSender.send(message);
+
+        } catch (
+                MessagingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Async
+    public void sendNewUserEmail( User user) {
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper;
+        Email email = new Email();
+        try {
+            email.setFrom("prestalialoans@gmail.com");
+            email.setTitle("Bienvenido a RYPS");
+            email.setTo(user.getMail());
+            email.setFullName(user.getFullName());
+            email.setMessage("Hola, ".concat(user.getFullName())
+                    + " este correo es para darle la bienvenida a Rove Yosef Party Supply, " +
+                    "y agradecerle que confie en nosotros para la creacion de sus eventos."
+            );
+
+            helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                    StandardCharsets.UTF_8.name());
+            Context context = new Context();
+            context.setVariable("data", email);
+            context.setVariable("name", "Rove Yosef Party Supply");
+            String htmlContent = templateEngine.process("new-user-email", context);
+
+            helper.setTo(email.getTo());
+            helper.setText(htmlContent, true);
+            helper.setSubject(email.getTitle());
+            helper.setFrom(email.getFrom());
+
+            emailSender.send(message);
+
+        } catch (
+                MessagingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
 }

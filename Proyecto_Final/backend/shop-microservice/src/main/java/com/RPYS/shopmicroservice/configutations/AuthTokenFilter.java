@@ -48,8 +48,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Sin permisos");
             }
         } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Sin permisos");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Estructura no válida");
         }
 
         //filterChain.doFilter(request, response);

@@ -1,13 +1,13 @@
 package com.RYPS.usermicroservice.Controllers;
 
 import com.RYPS.usermicroservice.Configurations.AuthTokenFilter;
+import com.RYPS.usermicroservice.Repositories.NotificationClient;
 import com.RYPS.usermicroservice.Service.UserService;
 import com.RYPS.usermicroservice.models.LogInRequest;
 import com.RYPS.usermicroservice.models.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,10 +23,12 @@ public class AuthController {
 
     private final UserService userService;
     private final AuthTokenFilter jwtUtil;
+    private final NotificationClient notificationClient;
 
-    public AuthController(UserService userService, AuthTokenFilter jwtUtil) {
+    public AuthController(UserService userService, AuthTokenFilter jwtUtil, NotificationClient notificationClient) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
+        this.notificationClient = notificationClient;
     }
 
     @PostMapping("/login")
@@ -68,7 +70,11 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         try {
-            userService.save(user);
+            user = userService.save(user);
+            String token = "Bearer ";
+            token += jwtUtil.generateJwtToken(user);
+
+            notificationClient.newUser(user,token);
         } catch (DataAccessException e) {
             response.put("message", "No se pudo crear el usuario en la base de datos");
             response.put("Error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));

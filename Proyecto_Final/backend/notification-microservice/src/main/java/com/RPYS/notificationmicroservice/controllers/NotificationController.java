@@ -36,7 +36,8 @@ public class NotificationController {
 
         try {
             List<User> users = userClient.findAllEmployments(token);
-            emailService.sendBroadcastEmail("send-email",users,event);
+            emailService.sendBroadcastEventEmail(users,event);
+            emailService.sendNewEventEmail(event);
 
         } catch (DataAccessException e) {
             response.put("message", "No se pudo crear el evento en la base de datos");
@@ -45,6 +46,23 @@ public class NotificationController {
         }
 
         response.put("message", "Los correos se enviaron con éxito...");
+        return true;
+
+    }
+
+    @PostMapping("/auth/user")
+    public Boolean newUser(@RequestBody User user,@RequestHeader(value = "Authorization") String authorizationHeader) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            emailService.sendNewUserEmail(user);
+        } catch (DataAccessException e) {
+            response.put("message", "No se pudo crear el usuario en la base de datos");
+            response.put("Error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return false;
+        }
+
+        response.put("message", "El correo se enviaron con éxito...");
         return true;
 
     }

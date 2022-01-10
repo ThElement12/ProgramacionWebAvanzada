@@ -14,7 +14,7 @@ public interface UserClient {
     @GetMapping("/{username}")
     @PreAuthorize("hasAnyAuthority('admin','empleado','cliente')")
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<?> findByUsername(@PathVariable String username);
+    User findByUsername(@PathVariable String username);
 
     @GetMapping("/employments")
     @PreAuthorize("isAuthenticated()")
