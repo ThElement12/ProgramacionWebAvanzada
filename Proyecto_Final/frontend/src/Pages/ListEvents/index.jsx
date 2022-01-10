@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-import ListElement from '../../Components/ListElement';
 import Navigation from '../../Components/Navigation';
 
 import { Modal, Button, Table, Container} from 'react-bootstrap'

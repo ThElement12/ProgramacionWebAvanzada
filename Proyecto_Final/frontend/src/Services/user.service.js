@@ -24,7 +24,13 @@ class UserService {
     return axios.post(process.env.REACT_APP_API_URL + 'user/auth/user',user);
   }
   getUsers(){
-    return axios.get(process.env.REACT_APP_API_URL + 'user/all', {headers: authHeader()})
+    return axios.get(process.env.REACT_APP_API_URL + 'user/all', {headers: authHeader()});
+  }
+  deleteUser(username){
+    return axios.delete(process.env.REACT_APP_API_URL + `user/${username}`, {headers: authHeader()});
+  }
+  modifyUser(user){
+    return axios.put(process.env.REACT_APP_API_URL + `user/${user.id}`, {headers: authHeader()});
   }
 }
 
