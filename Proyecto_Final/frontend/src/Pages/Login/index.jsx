@@ -3,13 +3,13 @@ import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
-//import { Auth } from "../../utils/firebase";
 //import logo from "../../assets/img/Logo.png";
 import Navigation from "../../Components/Navigation/index.jsx";
 
 //TODO: quitar comentarios cuando se conecte con el back
 
-//import AuthService from '../../Utils/auth.service.js'
+import UserService from '../../Services/user.service.js'
+
 import "./Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -23,18 +23,21 @@ const Login = () => {
     authentication();
   };
   const authentication = async () => {
-    /*await AuthService.login(credential, password)
+    await UserService.login(credential, password)
       .then(res => {
         var decoded = jwt_decode(res);
         sessionStorage.setItem('username', decoded.username);
         if (decoded.roles.includes("admin")) {
-          sessionStorage.setItem('rol', "admin")
+          sessionStorage.setItem('rol', "admin");
+        }
+        else if(decoded.roles.includes("empleado")){
+          sessionStorage.setItem('rol', "empleado");
         }
         navigate("/home");
       })
       .catch(res => {
         setmsgError("La contraseña o el usuario no es correcto")
-      });*/
+      });
   }
 
   return (

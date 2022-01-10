@@ -4,27 +4,25 @@ import { useNavigate } from "react-router-dom";
 
 import Navigation from "../../Components/Navigation";
 
-import Client from "../../Models/Client";
-import Employee from "../../Models/Employee";
+import User from "../../Models/User";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Register.css"
 //TODO: quitar comentarios cuando se conecte con el back
 
-//import AuthService from '../../Utils/auth.service.js'
+import UserService from '../../Services/user.service.js'
 
 const Register = (props) => {
   const [username, setUsername] = useState("");
   const [mail, setEmail] = useState("");
   const [password, setPass] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const [msgError, setmsgError] = useState("");
   const [modalSuccess, setModalSuccess] = useState(false);
-
-
   //TODO: Enviar por props si será usuario o empleado
-
   const navigate = useNavigate();
 
   const onSubmit = (event) => {
@@ -36,25 +34,27 @@ const Register = (props) => {
     }
   }
   const register = async () => {
+    let newUser = new User(username,mail,`${name} ${lastName}`, password);
     if(props.rol === "employee"){
-      let newUser = new Employee(username,mail,password,true);
+      newUser.roles = ['empleado'];
     }else{
-      let newUser = new Client(username,mail,password,[]);
-
+      newUser.roles = ['cliente'];
     }
-    /*await AuthService.register(username, password, mail, rol)
+    await UserService.register(newUser)
       .then(onSuccess)
       .catch(() => {
         setmsgError("Hubo un error al registrar el usuario")
       })
-*/
   }
   const onSuccess = () => {
     setModalSuccess(true);
-    setEmail("")
-    setPass("")
-    setConfirm("")
-    setmsgError("")
+    setEmail("");
+    setPass("");
+    setConfirm("");
+    setmsgError("");
+    setUsername("");
+    setName("");
+    setLastName("");
   }
   const hideModalSuccess = () => {
     setModalSuccess(false);
@@ -90,6 +90,10 @@ const Register = (props) => {
             <Form onSubmit={onSubmit}>
               <Form.Label>Nombre de Usuario:</Form.Label>
               <Form.Control type="username" name="username" onChange={(e) => { setUsername(e.target.value); }} required></Form.Control>
+              <Form.Label>Nombres:</Form.Label>
+              <Form.Control type="name" name="name" onChange={(e) => { setName(e.target.value); }} required></Form.Control>
+              <Form.Label>Apellidos:</Form.Label>
+              <Form.Control type="lastname" name="lastname" onChange={(e) => { setLastName(e.target.value); }} required></Form.Control>
               <Form.Label>Correo:</Form.Label>
               <Form.Control type="email" name="email" onChange={(e) => { setEmail(e.target.value); }} required></Form.Control>
               <Form.Label>Contraseña:</Form.Label>
