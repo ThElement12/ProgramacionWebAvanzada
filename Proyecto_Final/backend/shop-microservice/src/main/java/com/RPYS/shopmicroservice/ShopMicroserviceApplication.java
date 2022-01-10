@@ -48,7 +48,7 @@ public class ShopMicroserviceApplication {
 
 				product2.setName("Mesa para 8");
 				product2.setStock(250);
-				product.setPrice(2499.99);
+				product2.setPrice(2499.99);
 				productRepository.save(product2);
 
 				product3.setName("Silla");

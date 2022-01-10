@@ -17,7 +17,7 @@ public class Plan {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany()
+    @ManyToMany()
     private Set<Product> products;
 
 }
