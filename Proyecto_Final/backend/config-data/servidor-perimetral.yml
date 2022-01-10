@@ -1,10 +1,16 @@
+spring:
+  # GATEWAY CONFIG
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: http:/localhost:3000
+            allowedMethods: "GET, POST, PUT, DELETE, OPTIONS"
 management:
   endpoints:
     routes:
       enabled: true
-    web:
-      exposure:
-        include: '*'
 logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
