@@ -6,7 +6,7 @@ spring:
         corsConfigurations:
           '[/**]':
             allowedOrigins: "*"
-            allowedMethods: "*"
+            allowedMethods: "GET, POST, PUT, DELETE, OPTIONS"
 management:
   endpoints:
     routes:
