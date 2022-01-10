@@ -1,5 +1,6 @@
 package com.RYPS.usermicroservice.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ public class User {
     private String username;
     @Column()
     private String fullName;
+    @JsonIgnore()
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
