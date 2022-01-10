@@ -1,9 +1,12 @@
 export default class Event{
-  constructor(plan, products, cost, date_init, date_finish){
+  constructor(id, name,startTime,endTime,plan, username, totalPrice, productsRequests){
+    this.id = id;
+    this.name = name;
+    this.startTime = startTime;
+    this.endTime = endTime;
     this.plan = plan;
-    this.products = products;
-    this.cost = cost;
-    this.date_init = date_init;
-    this.date_finish = date_finish;
+    this.username = username;
+    this.totalPrice = totalPrice;
+    this.productsRequests = productsRequests;
   }
 }

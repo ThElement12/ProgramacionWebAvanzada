@@ -10,7 +10,7 @@ export default function Paypal(props) {
           intent: "CAPTURE",
           purchase_units: [
             {
-              description: `Pago de evento con el plan: ${props.plan}`,
+              description: `Pago de evento con el plan: ${props.plan} Asunto ${props.name}`,
               amount: {
                 value: props.price,
                 currency_code: "USD"

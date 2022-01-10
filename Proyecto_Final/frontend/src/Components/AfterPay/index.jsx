@@ -14,20 +14,20 @@ export default function AfterPay(props) {
         </Card.Header>
         <ListGroup className="list-group-flush">
           <ListGroupItem>
-            Plan seleccionado: {props.event.plan}
+            Plan seleccionado: {props.event.plan.name}
           </ListGroupItem>
           <ListGroupItem>
-            Fecha y hora de inicio: {props.event.date_init.replace("T", " ")}
+            Fecha y hora de inicio: {props.event.startTime.replace("T", " ")}
           </ListGroupItem>
           <ListGroupItem>
-            Fecha y hora de fin: {props.event.date_finish.replace("T", " ")}
+            Fecha y hora de fin: {props.event.endTime.replace("T", " ")}
           </ListGroupItem>
           <ListGroupItem>
             Productos Seleccionados:
-            <ListElement headers={["Producto", "Cantidad"]} data={props.event.products}/>
+            <ListElement headers={["","id", "Producto", "Cantidad"]} data={props.event.productsRequests}/>
           </ListGroupItem>
           <ListGroupItem>
-            Total: <b>{props.event.cost}</b>
+            Total: <b>USD${props.event.totalPrice}</b>
           </ListGroupItem>
 
 
