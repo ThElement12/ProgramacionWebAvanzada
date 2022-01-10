@@ -1,5 +1,5 @@
 export default class Event{
-  constructor(id, name,startTime,endTime,plan, username, totalPrice, productsRequests){
+  constructor(id, name,startTime,endTime,plan, username, totalPrice, productRequests){
     this.id = id;
     this.name = name;
     this.startTime = startTime;
@@ -7,6 +7,6 @@ export default class Event{
     this.plan = plan;
     this.username = username;
     this.totalPrice = totalPrice;
-    this.productsRequests = productsRequests;
+    this.productRequests = productRequests;
   }
 }

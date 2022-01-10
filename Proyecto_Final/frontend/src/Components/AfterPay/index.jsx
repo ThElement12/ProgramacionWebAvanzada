@@ -24,7 +24,7 @@ export default function AfterPay(props) {
           </ListGroupItem>
           <ListGroupItem>
             Productos Seleccionados:
-            <ListElement headers={["","id", "Producto", "Cantidad"]} data={props.event.productsRequests}/>
+            <ListElement headers={["","id", "Producto", "Cantidad"]} data={props.event.productRequests}/>
           </ListGroupItem>
           <ListGroupItem>
             Total: <b>USD${props.event.totalPrice}</b>

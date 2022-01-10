@@ -12,6 +12,10 @@ class EventService{
   postEvent(event){
     return axios.post(process.env.REACT_APP_API_URL + 'shop/event/', event, {headers: authHeader()});
   }
+  getProducts(){
+    return axios.get(process.env.REACT_APP_API_URL + 'shop/product/', {headers: authHeader()});
+  }
+
 
 }
 export default new EventService();

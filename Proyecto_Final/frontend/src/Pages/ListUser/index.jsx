@@ -14,8 +14,10 @@ export default function ListUser() {
       const newData = res.data;
       for(let data of newData){
         delete data.password
+        delete data.eventsId
       }
       setusers(res.data)
+      console.log(users)
     })
     .catch(err => console.error(err));
   }, [])
