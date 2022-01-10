@@ -50,10 +50,6 @@ public class ServidorPerimetralZuulApplication {
         source.registerCorsConfiguration("/**", config);
 
         return new CorsFilter(source);
-<<<<<<< HEAD
     }*/
-=======
-    }
 
->>>>>>> 2e416f9245dbb43624b736c92183d33ff9936674
 }
