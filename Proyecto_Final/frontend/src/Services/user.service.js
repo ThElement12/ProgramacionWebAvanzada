@@ -30,7 +30,7 @@ class UserService {
     return axios.delete(process.env.REACT_APP_API_URL + `user/${username}`, {headers: authHeader()});
   }
   modifyUser(user){
-    return axios.put(process.env.REACT_APP_API_URL + `user/${user.id}`, {headers: authHeader()});
+    return axios.put(process.env.REACT_APP_API_URL + `user/${user.id}`, user, {headers: authHeader()});
   }
 }
 
