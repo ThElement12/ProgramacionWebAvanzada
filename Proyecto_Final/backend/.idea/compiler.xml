@@ -2,18 +2,25 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="notification-microservice" />
+        <module name="config-service" />
+        <module name="shop-microservice" />
         <module name="eureka-server" />
         <module name="user-microservice" />
-        <module name="config-service" />
+        <module name="registry-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="config-service" target="11" />
       <module name="eureka-server" target="11" />
+      <module name="notification-microservice" target="11" />
+      <module name="registry-service" target="11" />
+      <module name="shop-microservice" target="11" />
       <module name="user-microservice" target="11" />
     </bytecodeTargetLevel>
   </component>
@@ -21,6 +28,9 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="config-service" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
+      <module name="notification-microservice" options="-parameters" />
+      <module name="registry-service" options="-parameters" />
+      <module name="shop-microservice" options="-parameters" />
       <module name="user-microservice" options="-parameters" />
     </option>
   </component>

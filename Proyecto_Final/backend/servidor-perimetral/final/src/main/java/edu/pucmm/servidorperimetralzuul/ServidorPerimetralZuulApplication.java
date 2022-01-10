@@ -20,7 +20,7 @@ public class ServidorPerimetralZuulApplication {
         SpringApplication.run(ServidorPerimetralZuulApplication.class, args);
     }
 
-    @Bean
+    /*@Bean
     public CorsFilter corsFilter() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
@@ -38,5 +38,5 @@ public class ServidorPerimetralZuulApplication {
         source.registerCorsConfiguration("/**", config);
 
         return new CorsFilter(source);
-    }
+    }*/
 }

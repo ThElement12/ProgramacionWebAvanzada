@@ -5,6 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/backend.iml" filepath="$PROJECT_DIR$/.idea/backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/config-service/config-service.iml" filepath="$PROJECT_DIR$/config-service/config-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/notification-microservice/notification-microservice.iml" filepath="$PROJECT_DIR$/notification-microservice/notification-microservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/registry-service/registry-service.iml" filepath="$PROJECT_DIR$/registry-service/registry-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shop-microservice/shop-microservice.iml" filepath="$PROJECT_DIR$/shop-microservice/shop-microservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/user-microservice/user-microservice.iml" filepath="$PROJECT_DIR$/user-microservice/user-microservice.iml" />
     </modules>
   </component>
