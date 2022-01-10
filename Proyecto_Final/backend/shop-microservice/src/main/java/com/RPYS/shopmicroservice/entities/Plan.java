@@ -17,7 +17,7 @@ public class Plan {
     @Column(nullable = false)
     private String name;
 
-    @Transient()
+    @OneToMany()
     private Set<Product> products;
 
 }
