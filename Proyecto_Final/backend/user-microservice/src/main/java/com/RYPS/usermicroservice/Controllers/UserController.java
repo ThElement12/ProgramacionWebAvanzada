@@ -104,6 +104,7 @@ public class UserController {
             User old = userService.findByid(id).get();
             old.setUsername(user.getUsername());
             old.setMail(user.getMail());
+            old.setFullName(user.getFullName());
             userService.save(old);
         } catch (NoSuchElementException e) {
             response.put("message", "el usuario no fue encontrado ");
