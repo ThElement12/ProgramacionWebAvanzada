@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: thelement012/frontend-final
+    environment:
+      REACT_APP_API_URL: http://localhost:8080/
+    ports:
+      - "3000:3000"
+    depends_on:
+      - config-service
+    networks:
+      - proyectoFinal
+  config-service:
+    restart: always
+    image: thelement012/config-service
+    ports:
+      - "8081:8081"
+    networks:
+      - proyectoFinal
+  registry-service:
+    restart: always
+    image: thelement012/registry-service
+    ports:
+      - "8099:8099"
+    networks:
+      - proyectoFinal
+    depends_on:
+      - config-service
+  notification-service:
+    restart: always
+    image: thelement012/notification-service
+    ports:
+      - "8093:8093"
+    networks:
+      - proyectoFinal
+    depends_on:
+      - config-service
+  shop-microservice:
+    restart: always
+    image: thelement012/shop-microservice
+    ports:
+      - "8092:8092"
+    networks:
+      - proyectoFinal
+    depends_on:
+      - config-service
+  user-microservice:
+    restart: always
+    image: thelement012/user-microservice
+    ports:
+      - "8091:8091"
+    networks:
+      - proyectoFinal
+    depends_on:
+      - config-service
+  api-gateway:
+    restart: always
+    image: thelement012/api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - proyectoFinal
+    depends_on:
+      - config-service
+  db:
+    image: buildo/h2database:latest
+    volumes:
+      - volumen:/tmp/
+    networks:
+      - proyectoFinal
+volumes:
+  volumen:
+networks:
+  proyectoFinal:

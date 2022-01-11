@@ -8,10 +8,10 @@ RUN mvn package
 #mantenimiento
 MAINTAINER Robert Garcia <20171086@ce.pucmm.edu.do>
 
-ENV spring.mail.host = 'smtp.gmail.com'
-ENV spring.mail.port = 587
-ENV spring.mail.username = 'prestalialoans@gmail.com'
-ENV spring.mail.password= 'gjjoxurzhbdbqfjp'
+ENV spring.mail.host='smtp.gmail.com'
+ENV spring.mail.port=587
+ENV spring.mail.username='prestalialoans@gmail.com'
+ENV spring.mail.password='gjjoxurzhbdbqfjp'
 
 VOLUME /tmp
 FROM openjdk:11.0.11-slim
