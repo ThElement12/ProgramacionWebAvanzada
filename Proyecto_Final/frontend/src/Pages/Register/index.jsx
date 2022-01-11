@@ -8,7 +8,6 @@ import User from "../../Models/User";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Register.css"
-//TODO: quitar comentarios cuando se conecte con el back
 
 import UserService from '../../Services/user.service.js'
 
@@ -22,7 +21,6 @@ const Register = (props) => {
 
   const [msgError, setmsgError] = useState("");
   const [modalSuccess, setModalSuccess] = useState(false);
-  //TODO: Enviar por props si será usuario o empleado
   const navigate = useNavigate();
 
   const onSubmit = (event) => {

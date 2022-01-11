@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-
-//import logo from "../../assets/img/Logo.png";
 import Navigation from "../../Components/Navigation/index.jsx";
-
-//TODO: quitar comentarios cuando se conecte con el back
 
 import UserService from '../../Services/user.service.js'
 

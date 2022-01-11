@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import Navigation from '../../Components/Navigation';
 
-import { Modal, Button, Table, Container} from 'react-bootstrap'
+import { Modal, Button, Table, Container } from 'react-bootstrap'
 
 import EventService from '../../Services/event.service.js';
 
@@ -13,13 +13,19 @@ export default function ListEvents() {
   const [event, setEvent] = useState(null);
 
   useEffect(() => {
-    EventService.getAllEvents()
-      .then(res => setEvents(res.data))
-      .catch(err => console.error(err));
-    
+    if (sessionStorage.getItem("rol") === "cliente") {
+      EventService.getEvent(sessionStorage.getItem("username"))
+        .then(res => setEvents(res.data))
+        .catch(err => console.error(err));
+    }
+    else {
+      EventService.getAllEvents()
+        .then(res => setEvents(res.data))
+        .catch(err => console.error(err));
+    }
+
   }, [])
 
-  //TODO: Listar eventos
   const hideModalSuccess = () => {
     setModalDetails(false);
     setEvent(null);
@@ -43,25 +49,25 @@ export default function ListEvents() {
         <br></br>
         <h5>Productos:</h5>
         <Container>
-        <Table className="table table-bordered" hover striped responsive>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Producto</th>
-              <th>Cantidad</th>
-            </tr>
-          </thead>
-          <tbody>
-            {event.productRequests.map((producto, i) => (
-             <tr key={i}>
-                <th>{producto.productId}</th>
-                <th>{producto.name}</th>
-                <th>{producto.requested}</th>
+          <Table className="table table-bordered" hover striped responsive>
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Container>
+            </thead>
+            <tbody>
+              {event.productRequests.map((producto, i) => (
+                <tr key={i}>
+                  <th>{producto.productId}</th>
+                  <th>{producto.name}</th>
+                  <th>{producto.requested}</th>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Container>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={() => hideModalSuccess()}>
@@ -89,12 +95,12 @@ export default function ListEvents() {
           </thead>
           <tbody>
             {events.map((event, i) => (
-             <tr key={i}>
+              <tr key={i}>
                 <th>{event.id}</th>
                 <th>{event.name}</th>
                 <th>{event.startTime.replace('T', ' ')}</th>
                 <th>{event.endTime.replace('T', ' ')}</th>
-                <th>{<Button variant="link" onClick={() => {showModalDetails(event)}}>Detalles</Button>}</th>
+                <th>{<Button variant="link" onClick={() => { showModalDetails(event) }}>Detalles</Button>}</th>
               </tr>
             ))}
           </tbody>

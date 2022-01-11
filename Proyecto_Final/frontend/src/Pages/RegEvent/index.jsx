@@ -65,7 +65,6 @@ const RegEvent = (props) => {
       })
       let newEvent = new Event(null, name,initDate,finishDate,selectedPlan,sessionStorage.getItem("username"), cost, productEvent)
 
-      console.log(newEvent);
       setEvent(newEvent);
       setCheckout(true);
     }
