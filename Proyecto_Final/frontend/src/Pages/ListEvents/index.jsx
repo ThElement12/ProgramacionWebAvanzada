@@ -15,7 +15,8 @@ export default function ListEvents() {
   useEffect(() => {
     if (sessionStorage.getItem("rol") === "cliente") {
       EventService.getEvent(sessionStorage.getItem("username"))
-        .then(res => setEvents(res.data))
+        .then(res => {
+          setEvents(res.data.events)})
         .catch(err => console.error(err));
     }
     else {
@@ -58,6 +59,7 @@ export default function ListEvents() {
               </tr>
             </thead>
             <tbody>
+              {console.log(event)}
               {event.productRequests.map((producto, i) => (
                 <tr key={i}>
                   <th>{producto.productId}</th>
