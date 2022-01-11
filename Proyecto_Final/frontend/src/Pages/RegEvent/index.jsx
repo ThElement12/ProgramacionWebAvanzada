@@ -170,8 +170,7 @@ const RegEvent = (props) => {
     <div>
       <Navigation />
       {afterpay && <AfterPay event={event} />}
-      {checkout && <div className="d-flex align-items-center justify-content-center"
-        style={{ minHeight: "100vh" }}>
+      {checkout && <div className="d-flex align-items-center justify-content-center">
         <Card className="card-register">
           <Card.Body>
             <Button className="btn btn-secondary" onClick={() => { setCheckout(false) }}>{"<Volver"}</Button>
@@ -180,8 +179,7 @@ const RegEvent = (props) => {
         </Card>
       </div>
       }
-      {!(checkout || afterpay) && <div className="d-flex align-items-center justify-content-center"
-        style={{ minHeight: "100vh" }}>
+      {!(checkout || afterpay) && <div className="d-flex align-items-center justify-content-center">
         <Card className="card-register">
           <Card.Body>
             <h2 className="text-center mb-4">Arma tu evento</h2>
