@@ -93,7 +93,7 @@ public class EventController {
             List<Integer> events = userClient.findAllEventsIdByUsername(username,token);
 
             response.put("events",eventService.findAllEventsByEventsId(events));
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             response.put("message", "no se encontraron eventos para ".concat(username));
             response.put("Error", e.getMessage().concat(": ").concat(e.getMessage()));
